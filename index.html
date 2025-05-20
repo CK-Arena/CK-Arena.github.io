@@ -234,6 +234,8 @@
         const [currentStatement, setCurrentStatement] = React.useState(0);
         const [animationProgress, setAnimationProgress] = React.useState(0);
         const [showJudgeScores, setShowJudgeScores] = React.useState(false);
+        const [currentGroup, setCurrentGroup] = React.useState(0);
+        const [started, setStarted] = React.useState(false);
 
         React.useEffect(() => {
             // JSON data
@@ -559,7 +561,7 @@
 
             // Auto-play animation
                 const timer = setTimeout(() => {
-                    if (currentPhase === 'introduction') {
+                    if (started && currentPhase === 'introduction') {
                         setCurrentPhase('statements');
                     }
                 }, 5000);
@@ -567,48 +569,43 @@
                 return () => clearTimeout(timer);
             }, [currentPhase]);
 
-            React.useEffect(() => {
-                if (currentPhase === 'statements') {
-                    // Show each statement for 3 seconds
-                    const statementTimer = setTimeout(() => {
-                        if (currentStatement < 6) {
-                            setCurrentStatement(currentStatement + 1);
-                        } else {
-                            setCurrentPhase('evaluation');
-                            setShowJudgeScores(true);
-                        }
-                    }, 3000);
+        // React.useEffect(() => {
+        //     if (currentPhase === 'introduction') {
+        //         setCurrentPhase('statements');
+        //     }
+        // }, [currentPhase]);
 
-                    return () => clearTimeout(statementTimer);
-                }
-
-                if (currentPhase === 'evaluation') {
-                    // Show evaluation for 3 seconds before moving to voting
-                    const evaluationTimer = setTimeout(() => {
+        React.useEffect(() => {
+            if (currentPhase === 'statements') {
+                const statementTimer = setTimeout(() => {
+                    if (currentStatement < 6) {
+                        setCurrentStatement(currentStatement + 1);
+                    } else {
+                        // Skip evaluation and go directly to voting
                         setCurrentPhase('voting');
-                    }, 5000);
+                    }
+                }, 3000);
 
-                    return () => clearTimeout(evaluationTimer);
-                }
+                return () => clearTimeout(statementTimer);
+            }
 
-                if (currentPhase === 'voting') {
-                    // Voting animation, increase progress every 500ms
-                    const votingInterval = setInterval(() => {
-                        setAnimationProgress(prev => {
-                            if (prev >= 100) {
-                                clearInterval(votingInterval);
-                                const delayTimer = setTimeout(() => {
-                                    setCurrentPhase('results');
-                                }, 5000);
-                                return 100;
-                            }
-                            return prev + 10;
-                        });
-                    }, 300);
+            if (currentPhase === 'voting') {
+                const votingInterval = setInterval(() => {
+                    setAnimationProgress(prev => {
+                        if (prev >= 100) {
+                            clearInterval(votingInterval);
+                            const delayTimer = setTimeout(() => {
+                                setCurrentPhase('results');
+                            }, 5000);
+                            return 100;
+                        }
+                        return prev + 10;
+                    });
+                }, 300);
 
-                    return () => clearInterval(votingInterval);
-                }
-            }, [currentPhase, currentStatement]);
+                return () => clearInterval(votingInterval);
+            }
+        }, [currentPhase, currentStatement]);
 
             if (loading) {
                 return <div className="flex items-center justify-center h-screen">Loading game data...</div>;
@@ -636,17 +633,32 @@
                     <h2 className="text-2xl font-bold mb-4">Undercover Game</h2>
                     <p className="text-lg mb-2">Topic Category: Animals</p>
                     <div className="flex justify-center space-x-8 mt-6">
-                        <div className="text-center">
-                            <div className="bg-gradient-to-r from-green-500 to-green-700 text-white p-4 rounded-lg">
-                                Civilian Concept: <span className="font-bold">bee</span>
-                            </div>
-                        </div>
-                        <div className="text-center">
-                            <div className="bg-gradient-to-r from-red-500 to-red-700 text-white p-4 rounded-lg">
-                                Undercover Concept: <span className="font-bold">butterfly</span>
-                            </div>
+                    <div className="text-center">
+                        <div className="bg-gradient-to-r from-green-500 to-green-700 text-white p-4 rounded-lg">
+                        Civilian Concept: <span className="font-bold">bee</span>
                         </div>
                     </div>
+                    <div className="text-center">
+                        <div className="bg-gradient-to-r from-red-500 to-red-700 text-white p-4 rounded-lg">
+                        Undercover Concept: <span className="font-bold">butterfly</span>
+                        </div>
+                    </div>
+                    </div>
+
+                    {/* Start Button Below Introduction */}
+                    {!started && (
+                    <div className="mt-6">
+                        <button
+                        className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                        onClick={() => {
+                            setStarted(true);
+                            setCurrentPhase('statements');
+                        }}
+                        >
+                        Start Demo
+                        </button>
+                    </div>
+                    )}
                 </div>
             );
 
@@ -655,108 +667,57 @@
                     <h2 className="text-2xl font-bold mb-4 text-center">Round 1 Statements</h2>
                     {currentStatement > 0 && firstRoundStatements.slice(0, currentStatement).map((statement, index) => {
                         const player = gameData.game_record.players.find(p => p.player_id === statement.player_id);
+                        const scores = statement.metrics.judges_stats;
                         return (
-                            <div 
-                                key={statement.statement_id} 
-                                className={`mb-4 p-4 rounded-lg border-2 ${index === currentStatement - 1 ? 'border-blue-500 animate-pulse bg-blue-50' : 'border-gray-200'}`}
-                            >
+                            <div key={statement.statement_id} className={`mb-6 p-4 rounded-lg border-2 ${index === currentStatement - 1 ? 'border-blue-500 animate-pulse bg-blue-50' : 'border-gray-200'}`}>
                                 <div className="flex items-center mb-2">
                                     <div className={`w-8 h-8 rounded-full bg-gradient-to-r ${getPlayerColor(player.player_id)} text-white flex items-center justify-center font-bold mr-2`}>
                                         {player.player_id}
                                     </div>
                                     <span className="font-medium">{getModelName(player.llm_id)}</span>
-                                    {currentPhase === 'results' && (
-                                        <span className={`ml-2 px-2 py-1 rounded text-xs ${player.role === 'undercover' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
-                                            {player.role === 'undercover' ? 'Undercover' : 'Civilian'}
-                                        </span>
-                                    )}
                                 </div>
                                 <p className="ml-10 italic">"{statement.content}"</p>
+
+                                {/* Display Scores Immediately After Statement */}
+                                <div className="mt-4 grid grid-cols-3 gap-4 justify-items-center bg-gray-50 p-3 rounded-lg">
+                                    <div className="text-center">
+                                        <div className="text-sm text-gray-600">Novelty</div>
+                                        <div className="font-bold text-lg">{scores.novelty_score_mean.toFixed(1)}</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-sm text-gray-600">Relevance</div>
+                                        <div className="font-bold text-lg">{scores.relevance_score_mean.toFixed(1)}</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-sm text-gray-600">Reasonableness</div>
+                                        <div className="font-bold text-lg">{scores.reasonableness_score_mean.toFixed(1)}</div>
+                                    </div>
+                                </div>
                             </div>
                         );
                     })}
                 </div>
             );
 
-            const renderEvaluation = () => (
-                <div className="animate-fade-in">
-                    <h2 className="text-2xl font-bold mb-4 text-center">Judge Evaluation</h2>
-
-                    {/* 单行显示：Player + Scores */}
-                    <div className="space-y-4">
-                    {firstRoundStatements.map((statement) => {
-                        const player = gameData.game_record.players.find(p => p.player_id === statement.player_id);
-                        const scores = statement.metrics.judges_stats;
-
-                        return (
-                        <div key={statement.statement_id} className="flex items-center justify-between p-3 border rounded-lg bg-gray-50">
-                            {/* Player Info */}
-                            <div className="flex items-center w-1/3">
-                            <div className={`w-8 h-8 rounded-full bg-gradient-to-r ${getPlayerColor(player.player_id)} text-white flex items-center justify-center font-bold mr-2`}>
-                                {player.player_id}
-                            </div>
-                            <span className="font-medium">{getModelName(player.llm_id)}</span>
-                            </div>
-
-                            {/* Scores */}
-                            <div className="grid grid-cols-3 gap-4 w-2/3 justify-items-center">
-                            <div className="text-center">
-                                <div className="text-sm text-gray-600">Novelty</div>
-                                <div className="font-bold text-lg">
-                                {showJudgeScores ? scores.novelty_score_mean.toFixed(1) : '...'}
-                                </div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-sm text-gray-600">Relevance</div>
-                                <div className="font-bold text-lg">
-                                {showJudgeScores ? scores.relevance_score_mean.toFixed(1) : '...'}
-                                </div>
-                            </div>
-                            <div className="text-center">
-                                <div className="text-sm text-gray-600">Reasonableness</div>
-                                <div className="font-bold text-lg">
-                                {showJudgeScores ? scores.reasonableness_score_mean.toFixed(1) : '...'}
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        );
-                    })}
-                    </div>
-                </div>
-            );
             const renderVoting = () => (
                 <div className="animate-fade-in">
-                    <h2 className="text-2xl font-bold mb-4 text-center">Voting Phase</h2>
-                    <div className="mb-8">
-                        <p className="text-center mb-4">Players are voting...</p>
-                        <div className="w-full bg-gray-200 rounded-full h-4">
-                            <div
-                                className="bg-blue-600 h-4 rounded-full transition-all duration-300"
-                                style={{ width: `${animationProgress}%` }}
-                            ></div>
-                        </div>
-                    </div>
-                    {animationProgress >= 60 && (
-                        <div className="grid grid-cols-6 gap-2">
-                            {gameData.game_record.players.map((player) => {
-                                const vote = firstRoundVoting.votes.find(v => v.voter_id === player.player_id);
-                                if (!vote) return null;
-                                
-                                return (
-                                    <div key={player.player_id} className="text-center">
-                                        <div className={`w-12 h-12 mx-auto rounded-full bg-gradient-to-r ${getPlayerColor(player.player_id)} text-white flex items-center justify-center font-bold`}>
-                                            {player.player_id}
-                                        </div>
-                                        <div className="mt-2">Votes for</div>
-                                        <div className="w-8 h-8 mx-auto rounded-full bg-gray-200 text-black flex items-center justify-center font-bold">
-                                            {vote.voted_for}
-                                        </div>
+                    <h2 className="text-2xl font-bold mb-4 text-center">Voting Summary</h2>
+                    <div className="grid grid-cols-6 gap-2 mb-6">
+                        {Object.entries(firstRoundVoting.vote_results).map(([playerId, votes]) => {
+                            const player = gameData.game_record.players.find(p => p.player_id === parseInt(playerId));
+                            return (
+                                <div key={playerId} className="text-center">
+                                    <div className={`w-12 h-12 mx-auto rounded-full bg-gradient-to-r ${getPlayerColor(parseInt(playerId))} text-white flex items-center justify-center font-bold`}>
+                                        {playerId}
                                     </div>
-                                );
-                            })}
-                        </div>
-                    )}
+                                    <div className="mt-2">Votes</div>
+                                    <div className="w-8 h-8 mx-auto rounded-full bg-gray-700 text-white flex items-center justify-center font-bold">
+                                        {votes}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             );
 
@@ -829,9 +790,6 @@
                             <div className={`px-3 py-1 rounded-full text-sm ${currentPhase === 'statements' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}>
                                 Statements
                             </div>
-                            <div className={`px-3 py-1 rounded-full text-sm ${currentPhase === 'evaluation' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}>
-                                Evaluation
-                            </div>
                             <div className={`px-3 py-1 rounded-full text-sm ${currentPhase === 'voting' ? 'bg-blue-600 text-white' : 'bg-gray-200'}`}>
                                 Voting
                             </div>
@@ -841,12 +799,12 @@
                         </div>
                     </header>
 
+
                     <main className="min-h-96">
                         {currentPhase === 'introduction' && renderIntroduction()}
-                        {currentPhase === 'statements' && renderStatements()}
-                        {currentPhase === 'evaluation' && renderEvaluation()}
-                        {currentPhase === 'voting' && renderVoting()}
-                        {currentPhase === 'results' && renderResults()}
+                        {currentPhase === 'statements' && started && renderStatements()}
+                        {currentPhase === 'voting' && started && renderVoting()}
+                        {currentPhase === 'results' && started && renderResults()}
                     </main>
 
                     <footer className="mt-8 text-center text-sm text-gray-500">
