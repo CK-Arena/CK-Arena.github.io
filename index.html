@@ -662,42 +662,98 @@
                 </div>
             );
 
-            const renderStatements = () => (
-                <div className="animate-fade-in">
-                    <h2 className="text-2xl font-bold mb-4 text-center">Round 1 Statements</h2>
-                    {currentStatement > 0 && firstRoundStatements.slice(0, currentStatement).map((statement, index) => {
-                        const player = gameData.game_record.players.find(p => p.player_id === statement.player_id);
-                        const scores = statement.metrics.judges_stats;
-                        return (
-                            <div key={statement.statement_id} className={`mb-6 p-4 rounded-lg border-2 ${index === currentStatement - 1 ? 'border-blue-500 animate-pulse bg-blue-50' : 'border-gray-200'}`}>
-                                <div className="flex items-center mb-2">
-                                    <div className={`w-8 h-8 rounded-full bg-gradient-to-r ${getPlayerColor(player.player_id)} text-white flex items-center justify-center font-bold mr-2`}>
-                                        {player.player_id}
-                                    </div>
-                                    <span className="font-medium">{getModelName(player.llm_id)}</span>
-                                </div>
-                                <p className="ml-10 italic">"{statement.content}"</p>
+            const renderStatements = () => {
+                const currentStatementData = currentStatement > 0 ? firstRoundStatements[currentStatement - 1] : null;
+                const currentPlayer = currentStatementData ? gameData.game_record.players.find(p => p.player_id === currentStatementData.player_id) : null;
+                const currentScores = currentStatementData ? currentStatementData.metrics.judges_stats : null;
 
-                                {/* Display Scores Immediately After Statement */}
-                                <div className="mt-4 grid grid-cols-3 gap-4 justify-items-center bg-gray-50 p-3 rounded-lg">
+                return (
+                    <div className="animate-fade-in">
+                        <h2 className="text-2xl font-bold mb-6 text-center">Round 1 Statements</h2>
+                        
+                        {/* Player Icons Row */}
+                        <div className="flex justify-center space-x-4 mb-8">
+                            {firstRoundStatements.map((statement, index) => {
+                                const player = gameData.game_record.players.find(p => p.player_id === statement.player_id);
+                                const isActive = index === currentStatement - 1;
+                                const hasSpoken = index < currentStatement;
+                                
+                                return (
+                                    <div key={statement.statement_id} className="text-center">
+                                        <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${getPlayerColor(player.player_id)} text-white flex items-center justify-center font-bold text-lg transition-all duration-500 ${
+                                            isActive ? 'animate-pulse ring-4 ring-blue-400 scale-110' : 
+                                            hasSpoken ? 'opacity-60' : 'opacity-30'
+                                        }`}>
+                                            {player.player_id}
+                                        </div>
+                                        <div className={`mt-2 text-sm font-medium transition-all duration-300 ${
+                                            isActive ? 'text-blue-600 font-bold' : 
+                                            hasSpoken ? 'text-gray-700' : 'text-gray-400'
+                                        }`}>
+                                            {getModelName(player.llm_id)}
+                                        </div>
+                                        {isActive && (
+                                            <div className="mt-1 text-xs text-blue-500 font-semibold animate-bounce">
+                                                Speaking...
+                                            </div>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* Current Statement Display */}
+                        {currentStatementData && (
+                            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-2 border-blue-200 animate-fade-in shadow-lg">
+                                <div className="flex items-center mb-4">
+                                    <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${getPlayerColor(currentPlayer.player_id)} text-white flex items-center justify-center font-bold text-lg mr-4 ring-2 ring-white shadow-lg`}>
+                                        {currentPlayer.player_id}
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-lg text-gray-800">{getModelName(currentPlayer.llm_id)}</div>
+                                        <div className="text-sm text-gray-600">
+                                            {currentPlayer.role === 'undercover' ? 'Undercover Agent' : 'Civilian'} • 
+                                            Concept: {currentPlayer.assigned_concept}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="bg-white p-4 rounded-lg mb-4 shadow-inner">
+                                    <p className="text-lg italic text-gray-700 leading-relaxed">"{currentStatementData.content}"</p>
+                                </div>
+
+                                {/* Judge Scores */}
+                                <div className="grid grid-cols-3 gap-4 bg-white p-4 rounded-lg shadow-inner">
                                     <div className="text-center">
-                                        <div className="text-sm text-gray-600">Novelty</div>
-                                        <div className="font-bold text-lg">{scores.novelty_score_mean.toFixed(1)}</div>
+                                        <div className="text-sm text-gray-600 mb-1">Novelty</div>
+                                        <div className="font-bold text-2xl text-purple-600">{currentScores.novelty_score_mean.toFixed(1)}</div>
                                     </div>
                                     <div className="text-center">
-                                        <div className="text-sm text-gray-600">Relevance</div>
-                                        <div className="font-bold text-lg">{scores.relevance_score_mean.toFixed(1)}</div>
+                                        <div className="text-sm text-gray-600 mb-1">Relevance</div>
+                                        <div className="font-bold text-2xl text-green-600">{currentScores.relevance_score_mean.toFixed(1)}</div>
                                     </div>
                                     <div className="text-center">
-                                        <div className="text-sm text-gray-600">Reasonableness</div>
-                                        <div className="font-bold text-lg">{scores.reasonableness_score_mean.toFixed(1)}</div>
+                                        <div className="text-sm text-gray-600 mb-1">Reasonableness</div>
+                                        <div className="font-bold text-2xl text-blue-600">{currentScores.reasonableness_score_mean.toFixed(1)}</div>
                                     </div>
                                 </div>
                             </div>
-                        );
-                    })}
-                </div>
-            );
+                        )}
+
+                        {/* Progress Indicator */}
+                        <div className="mt-6 text-center">
+                            <div className="text-sm text-gray-500 mb-2">Statement Progress</div>
+                            <div className="w-full bg-gray-200 rounded-full h-2 max-w-md mx-auto">
+                                <div 
+                                    className="bg-blue-600 h-2 rounded-full transition-all duration-500" 
+                                    style={{width: `${(currentStatement / 6) * 100}%`}}
+                                ></div>
+                            </div>
+                            <div className="text-xs text-gray-500 mt-1">{currentStatement} of 6 statements</div>
+                        </div>
+                    </div>
+                );
+            };
 
             const renderVoting = () => (
                 <div className="animate-fade-in">
