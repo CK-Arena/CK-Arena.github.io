@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CK-Arena Audience Mode Demo</title>
+  
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out;
+    }
+    @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.5); }
+        70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+    }
+    .animate-pulse-ring {
+        animation: pulse 2s infinite;
+    }
+    @keyframes slideIn {
+        from { transform: translateX(-100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    .animate-slide-in {
+        animation: slideIn 0.6s ease-out;
+    }
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-10px); }
+        60% { transform: translateY(-5px); }
+    }
+    .animate-gentle-bounce {
+        animation: bounce 1s ease-in-out;
+    }
+    .concept-reveal {
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+<div id="root"></div>
+
+<script type="text/babel">
+    const AudienceGameDemo = () => {
+        const [gameData, setGameData] = React.useState(null);
+        const [loading, setLoading] = React.useState(true);
+        const [currentPhase, setCurrentPhase] = React.useState('introduction');
+        const [currentAssignment, setCurrentAssignment] = React.useState(0);
+        const [currentStatement, setCurrentStatement] = React.useState(0);
+        const [currentRound, setCurrentRound] = React.useState(1);
+        const [currentEliminationRound, setCurrentEliminationRound] = React.useState(0);
+        const [started, setStarted] = React.useState(false);
+        const [assignedPlayers, setAssignedPlayers] = React.useState(new Set());
+
+        React.useEffect(() => {
+            const data = {
+                "game_record": {
+                    "game_id": "20250510-213437",
+                    "timestamp": "2025-05-10T21:34:37.726819",
+                    "topic_category": "food",
+                    "concept_pair": {
+                        "concept_a": "banana",
+                        "concept_b": "kiwi"
+                    },
+                    "judges": [
+                        {
+                            "id": "claude-3-7-sonnet-20250219",
+                            "version": ""
+                        },
+                        {
+                            "id": "gpt-4.1-2025-04-14",
+                            "version": ""
+                        }
+                    ],
+                    "audience": {
+                        "audience_id": "audience-1",
+                        "llm_id": "gpt-4.1-2025-04-14",
+                        "language": "en"
+                    },
+                    "players": [
+                        {
+                            "player_id": 1,
+                            "llm_id": "qwen2.5-72b",
+                            "role": "undercover",
+                            "assigned_concept": "kiwi",
+                            "eliminated_in_voting_round": null,
+                            "is_winner": true
+                        },
+                        {
+                            "player_id": 2,
+                            "llm_id": "qwen2.5-72b",
+                            "role": "civilian",
+                            "assigned_concept": "banana",
+                            "eliminated_in_voting_round": null,
+                            "is_winner": false
+                        },
+                        {
+                            "player_id": 3,
+                            "llm_id": "qwen2.5-32b",
+                            "role": "civilian",
+                            "assigned_concept": "banana",
+                            "eliminated_in_voting_round": 1,
+                            "is_winner": false
+                        },
+                        {
+                            "player_id": 4,
+                            "llm_id": "qwen2.5-32b",
+                            "role": "civilian",
+                            "assigned_concept": "banana",
+                            "eliminated_in_voting_round": null,
+                            "is_winner": false
+                        },
+                        {
+                            "player_id": 5,
+                            "llm_id": "qwen2.5-14b",
+                            "role": "civilian",
+                            "assigned_concept": "banana",
+                            "eliminated_in_voting_round": 2,
+                            "is_winner": false
+                        },
+                        {
+                            "player_id": 6,
+                            "llm_id": "qwen2.5-14b",
+                            "role": "undercover",
+                            "assigned_concept": "kiwi",
+                            "eliminated_in_voting_round": null,
+                            "is_winner": true
+                        }
+                    ],
+                    "game_process": {
+                        "statements": [
+                            {
+                                "statement_id": 1,
+                                "player_id": 4,
+                                "llm_id": "qwen2.5-32b",
+                                "content": "This fruit is often eaten fresh and is known for its health benefits.",
+                                "statement_round": 1,
+                                "metrics": {
+                                    "judges_stats": {
+                                        "novelty_score_mean": 1.0,
+                                        "relevance_score_mean": 0.30000000000000004,
+                                        "reasonableness_score_mean": 1.0
+                                    }
+                                }
+                            },
+                            {
+                                "statement_id": 2,
+                                "player_id": 5,
+                                "llm_id": "qwen2.5-14b",
+                                "content": "It is commonly found in grocery stores and enjoyed by many people around the world.",
+                                "statement_round": 1,
+                                "metrics": {
+                                    "judges_stats": {
+                                        "novelty_score_mean": 0.7,
+                                        "relevance_score_mean": 0.30000000000000004,
+                                        "reasonableness_score_mean": 1.0
+                                    }
+                                }
+                            },
+                            {
+                                "statement_id": 3,
+                                "player_id": 3,
+                                "llm_id": "qwen2.5-32b",
+                                "content": "It is a fruit that can be peeled to reveal its edible interior.",
+                                "statement_round": 1,
+                                "metrics": {
+                                    "judges_stats": {
+                                        "novelty_score_mean": 0.7,
+                                        "relevance_score_mean": 0.7,
+                                        "reasonableness_score_mean": 1.0
+                                    }
+                                }
+                            },
+                            {
+                                "statement_id": 4,
+                                "player_id": 2,
+                                "llm_id": "qwen2.5-72b",
+                                "content": "This fruit is often used in smoothies and desserts for its sweet flavor.",
+                                "statement_round": 1,
+                                "metrics": {
+                                    "judges_stats": {
+                                        "novelty_score_mean": 0.7,
+                                        "relevance_score_mean": 0.5,
+                                        "reasonableness_score_mean": 1.0
+                                    }
+                                }
+                            },
+                            {
+                                "statement_id": 5,
+                                "player_id": 6,
+                                "llm_id": "qwen2.5-14b",
+                                "content": "Both children and adults alike enjoy this fruit as a snack.",
+                                "statement_round": 1,
+                                "metrics": {
+                                    "judges_stats": {
+                                        "novelty_score_mean": 0.4,
+                                        "relevance_score_mean": 0.2,
+                                        "reasonableness_score_mean": 1.0
+                                    }
+                                }
+                            },
+                            {
+                                "statement_id": 6,
+                                "player_id": 1,
+                                "llm_id": "qwen2.5-72b",
+                                "content": "This fruit is rich in vitamins and is often included in healthy diets.",
+                                "statement_round": 1,
+                                "metrics": {
+                                    "judges_stats": {
+                                        "novelty_score_mean": 0.6000000000000001,
+                                        "relevance_score_mean": 0.30000000000000004,
+                                        "reasonableness_score_mean": 1.0
+                                    }
+                                }
+                            },
+                            {
+                                "statement_id": 7,
+                                "player_id": 6,
+                                "llm_id": "qwen2.5-14b",
+                                "content": "It is a fruit that comes in a variety of sizes and colors.",
+                                "statement_round": 2,
+                                "metrics": {
+                                    "judges_stats": {
+                                        "novelty_score_mean": 0.8,
+                                        "relevance_score_mean": 0.4,
+                                        "reasonableness_score_mean": 0.9
+                                    }
+                                }
+                            },
+                            {
+                                "statement_id": 8,
+                                "player_id": 1,
+                                "llm_id": "qwen2.5-72b",
+                                "content": "This fruit is often enjoyed for its vibrant color and refreshing taste.",
+                                "statement_round": 2,
+                                "metrics": {
+                                    "judges_stats": {
+                                        "novelty_score_mean": 0.6,
+                                        "relevance_score_mean": 0.6,
+                                        "reasonableness_score_mean": 0.9
+                                    }
+                                }
+                            },
+                            {
+                                "statement_id": 9,
+                                "player_id": 4,
+                                "llm_id": "qwen2.5-32b",
+                                "content": "It has a soft texture when ripe and is commonly consumed without cooking.",
+                                "statement_round": 2,
+                                "metrics": {
+                                    "judges_stats": {
+                                        "novelty_score_mean": 0.8,
+                                        "relevance_score_mean": 0.7,
+                                        "reasonableness_score_mean": 1.0
+                                    }
+                                }
+                            },
+                            {
+                                "statement_id": 10,
+                                "player_id": 2,
+                                "llm_id": "qwen2.5-72b",
+                                "content": "This fruit is often paired with other fruits in fruit salads and snacks.",
+                                "statement_round": 2,
+                                "metrics": {
+                                    "judges_stats": {
+                                        "novelty_score_mean": 0.8,
+                                        "relevance_score_mean": 0.5,
+                                        "reasonableness_score_mean": 1.0
+                                    }
+                                }
+                            },
+                            {
+                                "statement_id": 11,
+                                "player_id": 5,
+                                "llm_id": "qwen2.5-14b",
+                                "content": "It is a versatile fruit that can be consumed in various forms, such as raw, cooked, or even dried.",
+                                "statement_round": 2,
+                                "metrics": {
+                                    "judges_stats": {
+                                        "novelty_score_mean": 0.7,
+                                        "relevance_score_mean": 0.5,
+                                        "reasonableness_score_mean": 1.0
+                                    }
+                                }
+                            }
+                        ],
+                        "audience_decisions": [
+                            {
+                                "voting_round_id": 1,
+                                "after_statement_round": 1,
+                                "after_statement_id": 6,
+                                "audience_choice": 3,
+                                "eliminated": [
+                                    {
+                                        "player_id": 3,
+                                        "llm_id": "qwen2.5-32b",
+                                        "role": "civilian",
+                                        "correct_elimination": false
+                                    }
+                                ]
+                            },
+                            {
+                                "voting_round_id": 2,
+                                "after_statement_round": 2,
+                                "after_statement_id": 11,
+                                "audience_choice": 5,
+                                "eliminated": [
+                                    {
+                                        "player_id": 5,
+                                        "llm_id": "qwen2.5-14b",
+                                        "role": "civilian",
+                                        "correct_elimination": false
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            };
+
+            setGameData(data);
+            setLoading(false);
+        }, []);
+
+        React.useEffect(() => {
+            if (!started) return;
+
+            let timer;
+            
+            if (currentPhase === 'assignment') {
+                timer = setTimeout(() => {
+                    if (currentAssignment < 6) {
+                        setAssignedPlayers(prev => new Set([...prev, currentAssignment + 1]));
+                        setCurrentAssignment(currentAssignment + 1);
+                    } else {
+                        setTimeout(() => {
+                            setCurrentPhase('statements');
+                            setCurrentStatement(1);
+                        }, 2000);
+                    }
+                }, 1500);
+            } else if (currentPhase === 'statements') {
+                const round1Statements = gameData.game_record.game_process.statements.filter(s => s.statement_round === 1);
+                const round2Statements = gameData.game_record.game_process.statements.filter(s => s.statement_round === 2);
+                
+                timer = setTimeout(() => {
+                    if (currentRound === 1 && currentStatement < round1Statements.length) {
+                        setCurrentStatement(currentStatement + 1);
+                    } else if (currentRound === 1 && currentStatement === round1Statements.length) {
+                        setCurrentPhase('elimination');
+                        setCurrentEliminationRound(1);
+                    } else if (currentRound === 2 && currentStatement < round1Statements.length + round2Statements.length) {
+                        setCurrentStatement(currentStatement + 1);
+                    } else if (currentRound === 2 && currentStatement === round1Statements.length + round2Statements.length) {
+                        setCurrentPhase('elimination');
+                        setCurrentEliminationRound(2);
+                    }
+                }, 3000);
+            } else if (currentPhase === 'elimination') {
+                timer = setTimeout(() => {
+                    if (currentEliminationRound === 1) {
+                        setCurrentPhase('statements');
+                        setCurrentRound(2);
+                        setCurrentStatement(7); // Start round 2 statements
+                    } else {
+                        setCurrentPhase('results');
+                    }
+                }, 4000);
+            }
+
+            return () => clearTimeout(timer);
+        }, [currentPhase, currentAssignment, currentStatement, currentRound, currentEliminationRound, started]);
+
+        if (loading) {
+            return <div className="flex items-center justify-center h-screen">Loading game data...</div>;
+        }
+
+        const getModelName = (llmId) => {
+            if (llmId.includes('qwen2.5-72b')) return 'Qwen-72B';
+            if (llmId.includes('qwen2.5-32b')) return 'Qwen-32B';
+            if (llmId.includes('qwen2.5-14b')) return 'Qwen-14B';
+            return llmId.split('-')[0];
+        };
+
+        const getPlayerColor = (playerId) => {
+            const player = gameData.game_record.players.find(p => p.player_id === playerId);
+            if (player.role === 'undercover') {
+                return 'from-red-500 to-red-700';
+            }
+            return 'from-green-500 to-green-700';
+        };
+
+        const isPlayerEliminated = (playerId) => {
+            const player = gameData.game_record.players.find(p => p.player_id === playerId);
+            return player.eliminated_in_voting_round !== null && 
+                   ((currentPhase === 'elimination' && currentEliminationRound >= player.eliminated_in_voting_round) ||
+                    (currentPhase === 'statements' && currentRound > player.eliminated_in_voting_round) ||
+                    currentPhase === 'results');
+        };
+
+        const renderIntroduction = () => (
+            <div className="text-center animate-fade-in">
+                <h2 className="text-3xl font-bold mb-6 text-gray-800">Audience Mode Game</h2>
+                <div className="bg-white p-6 rounded-xl shadow-lg mb-6">
+                    <p className="text-xl mb-4 text-gray-700">Topic Category: <span className="font-bold text-blue-600">Food</span></p>
+                    <div className="flex justify-center space-x-8 mt-8">
+                        <div className="text-center">
+                            <div className="bg-gradient-to-r from-green-500 to-green-700 text-white p-6 rounded-xl shadow-lg">
+                                <div className="text-sm mb-2 opacity-90">Civilian Concept</div>
+                                <div className="text-2xl font-bold">banana</div>
+                            </div>
+                        </div>
+                        <div className="text-center">
+                            <div className="bg-gradient-to-r from-red-500 to-red-700 text-white p-6 rounded-xl shadow-lg">
+                                <div className="text-sm mb-2 opacity-90">Undercover Concept</div>
+                                <div className="text-2xl font-bold">kiwi</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                    <div className="flex items-center justify-center mb-2">
+                        <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center mr-3">
+                            <span className="text-white text-sm font-bold">👁</span>
+                        </div>
+                        <div className="text-lg font-semibold text-blue-800">Audience Observer</div>
+                    </div>
+                    <div className="text-sm text-blue-700">
+                        GPT-4.1 acts as the audience and decides who to eliminate
+                    </div>
+                </div>
+
+                {!started && (
+                    <div className="mt-8">
+                        <button
+                            className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg text-lg font-semibold"
+                            onClick={() => {
+                                setStarted(true);
+                                setCurrentPhase('assignment');
+                            }}
+                        >
+                            Start Demo
+                        </button>
+                    </div>
+                )}
+            </div>
+        );
+
+        const renderAssignment = () => (
+            <div className="animate-fade-in">
+                <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Concept Assignment</h2>
+                
+                <div className="grid grid-cols-6 gap-4 mb-8">
+                    {gameData.game_record.players.map((player) => {
+                        const isAssigned = assignedPlayers.has(player.player_id);
+                        const isCurrentlyAssigning = currentAssignment + 1 === player.player_id;
+                        
+                        return (
+                            <div key={player.player_id} className="text-center">
+                                <div className={`w-20 h-20 rounded-full transition-all duration-800 flex items-center justify-center font-bold text-xl ${
+                                    isAssigned 
+                                        ? `bg-gradient-to-r ${getPlayerColor(player.player_id)} text-white concept-reveal`
+                                        : isCurrentlyAssigning 
+                                            ? 'bg-yellow-400 text-white animate-pulse-ring' 
+                                            : 'bg-gray-200 text-gray-500'
+                                }`}>
+                                    {player.player_id}
+                                </div>
+                                <div className={`mt-3 text-sm font-medium transition-all duration-300 ${
+                                    isAssigned ? 'text-gray-700' : 'text-gray-400'
+                                }`}>
+                                    {getModelName(player.llm_id)}
+                                </div>
+                                {isAssigned && (
+                                    <div className="mt-2 animate-fade-in">
+                                        <div className={`text-xs px-2 py-1 rounded-full text-white ${
+                                            player.role === 'undercover' ? 'bg-red-500' : 'bg-green-500'
+                                        }`}>
+                                            {player.assigned_concept}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <div className="bg-white p-6 rounded-xl shadow-lg">
+                    <div className="text-center mb-4">
+                        <h3 className="text-lg font-semibold text-gray-700 mb-2">Assignment Rules</h3>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="bg-green-50 p-4 rounded-lg">
+                                <div className="flex items-center justify-center mb-2">
+                                    <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
+                                    <span className="font-semibold text-green-700">Civilian</span>
+                                </div>
+                                <div className="text-sm text-green-600">
+                                    Knows they have "banana"<br/>
+                                    <span className="text-xs italic">Visible to all players</span>
+                                </div>
+                            </div>
+                            <div className="bg-red-50 p-4 rounded-lg">
+                                <div className="flex items-center justify-center mb-2">
+                                    <div className="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
+                                    <span className="font-semibold text-red-700">Undercover</span>
+                                </div>
+                                <div className="text-sm text-red-600">
+                                    Knows they have "kiwi"<br/>
+                                    <span className="text-xs italic">Visible to all players</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mt-6 text-center">
+                    <div className="text-sm text-gray-500 mb-2">Assignment Progress</div>
+                    <div className="w-full bg-gray-200 rounded-full h-2 max-w-md mx-auto">
+                        <div 
+                            className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-800" 
+                            style={{width: `${(currentAssignment / 6) * 100}%`}}
+                        ></div>
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">{currentAssignment} of 6 players assigned</div>
+                </div>
+            </div>
+        );
+
+        const renderStatements = () => {
+            const allStatements = gameData.game_record.game_process.statements;
+            const currentStatementData = allStatements[currentStatement - 1];
+            const currentPlayer = currentStatementData ? gameData.game_record.players.find(p => p.player_id === currentStatementData.player_id) : null;
+            const currentScores = currentStatementData ? currentStatementData.metrics.judges_stats : null;
+
+            const activePlayerIds = gameData.game_record.players
+                .filter(p => !isPlayerEliminated(p.player_id))
+                .map(p => p.player_id);
+
+            return (
+                <div className="animate-fade-in">
+                    <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+                        Round {currentRound} Statements
+                    </h2>
+                    
+                    <div className="flex justify-center space-x-3 mb-8 flex-wrap">
+                        {gameData.game_record.players.map((player) => {
+                            const isEliminated = isPlayerEliminated(player.player_id);
+                            const isActive = currentPlayer && player.player_id === currentPlayer.player_id;
+                            
+                            return (
+                                <div key={player.player_id} className="text-center mb-4">
+                                    <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${getPlayerColor(player.player_id)} text-white flex items-center justify-center font-bold text-lg transition-all duration-500 ${
+                                        isEliminated ? 'opacity-30 grayscale' :
+                                        isActive ? 'animate-pulse-ring ring-4 ring-blue-400 scale-110' : 
+                                        'opacity-80'
+                                    }`}>
+                                        {isEliminated ? '✗' : player.player_id}
+                                    </div>
+                                    <div className={`mt-2 text-sm font-medium transition-all duration-300 ${
+                                        isEliminated ? 'text-gray-400 line-through' :
+                                        isActive ? 'text-blue-600 font-bold' : 'text-gray-700'
+                                    }`}>
+                                        {getModelName(player.llm_id)}
+                                    </div>
+                                    {isActive && (
+                                        <div className="mt-1 text-xs text-blue-500 font-semibold animate-gentle-bounce">
+                                            Speaking...
+                                        </div>
+                                    )}
+                                    {isEliminated && (
+                                        <div className="mt-1 text-xs text-red-500 font-semibold">
+                                            Eliminated
+                                        </div>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {currentStatementData && (
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border-2 border-blue-200 animate-slide-in shadow-lg mb-6">
+                            <div className="flex items-center mb-4">
+                                <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${getPlayerColor(currentPlayer.player_id)} text-white flex items-center justify-center font-bold text-lg mr-4 ring-2 ring-white shadow-lg`}>
+                                    {currentPlayer.player_id}
+                                </div>
+                                <div>
+                                    <div className="font-bold text-lg text-gray-800">{getModelName(currentPlayer.llm_id)}</div>
+                                    <div className="text-sm text-gray-600">
+                                        {currentPlayer.role === 'undercover' ? 'Undercover Agent' : 'Civilian'} • 
+                                        Concept: <span className="font-semibold">{currentPlayer.assigned_concept}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-white p-4 rounded-lg mb-4 shadow-inner">
+                                <p className="text-lg italic text-gray-700 leading-relaxed">"{currentStatementData.content}"</p>
+                            </div>
+
+                            <div className="grid grid-cols-3 gap-4 bg-white p-4 rounded-lg shadow-inner">
+                                <div className="text-center">
+                                    <div className="text-sm text-gray-600 mb-1">Novelty</div>
+                                    <div className="font-bold text-2xl text-purple-600">{currentScores.novelty_score_mean.toFixed(1)}</div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-sm text-gray-600 mb-1">Relevance</div>
+                                    <div className="font-bold text-2xl text-green-600">{currentScores.relevance_score_mean.toFixed(1)}</div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="text-sm text-gray-600 mb-1">Reasonableness</div>
+                                    <div className="font-bold text-2xl text-blue-600">{currentScores.reasonableness_score_mean.toFixed(1)}</div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className="mt-6 text-center">
+                        <div className="text-sm text-gray-500 mb-2">Round {currentRound} Progress</div>
+                        <div className="w-full bg-gray-200 rounded-full h-2 max-w-md mx-auto">
+                            <div 
+                                className="bg-blue-600 h-2 rounded-full transition-all duration-500" 
+                                style={{width: `${currentRound === 1 ? (currentStatement / 6) * 100 : ((currentStatement - 6) / 5) * 100}%`}}
+                            ></div>
+                        </div>
+                        <div className="text-xs text-gray-500 mt-1">
+                            {currentRound === 1 ? `${currentStatement} of 6 statements` : `${currentStatement - 6} of 5 statements`}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const renderElimination = () => {
+            const elimination = gameData.game_record.game_process.audience_decisions[currentEliminationRound - 1];
+            const eliminatedPlayer = elimination.eliminated[0];
+            const player = gameData.game_record.players.find(p => p.player_id === eliminatedPlayer.player_id);
+
+            return (
+                <div className="animate-fade-in">
+                    <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
+                        Audience Decision - Round {currentEliminationRound}
+                    </h2>
+                    
+                    <div className="bg-blue-50 p-6 rounded-xl mb-6">
+                        <div className="flex items-center justify-center mb-4">
+                            <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mr-4">
+                                <span className="text-white text-2xl">👁</span>
+                            </div>
+                            <div>
+                                <div className="font-bold text-xl text-blue-800">Audience Observer</div>
+                                <div className="text-blue-600">GPT-4.1 is analyzing the statements...</div>
+                            </div>
+                        </div>
+                        
+                        <div className="bg-white p-4 rounded-lg">
+                            <div className="text-center">
+                                <div className="text-lg font-semibold text-gray-700 mb-2">Decision</div>
+                                <div className="text-2xl font-bold text-red-600">
+                                    Eliminate Player {elimination.audience_choice}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-red-50 p-6 rounded-xl border-2 border-red-200">
+                        <h3 className="font-bold text-xl mb-4 text-center text-red-800">Player Eliminated</h3>
+                        <div className="flex items-center justify-center mb-4">
+                            <div className={`w-16 h-16 rounded-full bg-gradient-to-r ${getPlayerColor(eliminatedPlayer.player_id)} text-white flex items-center justify-center font-bold text-xl mr-4 opacity-60`}>
+                                {eliminatedPlayer.player_id}
+                            </div>
+                            <div>
+                                <div className="font-bold text-lg text-gray-800">{getModelName(eliminatedPlayer.llm_id)}</div>
+                                <div className="text-red-700 font-semibold">
+                                    Role: {eliminatedPlayer.role === 'undercover' ? 'Undercover' : 'Civilian'} ({player.assigned_concept})
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="text-center">
+                            <div className={`inline-block px-4 py-2 rounded-full text-white font-bold ${
+                                elimination.eliminated[0].correct_elimination ? 'bg-green-600' : 'bg-red-600'
+                            }`}>
+                                {elimination.eliminated[0].correct_elimination 
+                                    ? '✓ Correct Elimination' 
+                                    : '✗ Incorrect Elimination'
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-6 text-center">
+                        <div className="text-sm text-gray-600">
+                            {currentEliminationRound === 1 ? 'Moving to Round 2...' : 'Game Complete'}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const renderResults = () => {
+            const winners = gameData.game_record.players.filter(p => p.is_winner);
+            const losers = gameData.game_record.players.filter(p => !p.is_winner);
+
+            return (
+                <div className="animate-fade-in">
+                    <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Game Results</h2>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div className="bg-green-50 p-6 rounded-xl border-2 border-green-200">
+                            <h3 className="font-bold text-xl mb-4 text-center text-green-800">Winners</h3>
+                            <div className="space-y-3">
+                                {winners.map(player => (
+                                    <div key={player.player_id} className="flex items-center justify-center">
+                                        <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${getPlayerColor(player.player_id)} text-white flex items-center justify-center font-bold mr-3`}>
+                                            {player.player_id}
+                                        </div>
+                                        <div>
+                                            <div className="font-semibold">{getModelName(player.llm_id)}</div>
+                                            <div className="text-sm text-green-700">
+                                                {player.role === 'undercover' ? 'Undercover' : 'Civilian'} • {player.assigned_concept}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="bg-red-50 p-6 rounded-xl border-2 border-red-200">
+                            <h3 className="font-bold text-xl mb-4 text-center text-red-800">Eliminated</h3>
+                            <div className="space-y-3">
+                                {losers.map(player => (
+                                    <div key={player.player_id} className="flex items-center justify-center opacity-60">
+                                        <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${getPlayerColor(player.player_id)} text-white flex items-center justify-center font-bold mr-3`}>
+                                            {player.player_id}
+                                        </div>
+                                        <div>
+                                            <div className="font-semibold">{getModelName(player.llm_id)}</div>
+                                            <div className="text-sm text-red-700">
+                                                {player.role === 'undercover' ? 'Undercover' : 'Civilian'} • {player.assigned_concept}
+                                                {player.eliminated_in_voting_round && (
+                                                    <span className="ml-2 text-xs">
+                                                        (Round {player.eliminated_in_voting_round})
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white p-6 rounded-xl shadow-lg mb-6">
+                        <h3 className="font-bold text-lg mb-4 text-center text-gray-800">Game Summary</h3>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                            <div>
+                                <div className="text-2xl font-bold text-blue-600">2</div>
+                                <div className="text-sm text-gray-600">Statement Rounds</div>
+                            </div>
+                            <div>
+                                <div className="text-2xl font-bold text-purple-600">11</div>
+                                <div className="text-sm text-gray-600">Total Statements</div>
+                            </div>
+                            <div>
+                                <div className="text-2xl font-bold text-red-600">2</div>
+                                <div className="text-sm text-gray-600">Players Eliminated</div>
+                            </div>
+                            <div>
+                                <div className="text-2xl font-bold text-green-600">Undercover</div>
+                                <div className="text-sm text-gray-600">Winner Role</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-yellow-50 p-4 rounded-lg mb-6">
+                        <div className="text-center">
+                            <div className="text-lg font-semibold text-yellow-800 mb-2">Audience Performance</div>
+                            <div className="text-3xl font-bold text-red-600">0/2</div>
+                            <div className="text-sm text-yellow-700">Correct eliminations</div>
+                            <div className="text-xs text-yellow-600 mt-1">
+                                The audience eliminated 2 civilians instead of undercover agents
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="text-center">
+                        <button 
+                            className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-lg text-lg font-semibold"
+                            onClick={() => {
+                                setCurrentPhase('introduction');
+                                setCurrentAssignment(0);
+                                setCurrentStatement(0);
+                                setCurrentRound(1);
+                                setCurrentEliminationRound(0);
+                                setStarted(false);
+                                setAssignedPlayers(new Set());
+                            }}
+                        >
+                            Replay Demo
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        return (
+            <div className="min-h-screen bg-gray-50 py-8">
+                <div className="bg-white p-8 max-w-6xl mx-auto rounded-2xl shadow-2xl">
+                    <header className="mb-8">
+                        <h1 className="text-4xl font-bold text-center text-gray-800 mb-4">
+                            CK-Arena: Audience Mode Demo
+                        </h1>
+                        <div className="flex justify-center space-x-3 flex-wrap">
+                            <div className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                                currentPhase === 'introduction' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+                            }`}>
+                                Introduction
+                            </div>
+                            <div className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                                currentPhase === 'assignment' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+                            }`}>
+                                Assignment
+                            </div>
+                            <div className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                                currentPhase === 'statements' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+                            }`}>
+                                Statements
+                            </div>
+                            <div className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                                currentPhase === 'elimination' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+                            }`}>
+                                Elimination
+                            </div>
+                            <div className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
+                                currentPhase === 'results' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
+                            }`}>
+                                Results
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="min-h-96">
+                        {currentPhase === 'introduction' && renderIntroduction()}
+                        {currentPhase === 'assignment' && renderAssignment()}
+                        {currentPhase === 'statements' && renderStatements()}
+                        {currentPhase === 'elimination' && renderElimination()}
+                        {currentPhase === 'results' && renderResults()}
+                    </main>
+
+                    <footer className="mt-8 text-center text-sm text-gray-500">
+                        <div className="border-t pt-4">
+                            <div>Game ID: {gameData.game_record.game_id}</div>
+                            <div className="mt-1">
+                                Timestamp: {new Date(gameData.game_record.timestamp).toLocaleString()}
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<AudienceGameDemo />);
+</script>
+
+</body>
+</html>
