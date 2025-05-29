@@ -145,6 +145,8 @@
     <!-- Abstract. -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
+
+        <img src="docs/figures/abs.png" alt="Heat Image" class="image my-5 is-flex mx-auto" style="max-width: 100%;" />
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
@@ -170,6 +172,9 @@
   </div>
 </section>
 
+
+
+
 <!-- Game Demo Section -->
 <section class="section" id="game-demo">
   <div class="container is-max-desktop">
@@ -178,28 +183,128 @@
         <h2 class="title is-3">CK-Arena Demo: Undercover Game</h2>
         <div class="content">
           <p class="has-text-justified">
-            Below is an interactive demonstration of the Undercover game used in CK-Arena. In this game, LLM agents are assigned either the main concept ("bee") or an undercover concept ("butterfly"). Players take turns making statements about their concept without revealing it directly. The goal for the civilians is to identify and eliminate the undercover agents through voting, while undercover agents try to blend in without being detected.
+            Below is an interactive demonstration of the Undercover game used in CK-Arena. We first introduce the basic game rules to help you understand, and then demonstrate the interaction of intelligent agents in the first round of a real experiment. In this game, LLM agents are assigned either the main concept ("bee") or an undercover concept ("butterfly"). Players take turns making statements about their concept without revealing it directly. The goal for the civilians is to identify and eliminate the undercover agents through voting, while undercover agents try to blend in without being detected. <br> <br> <strong> Game Flow </strong>:<br>
+	
+1.	<strong>Role Assignment</strong>:
+Players are randomly assigned as civilians or undercover agents, each receiving a similar but distinct concept.
+	<br>2.	<strong>Concept Description</strong>:
+In each round, players take turns describing their concept while trying to hide their identity and infer others’.
+	<br>3.	<strong>LLM Evaluation</strong>:
+Statements are scored by LLM judges based on novelty, relevance, and reasonableness.
+	<br>4.	<strong>Threshold-Based Elimination</strong>:
+If a player’s score falls below a predefined threshold, they are automatically eliminated.
+	<br>5.	<strong>Voting Round</strong>:
+After a fixed number of rounds, all surviving players vote to eliminate one player based on the dialogue so far.
+	<br>6.	<strong>Win Condition Check</strong>:
+The game ends when:<br>
+	[All undercover agents are eliminated → civilians win]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	[Undercover agents equal civilians → undercover wins]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	[Maximum number of rounds is reached]
           </p>
           
           <!-- Game Animation Container -->
           <div id="root" class="mt-6"></div>
         </div>
+        
       </div>
     </div>
   </div>
 </section>
 
-<section class="section" id="BibTeX">
+
+
+<section class="section">
   <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>@article{xu2025probe,
-  title={Probe by Gaming: A Game-based Benchmark for Assessing Conceptual Knowledge in LLMs},
-  author={Xu, Shuhang and Deng, Weijian and Zhou, Yixuan and Zhong, Fangwei},
-  journal={arXiv preprint arXiv:2505.17512},
-  year={2025}
-}</code></pre>
+    <!-- 标题居中 -->
+    <h2 class="title is-3 has-text-centered">Experimental Results</h2>
+
+    <!-- 插入说明文字 -->
+    <p class="has-text-justified mt-5" style="max-width: 80%; margin: 0 auto;">
+  We have presented some experimental results here. For more comprehensive and specific information about the experiments, please refer to the article. <br><br><br><br>
+</p>
+    <!-- 图片展示区 -->
+    <div class="columns is-multiline is-variable-8">
+      <!-- 图片 1 -->
+      <div class="column is-full">
+        <div class="has-text-centered">
+          <figure class="image" style="max-width: 80%; margin: 0 auto; height: auto;">
+            <img src="docs/figures/z.png" alt="Result Chart 1" />
+          </figure>
+        </div>
+        <div class="content mt-4 has-text-left" style="max-width: 80%; margin: 0 auto;">
+          <p class="mt-2"><em>The win rate performance of six LLMs across 11 categories. A comparative analysis reveals that each model exhibits distinct strengths and weaknesses across different concept categories. These variations are likely influenced by differences in training data, architectural design, and optimization strategies specific to each model. The analysis reveals models’ focus areas, knowledge gaps, and insights for improving conceptual reasoning. <br><br><br> </em></p>
+        </div>
+      </div>
+
+      <!-- 图片 2 -->
+      <div class="column is-full">
+        <div class="has-text-centered">
+          <figure class="image" style="max-width: 60%; margin: 0 auto; height: auto;">
+            <img src="docs/figures/heat.png" alt="Result Chart 2" />
+          </figure>
+        </div>
+        <div class="content mt-4 has-text-left" style="max-width: 60%; margin: 0 auto;"> 
+          <p class="mt-2"><em>Relevance scores of different LLMs across various categories. In this heatmap, the darker the color, the higher the score, intuitively reflecting the association between the descriptions and concepts of each LLM in different categories. <br><br><br> </em></p>
+        </div>
+      </div>
+
+      <div class="column is-full">
+        <div class="has-text-centered">
+          <figure class="image" style="max-width: 60%; margin: 0 auto; height: auto;">
+            <img src="docs/figures/tsne/tools.png" alt="Result Chart 2" />
+          </figure>
+        </div>
+        <div class="content mt-4 has-text-left" style="max-width: 60%; margin: 0 auto;"> 
+          <p class="mt-2"><em>The t-SNE visualization of all embedded statements in the Tools category for GPT-4o and Gemini-2.0pro-exp. It shows that the distribution of Gemini-2.0-pro-exp’s statements is more widespread, while GPT-4o’s distribution is more concentrated. This indicates that Gemini-2.0-pro-exp captures a broader range of conceptual knowledge, which indirectly reflects a deeper understanding of concepts. <br><br><br> </em></p>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
+
+
+<section class="section">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">BibTeX</h2>
+
+    <p class="has-text-justified mt-5" style="max-width: 80%; margin: 0 auto;">
+      If you need to cite our work:
+    </p>
+
+    <!-- BibTeX citation -->
+    <pre class="mt-6 p-4 bg-gray-100 rounded-lg text-sm" style="max-width: 80%; margin: 0 auto; overflow-x: auto;">
+<code>@article{xu2025probe,
+  title={Probe by Gaming: A Game-based Benchmark for Assessing Conceptual Knowledge in LLMs},
+  author={Shuhang Xu and Weijian Deng and Yixuan Zhou and Fangwei Zhong},
+  journal={arXiv preprint arXiv:2505.17512},
+  year={2025}
+}</code>
+    </pre>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">Acknowledgements</h2>
+    <p class="has-text-justified mt-5" style="max-width: 80%; margin: 0 auto;">
+      We sincerely acknowledge the foundational work of 
+      <strong>MAgIC: Investigation of Large Language Model Powered Multi-Agent in Cognition, Adaptability, Rationality and Collaboration</strong>, 
+      which first applied the Undercover game to the study of LLM-based agents. It systematically explored the game’s potential in agent evaluation, providing critical insights for our research.
+    </p>
+
+    <!-- BibTeX citation -->
+    <pre class="mt-6 p-4 bg-gray-100 rounded-lg text-sm" style="max-width: 80%; margin: 0 auto; overflow-x: auto;">
+@misc{xu2024magicinvestigationlargelanguage,
+  title={MAgIC: Investigation of Large Language Model Powered Multi-Agent in Cognition, Adaptability, Rationality and Collaboration}, 
+  author={Lin Xu and Zhiyuan Hu and Daquan Zhou and Hongyu Ren and Zhen Dong and Kurt Keutzer and See Kiong Ng and Jiashi Feng},
+  journal={arXiv preprint arXiv:2311.08562},
+  year={2024},
+}
+    </pre>
+  </div>
+</section>
+
 
 <footer class="footer">
   <div class="container">
