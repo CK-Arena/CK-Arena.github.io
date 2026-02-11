@@ -14,11 +14,12 @@
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
-  
+  <link rel="stylesheet" href="./static/css/game.css">
+
   <!-- React and ReactDOM -->
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -28,6 +29,14 @@
   <script src="./static/js/index.js"></script>
   
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      padding-top: 3.25rem;
+    }
+
     @keyframes fadeIn {
         from { opacity: 0; }
         to { opacity: 1; }
@@ -43,7 +52,7 @@
     .animate-pulse {
         animation: pulse 2s infinite;
     }
-    
+
     /* Add margin to game demo section */
     #game-demo {
         margin-top: 2rem;
@@ -53,7 +62,7 @@
 </head>
 <body>
 
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
       <span aria-hidden="true"></span>
@@ -63,21 +72,22 @@
   </div>
   <div class="navbar-menu">
     <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
-      <a class="navbar-item" href="#">
-      <span class="icon">
-          <i class="fas fa-home"></i>
-      </span>
-      </a>
+      <a class="navbar-item" href="#home">Home</a>
+      <a class="navbar-item" href="#abstract">Abstract</a>
+      <a class="navbar-item" href="#game-demo">Game Demo</a>
+      <a class="navbar-item" href="./sup/knowledge_graph_all.html" target="_blank">Knowledge Graph</a>
+      <a class="navbar-item" href="#results">Results</a>
+      <a class="navbar-item" href="#citation">Citation</a>
     </div>
   </div>
 </nav>
 
-<section class="hero">
+<section class="hero" id="home">
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">Probe by Gaming: A Game-based Benchmark for Assessing Conceptual Knowledge in LLMs</h1>
+          <h1 class="title is-1 publication-title">Is Your LLM Really Mastering the Concept? A Multi-Agent Benchmark</h1>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
               <a href="#">Shuhang Xu</a><sup>♢</sup>,</span>
@@ -140,7 +150,7 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="abstract">
   <div class="container is-max-desktop">
     <!-- Abstract. -->
     <div class="columns is-centered has-text-centered">
@@ -150,20 +160,9 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Concepts represent generalized abstractions that enable humans to categorize and
-            reason efffciently, yet it is unclear to what extent Large Language Models (LLMs)
-            comprehend these semantic relationships. Existing benchmarks typically focus
-            on factual recall and isolated tasks, failing to evaluate the ability of LLMs to
-            understand conceptual boundaries. To address this gap, we introduce CK-Arena, a
-            multi-agent interaction game built upon the Undercover game, designed to evaluate
-            the capacity of LLMs to reason with concepts in interactive settings. CK-Arena
-            challenges models to describe, differentiate, and infer conceptual boundaries based
-            on partial information, encouraging models to explore commonalities and distinctions
-            between closely related concepts. By simulating real-world interaction,
-            CK-Arena provides a scalable and realistic benchmark for assessing conceptual
-            reasoning in dynamic environments. Experimental results show that LLMs' understanding
-            of conceptual knowledge varies signiffcantly across different categories
-            and is not strictly aligned with parameter size or general model capabilities.
+            Concepts serve as fundamental abstractions that support human reasoning and categorization. However, it remains unclear whether large language models truly capture such conceptual structures or primarily rely on surface-level pattern memorization. Existing benchmarks are largely static and fact oriented, which limits their ability to probe fine-grained semantic understanding and makes them vulnerable to data leakage and overfitting. 
+            To address this limitation, we introduce CK-Arena, a dynamic benchmark for conceptual knowledge evaluation based on a multi agent social deduction game, namely the Undercover game. In this setting, LLM based agents are assigned subtly different concept words and must describe, distinguish, and infer conceptual properties from others’ statements. Model performance is evaluated through both game level outcomes and the semantic quality of generated descriptions.
+            Furthermore, CK-Arena leverages the interaction process to automatically construct high quality question answering data for fine grained diagnostic analysis. Experimental results show that conceptual understanding varies substantially across models and categories, and is not strictly aligned with overall model capability.
           </p>
         </div>
       </div>
@@ -211,9 +210,7 @@ The game ends when:<br>
   </div>
 </section>
 
-
-
-<section class="section">
+<section class="section" id="results">
   <div class="container is-max-desktop content">
     <!-- 标题居中 -->
     <h2 class="title is-3 has-text-centered">Experimental Results</h2>
@@ -224,6 +221,22 @@ The game ends when:<br>
 </p>
     <!-- 图片展示区 -->
     <div class="columns is-multiline is-variable-8">
+      <!-- Model Leaderboard and Static Leaderboard - Two column layout -->
+      <div class="column is-half">
+        <div class="has-text-centered">
+          <figure class="image" style="max-width: 100%; margin: 0 auto; height: auto;">
+            <img src="docs/figures/model_leaderboard.png" alt="Model Leaderboard" />
+          </figure>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="has-text-centered">
+          <figure class="image" style="max-width: 100%; margin: 0 auto; height: auto;">
+            <img src="docs/figures/static_leaderboard.png" alt="Static Leaderboard" />
+          </figure>
+        </div>
+      </div>
+
       <!-- 图片 1 -->
       <div class="column is-full">
         <div class="has-text-centered">
@@ -251,11 +264,11 @@ The game ends when:<br>
       <div class="column is-full">
         <div class="has-text-centered">
           <figure class="image" style="max-width: 60%; margin: 0 auto; height: auto;">
-            <img src="docs/figures/tsne/tools.png" alt="Result Chart 2" />
+            <img src="docs/figures/t-sne.png" alt="Result Chart 2" />
           </figure>
         </div>
-        <div class="content mt-4 has-text-left" style="max-width: 60%; margin: 0 auto;"> 
-          <p class="mt-2"><em>The t-SNE visualization of all embedded statements in the Tools category for GPT-4o and Gemini-2.0pro-exp. It shows that the distribution of Gemini-2.0-pro-exp’s statements is more widespread, while GPT-4o’s distribution is more concentrated. This indicates that Gemini-2.0-pro-exp captures a broader range of conceptual knowledge, which indirectly reflects a deeper understanding of concepts. <br><br><br> </em></p>
+        <div class="content mt-4 has-text-left" style="max-width: 60%; margin: 0 auto;">
+          <p class="mt-2"><em></em></p>
         </div>
       </div>
 
@@ -264,7 +277,7 @@ The game ends when:<br>
 </section>
 
 
-<section class="section">
+<section class="section" id="citation">
   <div class="container is-max-desktop content">
     <h2 class="title is-3 has-text-centered">BibTeX</h2>
 
@@ -280,27 +293,6 @@ The game ends when:<br>
   journal={arXiv preprint arXiv:2505.17512},
   year={2025}
 }</code>
-    </pre>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container is-max-desktop content">
-    <h2 class="title is-3 has-text-centered">Acknowledgements</h2>
-    <p class="has-text-justified mt-5" style="max-width: 80%; margin: 0 auto;">
-      We sincerely acknowledge the foundational work of 
-      <strong>MAgIC: Investigation of Large Language Model Powered Multi-Agent in Cognition, Adaptability, Rationality and Collaboration</strong>, 
-      which first applied the Undercover game to the study of LLM-based agents. It systematically explored the game’s potential in agent evaluation, providing critical insights for our research.
-    </p>
-
-    <!-- BibTeX citation -->
-    <pre class="mt-6 p-4 bg-gray-100 rounded-lg text-sm" style="max-width: 80%; margin: 0 auto; overflow-x: auto;">
-@misc{xu2024magicinvestigationlargelanguage,
-  title={MAgIC: Investigation of Large Language Model Powered Multi-Agent in Cognition, Adaptability, Rationality and Collaboration}, 
-  author={Lin Xu and Zhiyuan Hu and Daquan Zhou and Hongyu Ren and Zhen Dong and Kurt Keutzer and See Kiong Ng and Jiashi Feng},
-  journal={arXiv preprint arXiv:2311.08562},
-  year={2024},
-}
     </pre>
   </div>
 </section>
@@ -980,5 +972,17 @@ The game ends when:<br>
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<UndercoverGameAnimation />);
     </script>
+
+<!-- Import game engine and API adapters -->
+<script src="./static/js/game/Prompts.js"></script>
+<script src="./static/js/game/ConceptLoader.js"></script>
+<script src="./static/js/api/LLMProvider.js"></script>
+<script src="./static/js/api/OpenAIAdapter.js"></script>
+<script src="./static/js/api/AnthropicAdapter.js"></script>
+<script src="./static/js/api/GoogleAdapter.js"></script>
+<script src="./static/js/game/Judge.js"></script>
+<script src="./static/js/game/Player.js"></script>
+<script src="./static/js/game/GameEngine.js"></script>
+
 </body>
 </html>
