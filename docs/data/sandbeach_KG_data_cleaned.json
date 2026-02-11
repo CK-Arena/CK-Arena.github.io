@@ -1,0 +1,1588 @@
+{
+  "concepts": {
+    "desert": {
+      "name": "desert",
+      "category": "landforms",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "vast",
+        "open",
+        "space",
+        "where",
+        "water",
+        "scarce",
+        "harsh",
+        "environment",
+        "where",
+        "survival",
+        "can",
+        "challenging",
+        "place",
+        "where",
+        "the",
+        "landscape",
+        "can",
+        "both",
+        "beautiful",
+        "and",
+        "unforgiving",
+        "place",
+        "where",
+        "extreme",
+        "conditions",
+        "test",
+        "the",
+        "limits",
+        "human",
+        "endurance",
+        "place",
+        "where",
+        "temperatures",
+        "can",
+        "swing",
+        "dramatically",
+        "between",
+        "day",
+        "and",
+        "night",
+        "place",
+        "where",
+        "the",
+        "landscape",
+        "can",
+        "change",
+        "dramatically",
+        "from",
+        "moment",
+        "the",
+        "next",
+        "place",
+        "where",
+        "the",
+        "landscape",
+        "can",
+        "both",
+        "serene",
+        "and",
+        "challenging",
+        "depending",
+        "the",
+        "time",
+        "day",
+        "place",
+        "where",
+        "the",
+        "lack",
+        "water",
+        "and",
+        "harsh",
+        "conditions",
+        "challenge",
+        "even",
+        "the",
+        "most",
+        "prepared",
+        "travelers",
+        "place",
+        "where",
+        "the",
+        "harsh",
+        "climate",
+        "and",
+        "lack",
+        "resources",
+        "can",
+        "push",
+        "people",
+        "their",
+        "limits",
+        "vast",
+        "open",
+        "space",
+        "can",
+        "quite",
+        "harsh",
+        "and",
+        "challenging",
+        "place"
+      ],
+      "statement_count": 90
+    },
+    "sandbeach": {
+      "name": "sandbeach",
+      "category": "landforms",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "place",
+        "where",
+        "people",
+        "often",
+        "relax",
+        "and",
+        "enjoy",
+        "the",
+        "natural",
+        "environment",
+        "natural",
+        "setting",
+        "where",
+        "people",
+        "often",
+        "build",
+        "structures",
+        "with",
+        "their",
+        "hands",
+        "place",
+        "where",
+        "the",
+        "sound",
+        "waves",
+        "and",
+        "the",
+        "feel",
+        "grains",
+        "underfoot",
+        "create",
+        "serene",
+        "atmosphere",
+        "place",
+        "where",
+        "the",
+        "gentle",
+        "breeze",
+        "and",
+        "warm",
+        "sun",
+        "make",
+        "for",
+        "relaxing",
+        "day",
+        "place",
+        "where",
+        "the",
+        "soft",
+        "sand",
+        "and",
+        "gentle",
+        "waves",
+        "invite",
+        "people",
+        "spend",
+        "hours",
+        "enjoying",
+        "the",
+        "outdoors",
+        "place",
+        "where",
+        "people",
+        "often",
+        "relax",
+        "and",
+        "enjoy",
+        "the",
+        "outdoors",
+        "natural",
+        "environment",
+        "can",
+        "vary",
+        "greatly",
+        "its",
+        "conditions",
+        "from",
+        "peaceful",
+        "intense",
+        "place",
+        "where",
+        "the",
+        "natural",
+        "beauty",
+        "sand",
+        "and",
+        "sky",
+        "can",
+        "create",
+        "serene",
+        "atmosphere",
+        "place",
+        "where",
+        "the",
+        "fine",
+        "grains",
+        "sand",
+        "can",
+        "shift",
+        "and"
+      ],
+      "statement_count": 67
+    }
+  },
+  "features": {
+    "make": {
+      "name": "make",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.04,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "rugged": {
+      "name": "rugged",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "extreme": {
+      "name": "extreme",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 0.9041666666666668,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "intense": {
+      "name": "intense",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.94,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "see": {
+      "name": "see",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "harsh": {
+      "name": "harsh",
+      "feature_type": "word",
+      "frequency": 22,
+      "avg_relevance": 1.8272727272727272,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "invites": {
+      "name": "invites",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "covered": {
+      "name": "covered",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 1.646153846153846,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "relentlessly": {
+      "name": "relentlessly",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "scenic": {
+      "name": "scenic",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "sand": {
+      "name": "sand",
+      "feature_type": "word",
+      "frequency": 30,
+      "avg_relevance": 1.8466666666666665,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "unique": {
+      "name": "unique",
+      "feature_type": "word",
+      "frequency": 17,
+      "avg_relevance": 1.435294117647059,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "fauna": {
+      "name": "fauna",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "dangerous": {
+      "name": "dangerous",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "relaxing": {
+      "name": "relaxing",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.43999999999999995,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "soft": {
+      "name": "soft",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "waves": {
+      "name": "waves",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "often": {
+      "name": "often",
+      "feature_type": "word",
+      "frequency": 47,
+      "avg_relevance": 2.3829787234042543,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "stark": {
+      "name": "stark",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "expanses": {
+      "name": "expanses",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.95,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "open": {
+      "name": "open",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "region": {
+      "name": "region",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "texture": {
+      "name": "texture",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "shift": {
+      "name": "shift",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "terrain": {
+      "name": "terrain",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.0399999999999998,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "night": {
+      "name": "night",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.8999999999999999,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "making": {
+      "name": "making",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6000000000000001,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "scarce": {
+      "name": "scarce",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.7999999999999999,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "minimal": {
+      "name": "minimal",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "beauty": {
+      "name": "beauty",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 1.9333333333333342,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "beats": {
+      "name": "beats",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "peaceful": {
+      "name": "peaceful",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.9333333333333335,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "from": {
+      "name": "from",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "expansive": {
+      "name": "expansive",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.9000000000000002,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "serene": {
+      "name": "serene",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.742857142857143,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "little": {
+      "name": "little",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "vegetation": {
+      "name": "vegetation",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "escape": {
+      "name": "escape",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "dry": {
+      "name": "dry",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "visited": {
+      "name": "visited",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.8666666666666668,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "sparse": {
+      "name": "sparse",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.3333333333333333,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "endurance": {
+      "name": "endurance",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "associated": {
+      "name": "associated",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 1.0999999999999999,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "dunes": {
+      "name": "dunes",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.12,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "inviting": {
+      "name": "inviting",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "known": {
+      "name": "known",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 2.16,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "between": {
+      "name": "between",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "scorching": {
+      "name": "scorching",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "limited": {
+      "name": "limited",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "challenge": {
+      "name": "challenge",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.675,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "climate": {
+      "name": "climate",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.7249999999999999,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "vast": {
+      "name": "vast",
+      "feature_type": "word",
+      "frequency": 17,
+      "avg_relevance": 1.2235294117647055,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "unpredictable": {
+      "name": "unpredictable",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "human": {
+      "name": "human",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.7000000000000001,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "activities": {
+      "name": "activities",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "resources": {
+      "name": "resources",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "survival": {
+      "name": "survival",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 1.1,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "stretch": {
+      "name": "stretch",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "wind": {
+      "name": "wind",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.5142857142857142,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "popular": {
+      "name": "popular",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.6000000000000003,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "awe": {
+      "name": "awe",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.0999999999999999,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "unforgiving": {
+      "name": "unforgiving",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 1.2727272727272727,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "influenced": {
+      "name": "influenced",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "characterized": {
+      "name": "characterized",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "vary": {
+      "name": "vary",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "greatly": {
+      "name": "greatly",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "offer": {
+      "name": "offer",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "near": {
+      "name": "near",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "survive": {
+      "name": "survive",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "down": {
+      "name": "down",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "enjoyed": {
+      "name": "enjoyed",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 1.5166666666666666,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "sky": {
+      "name": "sky",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "water": {
+      "name": "water",
+      "feature_type": "word",
+      "frequency": 19,
+      "avg_relevance": 1.484210526315789,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "contrast": {
+      "name": "contrast",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6000000000000001,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "fine": {
+      "name": "fine",
+      "feature_type": "word",
+      "frequency": 24,
+      "avg_relevance": 2.191666666666666,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "temperature": {
+      "name": "temperature",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.7777777777777777,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "material": {
+      "name": "material",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 2.6,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "shape": {
+      "name": "shape",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "enjoy": {
+      "name": "enjoy",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.5499999999999999,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "quite": {
+      "name": "quite",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "composed": {
+      "name": "composed",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 1.8999999999999997,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "far": {
+      "name": "far",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "gentle": {
+      "name": "gentle",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "spot": {
+      "name": "spot",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "leisure": {
+      "name": "leisure",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "found": {
+      "name": "found",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "relax": {
+      "name": "relax",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.43333333333333335,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "seeking": {
+      "name": "seeking",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 1.75,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "particles": {
+      "name": "particles",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.5999999999999999,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "granular": {
+      "name": "granular",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 2.16,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "recreational": {
+      "name": "recreational",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.875,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "inspiring": {
+      "name": "inspiring",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.0999999999999999,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "cold": {
+      "name": "cold",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "explore": {
+      "name": "explore",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "depending": {
+      "name": "depending",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "push": {
+      "name": "push",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "due": {
+      "name": "due",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "arid": {
+      "name": "arid",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "soothing": {
+      "name": "soothing",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "outcrops": {
+      "name": "outcrops",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "with": {
+      "name": "with",
+      "feature_type": "word",
+      "frequency": 26,
+      "avg_relevance": 1.7153846153846155,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "dominated": {
+      "name": "dominated",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.0799999999999998,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "gather": {
+      "name": "gather",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "enjoying": {
+      "name": "enjoying",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "memorable": {
+      "name": "memorable",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "come": {
+      "name": "come",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6000000000000001,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "barren": {
+      "name": "barren",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.72,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "bodies": {
+      "name": "bodies",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "rocky": {
+      "name": "rocky",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.12,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "formations": {
+      "name": "formations",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.2000000000000002,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "makes": {
+      "name": "makes",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "underfoot": {
+      "name": "underfoot",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.5333333333333333,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "relaxation": {
+      "name": "relaxation",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "challenging": {
+      "name": "challenging",
+      "feature_type": "word",
+      "frequency": 23,
+      "avg_relevance": 1.6086956521739133,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "breeze": {
+      "name": "breeze",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.4000000000000001,
+      "concepts": [
+        "sandbeach"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "features": {
+      "name": "features",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "flora": {
+      "name": "flora",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "both": {
+      "name": "both",
+      "feature_type": "word",
+      "frequency": 17,
+      "avg_relevance": 1.3058823529411767,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "dramatically": {
+      "name": "dramatically",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "desert"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "creating": {
+      "name": "creating",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 1.8,
+      "concepts": [
+        "sandbeach",
+        "desert"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    }
+  },
+  "statistics": {
+    "total_concepts": 2,
+    "total_features": 120,
+    "total_games": 10
+  }
+}

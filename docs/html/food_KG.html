@@ -1,0 +1,4186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Knowledge Graph</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .main {
+            flex: 1;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .legend {
+            margin-bottom: 20px;
+        }
+        
+        .legend-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+        
+        .legend-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .legend-line {
+            width: 30px;
+            height: 3px;
+            margin-right: 10px;
+            flex-shrink: 0;
+            border-radius: 2px;
+        }
+        
+        .filters {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #f39c12;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            font-size: 0.85rem;
+            color: #f39c12;
+            min-width: 30px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input {
+            accent-color: #f39c12;
+        }
+        
+        .stats {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin: 5px 0;
+        }
+        
+        .stat-value {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
+        #tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f39c12;
+        }
+        
+        .tooltip-row {
+            margin: 4px 0;
+            color: #ccc;
+        }
+        
+        .tooltip-label {
+            color: #888;
+        }
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .node-label {
+            font-size: 11px;
+            fill: #fff;
+            pointer-events: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .concept-label {
+            font-size: 16px;
+            font-weight: bold;
+            fill: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 0.8rem;
+            max-width: 300px;
+        }
+        
+        .info-panel p {
+            margin: 5px 0;
+            color: #aaa;
+        }
+        
+        .info-panel strong {
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Food Knowledge Graph</h1>
+            
+            <div class="legend">
+                <div class="legend-title">Node Types</div>
+                
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Bread</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Cake</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Apple</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Pear</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Pineapple</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Mango</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Cherry</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Blueberry</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Noodle</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Pasta</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Zongzi</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Mooncake</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Macaron</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Cookie</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Jam</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Juice</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Pepper Powder</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Mustard</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Peach</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Salad</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Soup</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Walnut</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Pie</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Banana</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Kiwi</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Tomato</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Potato</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Rice</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Wheat</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Beef</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Pork</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Wine</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Beer</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Tea</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Coffee</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e74c3c;"></div>
+                    <span>Concept 1 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Concept 2 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #2ecc71;"></div>
+                    <span>Shared Feature</span>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-title">Edge Strength</div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.8);"></div>
+                    <span>Strong (relevance > 1.0)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.4);"></div>
+                    <span>Medium</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.15);"></div>
+                    <span>Weak (relevance < 0.5)</span>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="filter-label">Min Frequency (filter low-frequency features)</label>
+                    <div class="slider-container">
+                        <input type="range" id="freqFilter" min="1" max="20" value="3">
+                        <span class="slider-value" id="freqValue">3</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Min Relevance</label>
+                    <div class="slider-container">
+                        <input type="range" id="relevanceFilter" min="0" max="100" value="50">
+                        <span class="slider-value" id="relevanceValue">0.5</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Feature Types</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showUnique" checked>
+                            <span>Unique</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showShared" checked>
+                            <span>Shared</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stats-title">Statistics</div>
+                <div class="stat-row">
+                    <span>Features Displayed</span>
+                    <span class="stat-value" id="featureCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Unique Features</span>
+                    <span class="stat-value" id="uniqueCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Shared Features</span>
+                    <span class="stat-value" id="sharedCount">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main">
+            <svg id="graph"></svg>
+            <div id="tooltip"></div>
+            <div class="info-panel">
+                <p><strong>Interactions:</strong></p>
+                <p>* Drag nodes to reposition</p>
+                <p>* Scroll to zoom</p>
+                <p>* Hover for details</p>
+                <p>* Use filters to reduce noise</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Concept data
+        const conceptsData = [
+  {
+    "id": "bread",
+    "name": "Bread 🐝",
+    "color": "#f39c12"
+  },
+  {
+    "id": "cake",
+    "name": "Cake 🦋",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "apple",
+    "name": "Apple 🌸",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "pear",
+    "name": "Pear 🌿",
+    "color": "#e67e22"
+  },
+  {
+    "id": "pineapple",
+    "name": "Pineapple 🌍",
+    "color": "#3498db"
+  },
+  {
+    "id": "mango",
+    "name": "Mango ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "cherry",
+    "name": "Cherry ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "blueberry",
+    "name": "Blueberry ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "noodle",
+    "name": "Noodle ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "pasta",
+    "name": "Pasta ",
+    "color": "#3498db"
+  },
+  {
+    "id": "Zongzi",
+    "name": "Zongzi ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "mooncake",
+    "name": "Mooncake ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "Macaron",
+    "name": "Macaron ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "cookie",
+    "name": "Cookie ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "Jam",
+    "name": "Jam ",
+    "color": "#3498db"
+  },
+  {
+    "id": "juice",
+    "name": "Juice ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "Pepper Powder",
+    "name": "Pepper Powder ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "Mustard",
+    "name": "Mustard ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "peach",
+    "name": "Peach ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "salad",
+    "name": "Salad ",
+    "color": "#3498db"
+  },
+  {
+    "id": "soup",
+    "name": "Soup ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "walnut",
+    "name": "Walnut ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "pie",
+    "name": "Pie ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "banana",
+    "name": "Banana ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "kiwi",
+    "name": "Kiwi ",
+    "color": "#3498db"
+  },
+  {
+    "id": "tomato",
+    "name": "Tomato ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "potato",
+    "name": "Potato ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "rice",
+    "name": "Rice ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "wheat",
+    "name": "Wheat ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "beef",
+    "name": "Beef ",
+    "color": "#3498db"
+  },
+  {
+    "id": "pork",
+    "name": "Pork ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "wine",
+    "name": "Wine ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "beer",
+    "name": "Beer ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "tea",
+    "name": "Tea ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "coffee",
+    "name": "Coffee ",
+    "color": "#3498db"
+  }
+];
+        
+        // Feature data
+        const featuresData = {
+  "eaten": {
+    "name": "eaten",
+    "frequency": 7,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "tomato",
+      "pear",
+      "apple",
+      "banana",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "process": {
+    "name": "process",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "apple",
+      "soup"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "denser": {
+    "name": "denser",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "mooncake",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "featuring": {
+    "name": "featuring",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "salad",
+      "Jam"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fried": {
+    "name": "fried",
+    "frequency": 4,
+    "avg_relevance": 2.0000000000000004,
+    "concepts": [
+      "potato",
+      "noodle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "unique": {
+    "name": "unique",
+    "frequency": 5,
+    "avg_relevance": 0.9999999999999998,
+    "concepts": [
+      "pineapple",
+      "noodle",
+      "kiwi",
+      "tea"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "technique": {
+    "name": "technique",
+    "frequency": 2,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "Zongzi",
+      "Macaron"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "texture": {
+    "name": "texture",
+    "frequency": 18,
+    "avg_relevance": 0.7323529411764707,
+    "concepts": [
+      "noodle",
+      "Macaron",
+      "cake",
+      "pasta",
+      "pear",
+      "pineapple",
+      "mooncake",
+      "cookie",
+      "cherry",
+      "bread",
+      "apple",
+      "banana",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "enjoyed": {
+    "name": "enjoyed",
+    "frequency": 19,
+    "avg_relevance": 0.8315947368421053,
+    "concepts": [
+      "noodle",
+      "Macaron",
+      "beer",
+      "salad",
+      "mango",
+      "pineapple",
+      "pear",
+      "blueberry",
+      "cherry",
+      "juice",
+      "bread",
+      "apple",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "distinctive": {
+    "name": "distinctive",
+    "frequency": 5,
+    "avg_relevance": 0.7166916666666667,
+    "concepts": [
+      "pineapple",
+      "cookie",
+      "kiwi",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "comes": {
+    "name": "comes",
+    "frequency": 10,
+    "avg_relevance": 0.8700000000000001,
+    "concepts": [
+      "Zongzi",
+      "rice",
+      "Macaron",
+      "cake",
+      "pasta",
+      "wine",
+      "cherry",
+      "Jam",
+      "beef"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sizes": {
+    "name": "sizes",
+    "frequency": 4,
+    "avg_relevance": 0.675,
+    "concepts": [
+      "rice",
+      "cake",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "boiling": {
+    "name": "boiling",
+    "frequency": 3,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "rice",
+      "pasta"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "weddings": {
+    "name": "weddings",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "cake"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "frequently": {
+    "name": "frequently",
+    "frequency": 7,
+    "avg_relevance": 0.9571428571428571,
+    "concepts": [
+      "noodle",
+      "wine",
+      "pineapple",
+      "pork",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "vegetable": {
+    "name": "vegetable",
+    "frequency": 5,
+    "avg_relevance": 0.7833333333333333,
+    "concepts": [
+      "rice",
+      "tomato",
+      "potato",
+      "soup",
+      "juice"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "oven": {
+    "name": "oven",
+    "frequency": 3,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "cake",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "bread": {
+    "name": "bread",
+    "frequency": 3,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "wheat",
+      "Jam"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "store": {
+    "name": "store",
+    "frequency": 6,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "pasta",
+      "wine",
+      "potato",
+      "Jam",
+      "bread",
+      "apple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "with": {
+    "name": "with",
+    "frequency": 62,
+    "avg_relevance": 1.595162903225806,
+    "concepts": [
+      "tomato",
+      "wine",
+      "soup",
+      "pork",
+      "tea",
+      "pie",
+      "noodle",
+      "mango",
+      "juice",
+      "banana",
+      "peach",
+      "rice",
+      "Macaron",
+      "cake",
+      "pasta",
+      "mooncake",
+      "Pepper Powder",
+      "Zongzi",
+      "kiwi",
+      "beer",
+      "salad",
+      "pear",
+      "pineapple",
+      "cookie",
+      "cherry",
+      "Jam",
+      "bread",
+      "apple",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "asian": {
+    "name": "asian",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "noodle",
+      "rice"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "festival": {
+    "name": "festival",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "apple",
+      "Zongzi"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sometimes": {
+    "name": "sometimes",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "noodle",
+      "mango"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "greens": {
+    "name": "greens",
+    "frequency": 4,
+    "avg_relevance": 1.2000000000000002,
+    "concepts": [
+      "apple",
+      "salad",
+      "tea"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "celebrations": {
+    "name": "celebrations",
+    "frequency": 5,
+    "avg_relevance": 1.1999999999999997,
+    "concepts": [
+      "cake"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "slightly": {
+    "name": "slightly",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "apple",
+      "pineapple",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "types": {
+    "name": "types",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "bread"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "smooth": {
+    "name": "smooth",
+    "frequency": 7,
+    "avg_relevance": 0.9000291666666667,
+    "concepts": [
+      "apple",
+      "banana",
+      "Macaron",
+      "mango"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "prepared": {
+    "name": "prepared",
+    "frequency": 8,
+    "avg_relevance": 0.8375,
+    "concepts": [
+      "Zongzi",
+      "rice",
+      "pasta",
+      "salad",
+      "tea",
+      "beef"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "requires": {
+    "name": "requires",
+    "frequency": 9,
+    "avg_relevance": 0.79375,
+    "concepts": [
+      "Zongzi",
+      "wheat",
+      "cake",
+      "salad",
+      "pineapple",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "events": {
+    "name": "events",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "cake",
+      "beer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "roasted": {
+    "name": "roasted",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "walnut",
+      "coffee"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "dark": {
+    "name": "dark",
+    "frequency": 2,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "potato",
+      "coffee"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "harvested": {
+    "name": "harvested",
+    "frequency": 3,
+    "avg_relevance": 0.675,
+    "concepts": [
+      "apple",
+      "cherry",
+      "wheat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "popular": {
+    "name": "popular",
+    "frequency": 12,
+    "avg_relevance": 1.0416666666666665,
+    "concepts": [
+      "wheat",
+      "cake",
+      "pasta",
+      "salad",
+      "tomato",
+      "pineapple",
+      "apple",
+      "banana",
+      "peach",
+      "Mustard"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "leaves": {
+    "name": "leaves",
+    "frequency": 3,
+    "avg_relevance": 0.9666666666666667,
+    "concepts": [
+      "pineapple",
+      "Zongzi",
+      "tea"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "methods": {
+    "name": "methods",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "rice",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "inside": {
+    "name": "inside",
+    "frequency": 4,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "banana",
+      "walnut",
+      "cherry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "inner": {
+    "name": "inner",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "pineapple",
+      "rice"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "region": {
+    "name": "region",
+    "frequency": 4,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "Zongzi",
+      "banana",
+      "pasta",
+      "pineapple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "products": {
+    "name": "products",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "apple",
+      "pork"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "core": {
+    "name": "core",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "apple",
+      "pineapple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "involves": {
+    "name": "involves",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "soup",
+      "cake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "both": {
+    "name": "both",
+    "frequency": 9,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "rice",
+      "pasta",
+      "pear",
+      "pineapple",
+      "cherry",
+      "bread",
+      "apple",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "butter": {
+    "name": "butter",
+    "frequency": 3,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "apple",
+      "pear",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "good": {
+    "name": "good",
+    "frequency": 3,
+    "avg_relevance": 0.6999999999999998,
+    "concepts": [
+      "wheat",
+      "banana",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "preserves": {
+    "name": "preserves",
+    "frequency": 4,
+    "avg_relevance": 0.7333333333333333,
+    "concepts": [
+      "cherry",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "hot": {
+    "name": "hot",
+    "frequency": 4,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "noodle",
+      "tea"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "commonly": {
+    "name": "commonly",
+    "frequency": 18,
+    "avg_relevance": 0.7611111111111111,
+    "concepts": [
+      "Zongzi",
+      "rice",
+      "wheat",
+      "cake",
+      "pasta",
+      "beer",
+      "salad",
+      "pear",
+      "pineapple",
+      "tomato",
+      "cherry",
+      "tea",
+      "juice",
+      "Pepper Powder",
+      "bread",
+      "apple",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cheese": {
+    "name": "cheese",
+    "frequency": 3,
+    "avg_relevance": 0.8250000000000001,
+    "concepts": [
+      "Mustard",
+      "pasta",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "decorated": {
+    "name": "decorated",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "cake"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "vibrant": {
+    "name": "vibrant",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "cherry",
+      "salad"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "paired": {
+    "name": "paired",
+    "frequency": 12,
+    "avg_relevance": 0.9166666666666665,
+    "concepts": [
+      "noodle",
+      "beer",
+      "tomato",
+      "mango",
+      "wine",
+      "cookie",
+      "Pepper Powder",
+      "bread",
+      "apple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "pastries": {
+    "name": "pastries",
+    "frequency": 2,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "wheat",
+      "Jam"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "flavor": {
+    "name": "flavor",
+    "frequency": 24,
+    "avg_relevance": 0.8696137254901961,
+    "concepts": [
+      "Macaron",
+      "cake",
+      "kiwi",
+      "pasta",
+      "wine",
+      "mango",
+      "pineapple",
+      "salad",
+      "soup",
+      "cherry",
+      "tea",
+      "Jam",
+      "bread",
+      "pie",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "food": {
+    "name": "food",
+    "frequency": 17,
+    "avg_relevance": 1.3470764705882359,
+    "concepts": [
+      "noodle",
+      "rice",
+      "salad",
+      "Jam",
+      "bread",
+      "beef",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "filled": {
+    "name": "filled",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "Zongzi",
+      "pie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "associated": {
+    "name": "associated",
+    "frequency": 14,
+    "avg_relevance": 0.6499999999999997,
+    "concepts": [
+      "Zongzi",
+      "rice",
+      "cake",
+      "salad",
+      "wine",
+      "pineapple",
+      "pork",
+      "tea",
+      "apple",
+      "banana",
+      "peach",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "versatile": {
+    "name": "versatile",
+    "frequency": 9,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "noodle",
+      "rice",
+      "tomato",
+      "bread",
+      "apple",
+      "beef",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "salad": {
+    "name": "salad",
+    "frequency": 4,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "noodle",
+      "kiwi",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "breakfast": {
+    "name": "breakfast",
+    "frequency": 8,
+    "avg_relevance": 0.9500000000000001,
+    "concepts": [
+      "juice",
+      "banana",
+      "pork",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "water": {
+    "name": "water",
+    "frequency": 4,
+    "avg_relevance": 0.7499999999999999,
+    "concepts": [
+      "pasta",
+      "tea",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cuisine": {
+    "name": "cuisine",
+    "frequency": 9,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "noodle",
+      "rice",
+      "pasta",
+      "tomato",
+      "banana",
+      "beef",
+      "Mustard"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "towards": {
+    "name": "towards",
+    "frequency": 3,
+    "avg_relevance": 1.4000000000000001,
+    "concepts": [
+      "pear"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "sauces": {
+    "name": "sauces",
+    "frequency": 4,
+    "avg_relevance": 1.175,
+    "concepts": [
+      "pasta",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "features": {
+    "name": "features",
+    "frequency": 5,
+    "avg_relevance": 0.7333333333333333,
+    "concepts": [
+      "pineapple",
+      "rice",
+      "cake",
+      "apple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "make": {
+    "name": "make",
+    "frequency": 5,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "apple",
+      "mango",
+      "cherry",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "includes": {
+    "name": "includes",
+    "frequency": 4,
+    "avg_relevance": 1.2000000000000002,
+    "concepts": [
+      "wine",
+      "salad"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "unleavened": {
+    "name": "unleavened",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "bread"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "effect": {
+    "name": "effect",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "soup",
+      "coffee"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "treat": {
+    "name": "treat",
+    "frequency": 8,
+    "avg_relevance": 3.0000000000000004,
+    "concepts": [
+      "cookie",
+      "Macaron",
+      "cake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "careful": {
+    "name": "careful",
+    "frequency": 3,
+    "avg_relevance": 0.6999999999999998,
+    "concepts": [
+      "Zongzi",
+      "salad",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "often": {
+    "name": "often",
+    "frequency": 143,
+    "avg_relevance": 3.3853286713286708,
+    "concepts": [
+      "tomato",
+      "wine",
+      "soup",
+      "pork",
+      "coffee",
+      "tea",
+      "Mustard",
+      "wheat",
+      "noodle",
+      "mango",
+      "juice",
+      "banana",
+      "peach",
+      "beef",
+      "rice",
+      "Macaron",
+      "cake",
+      "pasta",
+      "mooncake",
+      "Pepper Powder",
+      "Zongzi",
+      "kiwi",
+      "beer",
+      "salad",
+      "pear",
+      "pineapple",
+      "cookie",
+      "blueberry",
+      "cherry",
+      "Jam",
+      "bread",
+      "apple",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "grown": {
+    "name": "grown",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "wheat",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "achieve": {
+    "name": "achieve",
+    "frequency": 4,
+    "avg_relevance": 0.825,
+    "concepts": [
+      "Macaron",
+      "cake",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "snack": {
+    "name": "snack",
+    "frequency": 12,
+    "avg_relevance": 1.0055555555555555,
+    "concepts": [
+      "noodle",
+      "beer",
+      "pear",
+      "mango",
+      "potato",
+      "cookie",
+      "bread",
+      "apple",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "known": {
+    "name": "known",
+    "frequency": 6,
+    "avg_relevance": 1.0666833333333334,
+    "concepts": [
+      "Macaron",
+      "mango",
+      "pineapple",
+      "banana",
+      "peach"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shapes": {
+    "name": "shapes",
+    "frequency": 10,
+    "avg_relevance": 0.8222222222222223,
+    "concepts": [
+      "Zongzi",
+      "noodle",
+      "pasta",
+      "pear",
+      "pineapple",
+      "cherry",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "widely": {
+    "name": "widely",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "beef",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "jams": {
+    "name": "jams",
+    "frequency": 3,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "cherry",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "world": {
+    "name": "world",
+    "frequency": 3,
+    "avg_relevance": 0.5666666666666665,
+    "concepts": [
+      "pork",
+      "pasta",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "refreshing": {
+    "name": "refreshing",
+    "frequency": 5,
+    "avg_relevance": 0.54002,
+    "concepts": [
+      "kiwi",
+      "salad",
+      "pear",
+      "pineapple",
+      "peach"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "taste": {
+    "name": "taste",
+    "frequency": 6,
+    "avg_relevance": 0.58001,
+    "concepts": [
+      "kiwi",
+      "cake",
+      "wine",
+      "Pepper Powder",
+      "Jam",
+      "peach"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "base": {
+    "name": "base",
+    "frequency": 5,
+    "avg_relevance": 0.74,
+    "concepts": [
+      "apple",
+      "pear",
+      "salad",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "dessert": {
+    "name": "dessert",
+    "frequency": 10,
+    "avg_relevance": 0.7000125,
+    "concepts": [
+      "cake",
+      "pineapple",
+      "blueberry",
+      "cherry",
+      "apple",
+      "banana",
+      "peach",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fresh": {
+    "name": "fresh",
+    "frequency": 11,
+    "avg_relevance": 1.4818363636363636,
+    "concepts": [
+      "salad",
+      "mango",
+      "pineapple",
+      "blueberry",
+      "cherry",
+      "bread",
+      "apple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "specific": {
+    "name": "specific",
+    "frequency": 2,
+    "avg_relevance": 0.45,
+    "concepts": [
+      "Zongzi",
+      "wheat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "traditionally": {
+    "name": "traditionally",
+    "frequency": 7,
+    "avg_relevance": 0.7833333333333333,
+    "concepts": [
+      "Zongzi",
+      "beer",
+      "bread",
+      "pork",
+      "tea"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "appreciated": {
+    "name": "appreciated",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "pineapple",
+      "wine"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "depending": {
+    "name": "depending",
+    "frequency": 5,
+    "avg_relevance": 0.7399999999999999,
+    "concepts": [
+      "Zongzi",
+      "rice",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "loaves": {
+    "name": "loaves",
+    "frequency": 4,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "bread"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "fibrous": {
+    "name": "fibrous",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "pineapple",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "dish": {
+    "name": "dish",
+    "frequency": 8,
+    "avg_relevance": 3.675,
+    "concepts": [
+      "noodle",
+      "rice",
+      "salad"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "baking": {
+    "name": "baking",
+    "frequency": 6,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "pear",
+      "cherry",
+      "bread",
+      "banana",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "red": {
+    "name": "red",
+    "frequency": 6,
+    "avg_relevance": 0.8166666666666665,
+    "concepts": [
+      "Zongzi",
+      "wine",
+      "tomato",
+      "cherry",
+      "apple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "consumption": {
+    "name": "consumption",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "soup",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "preparation": {
+    "name": "preparation",
+    "frequency": 6,
+    "avg_relevance": 0.7125,
+    "concepts": [
+      "Zongzi",
+      "rice",
+      "pineapple",
+      "bread",
+      "apple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cultural": {
+    "name": "cultural",
+    "frequency": 4,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "Zongzi",
+      "beer",
+      "tea",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tropical": {
+    "name": "tropical",
+    "frequency": 6,
+    "avg_relevance": 2.4499999999999997,
+    "concepts": [
+      "pineapple",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tart": {
+    "name": "tart",
+    "frequency": 3,
+    "avg_relevance": 0.5666666666666667,
+    "concepts": [
+      "apple",
+      "pineapple",
+      "cherry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "customized": {
+    "name": "customized",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "cake"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "have": {
+    "name": "have",
+    "frequency": 3,
+    "avg_relevance": 0.6333333333333334,
+    "concepts": [
+      "pie",
+      "cake",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "before": {
+    "name": "before",
+    "frequency": 9,
+    "avg_relevance": 0.8333333333333333,
+    "concepts": [
+      "Zongzi",
+      "pasta",
+      "tomato",
+      "pineapple",
+      "soup",
+      "coffee",
+      "bread",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "pies": {
+    "name": "pies",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "apple",
+      "cherry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "found": {
+    "name": "found",
+    "frequency": 12,
+    "avg_relevance": 0.6666750000000001,
+    "concepts": [
+      "pineapple",
+      "pork",
+      "cookie",
+      "cherry",
+      "tea",
+      "Pepper Powder",
+      "bread",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "classic": {
+    "name": "classic",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "pasta",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "golden": {
+    "name": "golden",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "pineapple",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sandwiches": {
+    "name": "sandwiches",
+    "frequency": 9,
+    "avg_relevance": 1.1750000000000003,
+    "concepts": [
+      "Macaron",
+      "tomato",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "profile": {
+    "name": "profile",
+    "frequency": 4,
+    "avg_relevance": 0.6000000000000001,
+    "concepts": [
+      "kiwi",
+      "wine",
+      "mango"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "grows": {
+    "name": "grows",
+    "frequency": 5,
+    "avg_relevance": 0.6799999999999999,
+    "concepts": [
+      "mango",
+      "potato",
+      "pear",
+      "cherry",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "enhances": {
+    "name": "enhances",
+    "frequency": 5,
+    "avg_relevance": 0.7875000000000001,
+    "concepts": [
+      "pasta",
+      "bread",
+      "Pepper Powder",
+      "Jam",
+      "tea"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "baked": {
+    "name": "baked",
+    "frequency": 12,
+    "avg_relevance": 1.2083333333333333,
+    "concepts": [
+      "wheat",
+      "cake",
+      "potato",
+      "cookie",
+      "bread",
+      "apple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "notes": {
+    "name": "notes",
+    "frequency": 2,
+    "avg_relevance": 1.7000000000000002,
+    "concepts": [
+      "wine"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "choice": {
+    "name": "choice",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "apple",
+      "soup",
+      "salad"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "stringy": {
+    "name": "stringy",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "Zongzi",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "stir": {
+    "name": "stir",
+    "frequency": 3,
+    "avg_relevance": 2.2,
+    "concepts": [
+      "noodle"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "making": {
+    "name": "making",
+    "frequency": 5,
+    "avg_relevance": 1.24,
+    "concepts": [
+      "pineapple",
+      "banana",
+      "cake",
+      "salad"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "eating": {
+    "name": "eating",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "Zongzi",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "presents": {
+    "name": "presents",
+    "frequency": 4,
+    "avg_relevance": 0.9000000000000001,
+    "concepts": [
+      "pineapple",
+      "cake",
+      "pasta",
+      "salad"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "formed": {
+    "name": "formed",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "noodle",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "beverages": {
+    "name": "beverages",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "pineapple",
+      "beer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sweetness": {
+    "name": "sweetness",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "cherry",
+      "Jam"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "multiple": {
+    "name": "multiple",
+    "frequency": 4,
+    "avg_relevance": 0.625,
+    "concepts": [
+      "cake",
+      "pasta",
+      "salad"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "trees": {
+    "name": "trees",
+    "frequency": 4,
+    "avg_relevance": 0.575,
+    "concepts": [
+      "mango",
+      "cherry",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "outer": {
+    "name": "outer",
+    "frequency": 4,
+    "avg_relevance": 0.850025,
+    "concepts": [
+      "pineapple",
+      "kiwi",
+      "potato",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "open": {
+    "name": "open",
+    "frequency": 3,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "cherry",
+      "walnut",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "used": {
+    "name": "used",
+    "frequency": 36,
+    "avg_relevance": 1.7416777777777777,
+    "concepts": [
+      "noodle",
+      "rice",
+      "tomato",
+      "mango",
+      "pineapple",
+      "pear",
+      "blueberry",
+      "cherry",
+      "Pepper Powder",
+      "Jam",
+      "bread",
+      "apple",
+      "banana",
+      "beef",
+      "Mustard",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "side": {
+    "name": "side",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "noodle",
+      "rice"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "serving": {
+    "name": "serving",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "bread"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "meat": {
+    "name": "meat",
+    "frequency": 5,
+    "avg_relevance": 0.8399999999999999,
+    "concepts": [
+      "pineapple",
+      "pie",
+      "beef",
+      "rice"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "such": {
+    "name": "such",
+    "frequency": 8,
+    "avg_relevance": 1.0374999999999999,
+    "concepts": [
+      "wheat",
+      "noodle",
+      "cake",
+      "tea",
+      "bread",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "chips": {
+    "name": "chips",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "potato",
+      "cookie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "italian": {
+    "name": "italian",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "pasta",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "typically": {
+    "name": "typically",
+    "frequency": 11,
+    "avg_relevance": 0.7363636363636363,
+    "concepts": [
+      "Macaron",
+      "cake",
+      "salad",
+      "wine",
+      "soup",
+      "potato",
+      "mooncake",
+      "cherry",
+      "tea"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "using": {
+    "name": "using",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "pasta",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "vanilla": {
+    "name": "vanilla",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "cake",
+      "wine"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "range": {
+    "name": "range",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "apple",
+      "noodle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "source": {
+    "name": "source",
+    "frequency": 5,
+    "avg_relevance": 0.9400000000000001,
+    "concepts": [
+      "wheat",
+      "banana",
+      "rice",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cooked": {
+    "name": "cooked",
+    "frequency": 6,
+    "avg_relevance": 0.9666666666666668,
+    "concepts": [
+      "rice",
+      "pasta",
+      "tomato",
+      "pear",
+      "apple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "staple": {
+    "name": "staple",
+    "frequency": 14,
+    "avg_relevance": 0.9714285714285714,
+    "concepts": [
+      "noodle",
+      "rice",
+      "beer",
+      "coffee",
+      "Jam",
+      "bread",
+      "apple",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "flesh": {
+    "name": "flesh",
+    "frequency": 4,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "pineapple",
+      "cherry",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "contains": {
+    "name": "contains",
+    "frequency": 4,
+    "avg_relevance": 0.875,
+    "concepts": [
+      "apple",
+      "Zongzi",
+      "cookie",
+      "coffee"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "usually": {
+    "name": "usually",
+    "frequency": 4,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "pie",
+      "tomato",
+      "salad",
+      "Jam"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "made": {
+    "name": "made",
+    "frequency": 10,
+    "avg_relevance": 0.6599999999999999,
+    "concepts": [
+      "noodle",
+      "Macaron",
+      "cake",
+      "soup",
+      "juice",
+      "Pepper Powder",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "household": {
+    "name": "household",
+    "frequency": 2,
+    "avg_relevance": 0.50005,
+    "concepts": [
+      "Jam",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "plate": {
+    "name": "plate",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "rice",
+      "cake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shell": {
+    "name": "shell",
+    "frequency": 2,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "noodle",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "ripe": {
+    "name": "ripe",
+    "frequency": 5,
+    "avg_relevance": 1.1600000000000001,
+    "concepts": [
+      "banana",
+      "cherry",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "component": {
+    "name": "component",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "rice",
+      "tomato",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "ingredients": {
+    "name": "ingredients",
+    "frequency": 24,
+    "avg_relevance": 1.3307142857142857,
+    "concepts": [
+      "tomato",
+      "soup",
+      "wheat",
+      "noodle",
+      "juice",
+      "banana",
+      "beef",
+      "peach",
+      "rice",
+      "Macaron",
+      "cake",
+      "pasta",
+      "Pepper Powder",
+      "Zongzi",
+      "salad",
+      "pineapple",
+      "Jam",
+      "bread",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "dried": {
+    "name": "dried",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "Pepper Powder",
+      "mango"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "easily": {
+    "name": "easily",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "pineapple",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "yellow": {
+    "name": "yellow",
+    "frequency": 4,
+    "avg_relevance": 1.225,
+    "concepts": [
+      "apple",
+      "banana",
+      "Mustard"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "gourmet": {
+    "name": "gourmet",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "Macaron",
+      "wine"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "white": {
+    "name": "white",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "rice",
+      "tea"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "course": {
+    "name": "course",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "rice",
+      "pasta"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "meals": {
+    "name": "meals",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "bread"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "tapers": {
+    "name": "tapers",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "pear"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "birthdays": {
+    "name": "birthdays",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "cake"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "transformed": {
+    "name": "transformed",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "potato",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "crispy": {
+    "name": "crispy",
+    "frequency": 3,
+    "avg_relevance": 0.8000000000000002,
+    "concepts": [
+      "potato",
+      "noodle",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "topped": {
+    "name": "topped",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "cake",
+      "salad"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "consumed": {
+    "name": "consumed",
+    "frequency": 7,
+    "avg_relevance": 0.6143,
+    "concepts": [
+      "pear",
+      "mooncake",
+      "cherry",
+      "tea",
+      "juice",
+      "bread",
+      "beef"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "dishes": {
+    "name": "dishes",
+    "frequency": 19,
+    "avg_relevance": 1.1263263157894738,
+    "concepts": [
+      "noodle",
+      "kiwi",
+      "rice",
+      "wine",
+      "pineapple",
+      "blueberry",
+      "Pepper Powder",
+      "bread",
+      "apple",
+      "beef",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "filling": {
+    "name": "filling",
+    "frequency": 4,
+    "avg_relevance": 0.775,
+    "concepts": [
+      "Zongzi",
+      "Macaron",
+      "mooncake",
+      "cake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "alongside": {
+    "name": "alongside",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "rice",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "crust": {
+    "name": "crust",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "pie",
+      "mooncake",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "special": {
+    "name": "special",
+    "frequency": 7,
+    "avg_relevance": 0.8428571428571427,
+    "concepts": [
+      "pineapple",
+      "Macaron",
+      "cake",
+      "wine"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "edible": {
+    "name": "edible",
+    "frequency": 4,
+    "avg_relevance": 0.725025,
+    "concepts": [
+      "apple",
+      "kiwi",
+      "walnut",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tangy": {
+    "name": "tangy",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "kiwi",
+      "mango"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cream": {
+    "name": "cream",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "pie",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "baguettes": {
+    "name": "baguettes",
+    "frequency": 3,
+    "avg_relevance": 0.8666666666666667,
+    "concepts": [
+      "bread"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "fruit": {
+    "name": "fruit",
+    "frequency": 46,
+    "avg_relevance": 2.7204566666666654,
+    "concepts": [
+      "kiwi",
+      "cake",
+      "wine",
+      "pear",
+      "pineapple",
+      "mango",
+      "juice",
+      "banana",
+      "Pepper Powder",
+      "Jam",
+      "apple",
+      "pie",
+      "peach"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "spread": {
+    "name": "spread",
+    "frequency": 3,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "Jam",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "added": {
+    "name": "added",
+    "frequency": 4,
+    "avg_relevance": 0.8500749999999999,
+    "concepts": [
+      "pineapple",
+      "kiwi",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "soft": {
+    "name": "soft",
+    "frequency": 4,
+    "avg_relevance": 0.675025,
+    "concepts": [
+      "cookie",
+      "cake",
+      "cherry",
+      "kiwi"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "main": {
+    "name": "main",
+    "frequency": 4,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "rice",
+      "pasta",
+      "Jam"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "end": {
+    "name": "end",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "Macaron",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "long": {
+    "name": "long",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "noodle",
+      "pasta",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "seeds": {
+    "name": "seeds",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "apple",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "gatherings": {
+    "name": "gatherings",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "beer",
+      "tea"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "flour": {
+    "name": "flour",
+    "frequency": 5,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "wheat",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "drink": {
+    "name": "drink",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "juice",
+      "cookie",
+      "wine"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "savory": {
+    "name": "savory",
+    "frequency": 8,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "rice",
+      "wine",
+      "pineapple",
+      "bread",
+      "apple",
+      "pie",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "experiences": {
+    "name": "experiences",
+    "frequency": 3,
+    "avg_relevance": 0.600025,
+    "concepts": [
+      "peach",
+      "wine",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "toast": {
+    "name": "toast",
+    "frequency": 6,
+    "avg_relevance": 0.8166666666666668,
+    "concepts": [
+      "Jam",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "rich": {
+    "name": "rich",
+    "frequency": 5,
+    "avg_relevance": 0.6799999999999999,
+    "concepts": [
+      "wine",
+      "mango",
+      "mooncake",
+      "banana",
+      "beef"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "varieties": {
+    "name": "varieties",
+    "frequency": 4,
+    "avg_relevance": 0.625,
+    "concepts": [
+      "tea",
+      "wine",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "recipe": {
+    "name": "recipe",
+    "frequency": 5,
+    "avg_relevance": 0.675,
+    "concepts": [
+      "pineapple",
+      "banana",
+      "cherry",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "topping": {
+    "name": "topping",
+    "frequency": 7,
+    "avg_relevance": 0.7250000000000001,
+    "concepts": [
+      "noodle",
+      "cake",
+      "pineapple",
+      "blueberry",
+      "cherry",
+      "bread",
+      "banana"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sweet": {
+    "name": "sweet",
+    "frequency": 19,
+    "avg_relevance": 0.9579000000000001,
+    "concepts": [
+      "rice",
+      "Macaron",
+      "cake",
+      "kiwi",
+      "pineapple",
+      "cherry",
+      "Jam",
+      "bread",
+      "apple",
+      "pie",
+      "peach",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sliced": {
+    "name": "sliced",
+    "frequency": 7,
+    "avg_relevance": 1.4714285714285718,
+    "concepts": [
+      "kiwi",
+      "tomato",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "skin": {
+    "name": "skin",
+    "frequency": 5,
+    "avg_relevance": 0.66002,
+    "concepts": [
+      "kiwi",
+      "pear",
+      "potato",
+      "mango",
+      "apple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "due": {
+    "name": "due",
+    "frequency": 6,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "mango",
+      "pineapple",
+      "soup",
+      "mooncake",
+      "cherry",
+      "coffee"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "social": {
+    "name": "social",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "beer",
+      "tea"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "historical": {
+    "name": "historical",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "Zongzi"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "juicy": {
+    "name": "juicy",
+    "frequency": 5,
+    "avg_relevance": 0.6800599999999999,
+    "concepts": [
+      "pineapple",
+      "peach",
+      "cherry",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "dining": {
+    "name": "dining",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "Pepper Powder",
+      "wine"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "top": {
+    "name": "top",
+    "frequency": 3,
+    "avg_relevance": 1.5999999999999999,
+    "concepts": [
+      "Macaron",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "chocolate": {
+    "name": "chocolate",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "cookie",
+      "cake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "chewy": {
+    "name": "chewy",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "noodle",
+      "Macaron"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "including": {
+    "name": "including",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "juice",
+      "rice",
+      "soup"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "well": {
+    "name": "well",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "rice",
+      "Jam",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "meats": {
+    "name": "meats",
+    "frequency": 3,
+    "avg_relevance": 0.8000000000000002,
+    "concepts": [
+      "soup",
+      "pork",
+      "Mustard"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cold": {
+    "name": "cold",
+    "frequency": 3,
+    "avg_relevance": 1.3333333333333333,
+    "concepts": [
+      "noodle",
+      "salad"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "into": {
+    "name": "into",
+    "frequency": 9,
+    "avg_relevance": 1.1444444444444446,
+    "concepts": [
+      "wheat",
+      "noodle",
+      "cake",
+      "potato",
+      "cookie",
+      "bread",
+      "apple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "culinary": {
+    "name": "culinary",
+    "frequency": 3,
+    "avg_relevance": 0.6000333333333333,
+    "concepts": [
+      "apple",
+      "blueberry",
+      "pasta"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "rolls": {
+    "name": "rolls",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "bread"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "frosting": {
+    "name": "frosting",
+    "frequency": 4,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "cake"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "pit": {
+    "name": "pit",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "cherry"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "served": {
+    "name": "served",
+    "frequency": 26,
+    "avg_relevance": 1.2692307692307698,
+    "concepts": [
+      "noodle",
+      "Macaron",
+      "cake",
+      "pasta",
+      "rice",
+      "salad",
+      "wine",
+      "mooncake",
+      "tea",
+      "juice",
+      "bread",
+      "Mustard"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "pizzas": {
+    "name": "pizzas",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "pineapple",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "around": {
+    "name": "around",
+    "frequency": 4,
+    "avg_relevance": 0.5499999999999999,
+    "concepts": [
+      "banana",
+      "pork",
+      "pasta",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cooking": {
+    "name": "cooking",
+    "frequency": 9,
+    "avg_relevance": 0.8888888888888888,
+    "concepts": [
+      "wheat",
+      "rice",
+      "pasta",
+      "salad",
+      "tomato",
+      "soup",
+      "banana",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "foot": {
+    "name": "foot",
+    "frequency": 2,
+    "avg_relevance": 2.0,
+    "concepts": [
+      "Macaron"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "foods": {
+    "name": "foods",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "banana",
+      "Jam",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "different": {
+    "name": "different",
+    "frequency": 6,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "rice",
+      "cake",
+      "pasta",
+      "wine",
+      "potato",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "convenient": {
+    "name": "convenient",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "banana"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "occasions": {
+    "name": "occasions",
+    "frequency": 5,
+    "avg_relevance": 0.6000000000000001,
+    "concepts": [
+      "Macaron",
+      "cake",
+      "wine"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "plain": {
+    "name": "plain",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "Jam",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "through": {
+    "name": "through",
+    "frequency": 3,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "Zongzi",
+      "wine",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "during": {
+    "name": "during",
+    "frequency": 6,
+    "avg_relevance": 0.5333333333333333,
+    "concepts": [
+      "Macaron",
+      "cake",
+      "beer",
+      "salad",
+      "soup",
+      "cherry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "grilling": {
+    "name": "grilling",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "beef",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "precise": {
+    "name": "precise",
+    "frequency": 2,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "Macaron",
+      "cake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "perfect": {
+    "name": "perfect",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "Macaron",
+      "cake",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fall": {
+    "name": "fall",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "apple",
+      "wheat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "decorative": {
+    "name": "decorative",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "cake",
+      "cherry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "like": {
+    "name": "like",
+    "frequency": 8,
+    "avg_relevance": 0.8374999999999999,
+    "concepts": [
+      "Zongzi",
+      "rice",
+      "Macaron",
+      "salad",
+      "tomato",
+      "bread",
+      "apple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "chilled": {
+    "name": "chilled",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "juice",
+      "tea"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "pairs": {
+    "name": "pairs",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "rice",
+      "Jam",
+      "pear"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "crisp": {
+    "name": "crisp",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "apple",
+      "noodle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "large": {
+    "name": "large",
+    "frequency": 3,
+    "avg_relevance": 1.3,
+    "concepts": [
+      "banana",
+      "mango"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "wide": {
+    "name": "wide",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "soup",
+      "noodle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "from": {
+    "name": "from",
+    "frequency": 15,
+    "avg_relevance": 1.0733333333333335,
+    "concepts": [
+      "noodle",
+      "coffee",
+      "juice",
+      "Pepper Powder",
+      "bread",
+      "apple",
+      "beef"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "certain": {
+    "name": "certain",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "pork",
+      "Pepper Powder"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cakes": {
+    "name": "cakes",
+    "frequency": 2,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "wheat",
+      "cherry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "key": {
+    "name": "key",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "rice",
+      "Pepper Powder",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "raw": {
+    "name": "raw",
+    "frequency": 7,
+    "avg_relevance": 0.9142857142857144,
+    "concepts": [
+      "salad",
+      "pear",
+      "tomato",
+      "apple",
+      "banana",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "rice": {
+    "name": "rice",
+    "frequency": 3,
+    "avg_relevance": 0.7999999999999999,
+    "concepts": [
+      "Zongzi",
+      "noodle",
+      "rice"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "meal": {
+    "name": "meal",
+    "frequency": 4,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "kiwi",
+      "pasta",
+      "wine",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "salt": {
+    "name": "salt",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "Pepper Powder",
+      "mango"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "forms": {
+    "name": "forms",
+    "frequency": 4,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "potato",
+      "cherry",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "delicacy": {
+    "name": "delicacy",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "Zongzi",
+      "Macaron"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cause": {
+    "name": "cause",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "Pepper Powder",
+      "mango"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "nuts": {
+    "name": "nuts",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "Macaron",
+      "cake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "item": {
+    "name": "item",
+    "frequency": 8,
+    "avg_relevance": 0.9500125,
+    "concepts": [
+      "noodle",
+      "cake",
+      "Jam",
+      "bread"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "liquid": {
+    "name": "liquid",
+    "frequency": 2,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "coffee",
+      "wine"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "children": {
+    "name": "children",
+    "frequency": 2,
+    "avg_relevance": 0.6000000000000001,
+    "concepts": [
+      "cookie",
+      "kiwi"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "come": {
+    "name": "come",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "cake",
+      "wine"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "soups": {
+    "name": "soups",
+    "frequency": 4,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "noodle",
+      "tomato"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  }
+};
+        
+        // Feature color mapping
+        const uniqueColors = ['#e74c3c', '#3498db', '#e67e22', '#1abc9c', '#9b59b6'];
+        const sharedColor = '#2ecc71';
+        
+        // Prepare node and edge data
+        let nodes = [];
+        let links = [];
+
+        function prepareData(minFreq, minRelevance, showUnique, showShared) {
+            nodes = [];
+            links = [];
+            
+            // Add concept nodes
+            conceptsData.forEach(concept => {
+                nodes.push({
+                    id: concept.id,
+                    name: concept.name,
+                    type: 'concept',
+                    color: concept.color,
+                    radius: 40
+                });
+            });
+
+            // Add feature nodes
+            Object.entries(featuresData).forEach(([key, feature]) => {
+                if (feature.frequency < minFreq) return;
+                if (feature.avg_relevance < minRelevance) return;
+                
+                const isShared = feature.is_shared;
+                
+                if (!isShared && !showUnique) return;
+                if (isShared && !showShared) return;
+                
+                let color;
+                if (isShared) {
+                    color = sharedColor;
+                } else {
+                    // Determine color based on first related concept
+                    const conceptIndex = conceptsData.findIndex(c => c.id === feature.concepts[0]);
+                    color = uniqueColors[conceptIndex % uniqueColors.length];
+                }
+                
+                const radius = Math.max(8, Math.min(25, feature.frequency * 1.2));
+                
+                nodes.push({
+                    id: key,
+                    name: feature.name,
+                    type: 'feature',
+                    color: color,
+                    radius: radius,
+                    frequency: feature.frequency,
+                    relevance: feature.avg_relevance,
+                    concepts: feature.concepts,
+                    isShared: isShared,
+                    featureType: feature.feature_type
+                });
+                
+                // Add connections
+                feature.concepts.forEach(concept => {
+                    links.push({
+                        source: key,
+                        target: concept,
+                        relevance: feature.avg_relevance,
+                        strength: Math.min(1, feature.avg_relevance / 2)
+                    });
+                });
+            });
+            
+            // Update statistics
+            const featureNodes = nodes.filter(n => n.type === 'feature');
+            document.getElementById('featureCount').textContent = featureNodes.length;
+            document.getElementById('uniqueCount').textContent = featureNodes.filter(n => !n.isShared).length;
+            document.getElementById('sharedCount').textContent = featureNodes.filter(n => n.isShared).length;
+        }
+
+        // D3 visualization
+        const svg = d3.select('#graph');
+        const width = document.querySelector('.main').clientWidth;
+        const height = document.querySelector('.main').clientHeight;
+        
+        const g = svg.append('g');
+        
+        // Zoom
+        const zoom = d3.zoom()
+            .scaleExtent([0.3, 3])
+            .on('zoom', (event) => {
+                g.attr('transform', event.transform);
+            });
+        
+        svg.call(zoom);
+        
+        // Initial zoom to center
+        svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.8));
+
+        let simulation;
+        
+        function updateGraph() {
+            const minFreq = parseInt(document.getElementById('freqFilter').value);
+            const minRelevance = parseInt(document.getElementById('relevanceFilter').value) / 100;
+            const showUnique = document.getElementById('showUnique').checked;
+            const showShared = document.getElementById('showShared').checked;
+            
+            prepareData(minFreq, minRelevance, showUnique, showShared);
+            
+            // Clear old elements
+            g.selectAll('*').remove();
+            
+            // Force-directed simulation
+            simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
+                    return d.relevance > 1 ? 80 : 120;
+                }).strength(d => d.strength * 0.5))
+                .force('charge', d3.forceManyBody().strength(d => d.type === 'concept' ? -500 : -100))
+                .force('center', d3.forceCenter(0, 0))
+                .force('collision', d3.forceCollide().radius(d => d.radius + 5));
+            
+            // Draw edges
+            const link = g.append('g')
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('stroke', d => {
+                    if (d.relevance > 1) return 'rgba(255,255,255,0.6)';
+                    if (d.relevance > 0.7) return 'rgba(255,255,255,0.35)';
+                    return 'rgba(255,255,255,0.15)';
+                })
+                .attr('stroke-width', d => Math.max(1, d.relevance * 2));
+            
+            // Draw nodes
+            const node = g.append('g')
+                .selectAll('g')
+                .data(nodes)
+                .join('g')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            // Node glow effect
+            const defs = svg.select('defs').empty() ? svg.append('defs') : svg.select('defs');
+            defs.selectAll('*').remove();
+            
+            nodes.forEach((n, i) => {
+                const filter = defs.append('filter')
+                    .attr('id', `glow-${i}`)
+                    .attr('x', '-50%')
+                    .attr('y', '-50%')
+                    .attr('width', '200%')
+                    .attr('height', '200%');
+                
+                filter.append('feGaussianBlur')
+                    .attr('stdDeviation', '3')
+                    .attr('result', 'coloredBlur');
+                
+                const feMerge = filter.append('feMerge');
+                feMerge.append('feMergeNode').attr('in', 'coloredBlur');
+                feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+            });
+            
+            node.append('circle')
+                .attr('r', d => d.radius)
+                .attr('fill', d => d.color)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', d => d.type === 'concept' ? 3 : 1.5)
+                .attr('opacity', d => d.type === 'concept' ? 1 : 0.85)
+                .style('filter', (d, i) => `url(#glow-${i})`)
+                .style('cursor', 'pointer');
+            
+            // Node labels
+            node.append('text')
+                .attr('class', d => d.type === 'concept' ? 'concept-label' : 'node-label')
+                .attr('text-anchor', 'middle')
+                .attr('dy', d => d.type === 'concept' ? 5 : (d.radius + 14))
+                .text(d => d.name.length > 20 ? d.name.substring(0, 18) + '...' : d.name);
+            
+            // Tooltip
+            const tooltip = document.getElementById('tooltip');
+            
+            node.on('mouseover', (event, d) => {
+                if (d.type === 'feature') {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Frequency: </span>${d.frequency}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Relevance: </span>${d.relevance.toFixed(2)}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Type: </span>${d.isShared ? 'Shared' : 'Unique'}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Feature Type: </span>${d.featureType}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Related Concepts: </span>${d.concepts.join(', ')}</div>
+                    `;
+                } else {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row">Core Concept Node</div>
+                    `;
+                }
+                tooltip.style.opacity = 1;
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mousemove', (event) => {
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mouseout', () => {
+                tooltip.style.opacity = 0;
+            });
+            
+            // Update positions
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node.attr('transform', d => `translate(${d.x},${d.y})`);
+            });
+        }
+        
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // Event listeners
+        document.getElementById('freqFilter').addEventListener('input', (e) => {
+            document.getElementById('freqValue').textContent = e.target.value;
+            updateGraph();
+        });
+        
+        document.getElementById('relevanceFilter').addEventListener('input', (e) => {
+            document.getElementById('relevanceValue').textContent = (e.target.value / 100).toFixed(1);
+            updateGraph();
+        });
+        
+        document.getElementById('showUnique').addEventListener('change', updateGraph);
+        document.getElementById('showShared').addEventListener('change', updateGraph);
+        
+        // Initialize
+        updateGraph();
+    </script>
+</body>
+</html>

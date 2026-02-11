@@ -1,0 +1,5360 @@
+{
+  "concepts": {
+    "city": {
+      "name": "city",
+      "category": "landforms",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "densely",
+        "populated",
+        "area",
+        "with",
+        "various",
+        "amenities",
+        "and",
+        "services",
+        "urban",
+        "area",
+        "characterized",
+        "high",
+        "population",
+        "density",
+        "and",
+        "variety",
+        "infrastructure",
+        "bustling",
+        "area",
+        "with",
+        "diverse",
+        "population",
+        "and",
+        "numerous",
+        "facilities",
+        "place",
+        "with",
+        "well",
+        "developed",
+        "transportation",
+        "network",
+        "and",
+        "variety",
+        "cultural",
+        "attractions",
+        "hub",
+        "economic",
+        "activity",
+        "and",
+        "social",
+        "interaction",
+        "often",
+        "featuring",
+        "skyscrapers",
+        "and",
+        "public",
+        "transportation",
+        "area",
+        "with",
+        "well",
+        "organized",
+        "infrastructure",
+        "and",
+        "wide",
+        "range",
+        "public",
+        "services",
+        "place",
+        "with",
+        "vibrant",
+        "nightlife",
+        "and",
+        "wide",
+        "range",
+        "entertainment",
+        "options",
+        "place",
+        "where",
+        "diverse",
+        "cultures",
+        "and",
+        "backgrounds",
+        "come",
+        "together",
+        "create",
+        "dynamic",
+        "and",
+        "inclusive",
+        "environment",
+        "place",
+        "where",
+        "people",
+        "from",
+        "different",
+        "backgrounds",
+        "come",
+        "together",
+        "form",
+        "vibrant",
+        "and",
+        "diverse",
+        "community",
+        "often",
+        "characterized",
+        "bustling",
+        "economy",
+        "and",
+        "rich",
+        "cultural",
+        "scene"
+      ],
+      "statement_count": 90
+    },
+    "village": {
+      "name": "village",
+      "category": "landforms",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "location",
+        "where",
+        "group",
+        "people",
+        "reside",
+        "and",
+        "interact",
+        "settlement",
+        "where",
+        "residents",
+        "share",
+        "resources",
+        "and",
+        "support",
+        "each",
+        "other",
+        "place",
+        "where",
+        "people",
+        "come",
+        "together",
+        "form",
+        "close",
+        "knit",
+        "community",
+        "community",
+        "where",
+        "people",
+        "often",
+        "know",
+        "each",
+        "other",
+        "and",
+        "share",
+        "sense",
+        "belonging",
+        "place",
+        "where",
+        "neighbors",
+        "often",
+        "gather",
+        "for",
+        "social",
+        "events",
+        "and",
+        "celebrations",
+        "place",
+        "where",
+        "residents",
+        "often",
+        "engage",
+        "communal",
+        "activities",
+        "and",
+        "support",
+        "each",
+        "other",
+        "daily",
+        "lives",
+        "place",
+        "where",
+        "residents",
+        "often",
+        "gather",
+        "local",
+        "landmarks",
+        "and",
+        "celebrate",
+        "traditional",
+        "festivals",
+        "community",
+        "where",
+        "daily",
+        "life",
+        "and",
+        "social",
+        "interactions",
+        "take",
+        "place",
+        "smaller",
+        "settlement",
+        "where",
+        "people",
+        "share",
+        "resources",
+        "and",
+        "traditions",
+        "place",
+        "where",
+        "traditions",
+        "and",
+        "close",
+        "knit",
+        "relationships",
+        "are",
+        "deeply",
+        "rooted",
+        "place",
+        "where",
+        "neighbors"
+      ],
+      "statement_count": 77
+    },
+    "forest": {
+      "name": "forest",
+      "category": "landforms",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "vast",
+        "area",
+        "covered",
+        "dense",
+        "network",
+        "trees",
+        "and",
+        "plants",
+        "expansive",
+        "area",
+        "dominated",
+        "thick",
+        "canopy",
+        "trees",
+        "and",
+        "rich",
+        "biodiversity",
+        "natural",
+        "habitat",
+        "where",
+        "trees",
+        "and",
+        "wildlife",
+        "thrive",
+        "often",
+        "providing",
+        "home",
+        "for",
+        "numerous",
+        "species",
+        "natural",
+        "environment",
+        "where",
+        "towering",
+        "trees",
+        "create",
+        "canopy",
+        "filters",
+        "sunlight",
+        "supporting",
+        "rich",
+        "understory",
+        "smaller",
+        "plants",
+        "and",
+        "diverse",
+        "range",
+        "wildlife",
+        "natural",
+        "environment",
+        "where",
+        "dense",
+        "canopy",
+        "trees",
+        "provides",
+        "shade",
+        "and",
+        "supports",
+        "rich",
+        "variety",
+        "plant",
+        "and",
+        "animal",
+        "life",
+        "natural",
+        "environment",
+        "where",
+        "dense",
+        "network",
+        "trees",
+        "and",
+        "plants",
+        "creates",
+        "habitat",
+        "for",
+        "wide",
+        "variety",
+        "wildlife",
+        "natural",
+        "environment",
+        "where",
+        "dense",
+        "canopy",
+        "trees",
+        "provides",
+        "habitat",
+        "for",
+        "wide",
+        "variety",
+        "wildlife",
+        "including",
+        "birds",
+        "mammals",
+        "and",
+        "insects",
+        "natural",
+        "environment",
+        "where",
+        "dense",
+        "network"
+      ],
+      "statement_count": 89
+    },
+    "jungle": {
+      "name": "jungle",
+      "category": "landforms",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "place",
+        "teeming",
+        "with",
+        "life",
+        "and",
+        "diverse",
+        "ecosystems",
+        "environment",
+        "characterized",
+        "dense",
+        "vegetation",
+        "and",
+        "complex",
+        "web",
+        "life",
+        "lush",
+        "tropical",
+        "environment",
+        "filled",
+        "with",
+        "variety",
+        "plant",
+        "and",
+        "animal",
+        "species",
+        "vibrant",
+        "ecosystem",
+        "where",
+        "dense",
+        "foliage",
+        "and",
+        "wide",
+        "array",
+        "flora",
+        "and",
+        "fauna",
+        "coexist",
+        "dense",
+        "verdant",
+        "landscape",
+        "where",
+        "multitude",
+        "species",
+        "coexist",
+        "thriving",
+        "ecosystem",
+        "dense",
+        "tropical",
+        "habitat",
+        "where",
+        "diverse",
+        "array",
+        "species",
+        "including",
+        "unique",
+        "the",
+        "region",
+        "thrive",
+        "lush",
+        "environment",
+        "lush",
+        "tropical",
+        "habitat",
+        "where",
+        "dense",
+        "foliage",
+        "and",
+        "wide",
+        "array",
+        "flora",
+        "and",
+        "fauna",
+        "coexist",
+        "often",
+        "shrouded",
+        "mist",
+        "and",
+        "filled",
+        "with",
+        "the",
+        "sounds",
+        "nature",
+        "dense",
+        "verdant",
+        "landscape",
+        "where",
+        "multitude",
+        "species",
+        "coexist",
+        "thriving",
+        "ecosystem",
+        "often",
+        "shrouded",
+        "mist",
+        "and",
+        "filled",
+        "with",
+        "the",
+        "sounds",
+        "nature"
+      ],
+      "statement_count": 90
+    },
+    "ocean": {
+      "name": "ocean",
+      "category": "landforms",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "vast",
+        "body",
+        "water",
+        "covers",
+        "significant",
+        "portion",
+        "the",
+        "earth",
+        "surface",
+        "massive",
+        "expanse",
+        "water",
+        "plays",
+        "crucial",
+        "role",
+        "the",
+        "earth",
+        "climate",
+        "and",
+        "ecosystems",
+        "complex",
+        "ecosystem",
+        "supports",
+        "diverse",
+        "array",
+        "marine",
+        "life",
+        "and",
+        "influences",
+        "global",
+        "weather",
+        "patterns",
+        "vast",
+        "expanse",
+        "water",
+        "home",
+        "diverse",
+        "range",
+        "marine",
+        "species",
+        "and",
+        "plays",
+        "crucial",
+        "role",
+        "global",
+        "climate",
+        "regulation",
+        "the",
+        "ocean",
+        "depth",
+        "and",
+        "pressure",
+        "create",
+        "unique",
+        "environments",
+        "support",
+        "deep",
+        "sea",
+        "ecosystems",
+        "and",
+        "influence",
+        "global",
+        "currents",
+        "the",
+        "vast",
+        "expanse",
+        "water",
+        "essential",
+        "for",
+        "global",
+        "climate",
+        "regulation",
+        "and",
+        "supports",
+        "wide",
+        "variety",
+        "marine",
+        "life",
+        "including",
+        "coral",
+        "reefs",
+        "and",
+        "migratory",
+        "species",
+        "the",
+        "ocean",
+        "vastness",
+        "and",
+        "depth",
+        "contribute",
+        "its",
+        "role",
+        "regulating",
+        "global",
+        "temperatures",
+        "and",
+        "supporting",
+        "rich",
+        "biodiversity",
+        "the"
+      ],
+      "statement_count": 90
+    },
+    "lake": {
+      "name": "lake",
+      "category": "landforms",
+      "appearances": 20,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "natural",
+        "body",
+        "water",
+        "supports",
+        "various",
+        "forms",
+        "life",
+        "and",
+        "essential",
+        "for",
+        "local",
+        "ecosystems",
+        "natural",
+        "body",
+        "water",
+        "supports",
+        "variety",
+        "plant",
+        "and",
+        "animal",
+        "life",
+        "and",
+        "often",
+        "source",
+        "recreation",
+        "natural",
+        "body",
+        "water",
+        "provides",
+        "habitat",
+        "for",
+        "various",
+        "species",
+        "and",
+        "often",
+        "used",
+        "for",
+        "recreational",
+        "activities",
+        "natural",
+        "body",
+        "water",
+        "serves",
+        "vital",
+        "habitat",
+        "for",
+        "aquatic",
+        "life",
+        "and",
+        "often",
+        "enjoyed",
+        "for",
+        "its",
+        "scenic",
+        "beauty",
+        "and",
+        "recreational",
+        "opportunities",
+        "natural",
+        "body",
+        "water",
+        "supports",
+        "variety",
+        "wildlife",
+        "and",
+        "often",
+        "popular",
+        "destination",
+        "for",
+        "fishing",
+        "and",
+        "boating",
+        "natural",
+        "body",
+        "water",
+        "provides",
+        "habitat",
+        "for",
+        "variety",
+        "species",
+        "and",
+        "often",
+        "source",
+        "relaxation",
+        "and",
+        "enjoyment",
+        "for",
+        "people",
+        "natural",
+        "body",
+        "water",
+        "vital",
+        "part",
+        "the",
+        "landscape",
+        "supporting",
+        "both",
+        "wildlife",
+        "and",
+        "human"
+      ],
+      "statement_count": 171
+    },
+    "river": {
+      "name": "river",
+      "category": "landforms",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "flowing",
+        "stream",
+        "often",
+        "follows",
+        "winding",
+        "path",
+        "through",
+        "the",
+        "landscape",
+        "water",
+        "moves",
+        "continuously",
+        "shaping",
+        "the",
+        "landscape",
+        "over",
+        "time",
+        "water",
+        "flows",
+        "continuously",
+        "often",
+        "carrying",
+        "sediment",
+        "and",
+        "nutrients",
+        "downstream",
+        "body",
+        "water",
+        "often",
+        "serves",
+        "habitat",
+        "for",
+        "various",
+        "aquatic",
+        "plants",
+        "and",
+        "animals",
+        "body",
+        "water",
+        "often",
+        "plays",
+        "crucial",
+        "role",
+        "the",
+        "ecosystem",
+        "supporting",
+        "diverse",
+        "plant",
+        "and",
+        "animal",
+        "life",
+        "body",
+        "water",
+        "can",
+        "vital",
+        "source",
+        "fresh",
+        "water",
+        "for",
+        "communities",
+        "and",
+        "wildlife",
+        "body",
+        "water",
+        "essential",
+        "for",
+        "maintaining",
+        "the",
+        "local",
+        "ecosystem",
+        "and",
+        "supporting",
+        "biodiversity",
+        "body",
+        "water",
+        "can",
+        "play",
+        "significant",
+        "role",
+        "shaping",
+        "the",
+        "landscape",
+        "and",
+        "influencing",
+        "the",
+        "climate",
+        "the",
+        "surrounding",
+        "area",
+        "body",
+        "water",
+        "can",
+        "vital",
+        "part",
+        "the",
+        "local",
+        "environment",
+        "providing",
+        "habitat",
+        "for"
+      ],
+      "statement_count": 90
+    }
+  },
+  "features": {
+    "venues": {
+      "name": "venues",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "covering": {
+      "name": "covering",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "largest": {
+      "name": "largest",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "concentration": {
+      "name": "concentration",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8333333333333334,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "streams": {
+      "name": "streams",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "share": {
+      "name": "share",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 0.62,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "moisture": {
+      "name": "moisture",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "jungle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "than": {
+      "name": "than",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "relaxed": {
+      "name": "relaxed",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "filters": {
+      "name": "filters",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.7999999999999999,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "lives": {
+      "name": "lives",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "hub": {
+      "name": "hub",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "valleys": {
+      "name": "valleys",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "earth": {
+      "name": "earth",
+      "feature_type": "word",
+      "frequency": 43,
+      "avg_relevance": 3.065116279069768,
+      "concepts": [
+        "jungle",
+        "forest",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "fauna": {
+      "name": "fauna",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 0.8461538461538461,
+      "concepts": [
+        "lake",
+        "jungle",
+        "forest",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "contributing": {
+      "name": "contributing",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.84,
+      "concepts": [
+        "lake",
+        "ocean",
+        "forest",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "backgrounds": {
+      "name": "backgrounds",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.2285714285714289,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "thick": {
+      "name": "thick",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 1.2400000000000007,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "ties": {
+      "name": "ties",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "foliage": {
+      "name": "foliage",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.9777777777777781,
+      "concepts": [
+        "jungle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "serves": {
+      "name": "serves",
+      "feature_type": "word",
+      "frequency": 24,
+      "avg_relevance": 0.8083333333333333,
+      "concepts": [
+        "lake",
+        "river",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "amenities": {
+      "name": "amenities",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.7200000000000001,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "species": {
+      "name": "species",
+      "feature_type": "word",
+      "frequency": 52,
+      "avg_relevance": 1.48076923076923,
+      "concepts": [
+        "ocean",
+        "jungle",
+        "forest",
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "functions": {
+      "name": "functions",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "lake",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "celebrate": {
+      "name": "celebrate",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.5644444444444444,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "picturesque": {
+      "name": "picturesque",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "sizes": {
+      "name": "sizes",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "forming": {
+      "name": "forming",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "forest",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "thriving": {
+      "name": "thriving",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 1.4714285714285718,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "commutes": {
+      "name": "commutes",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "reflective": {
+      "name": "reflective",
+      "feature_type": "word",
+      "frequency": 28,
+      "avg_relevance": 0.7320512820512821,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "residents": {
+      "name": "residents",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 0.9133333333333333,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "dynamic": {
+      "name": "dynamic",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 0.9900000000000004,
+      "concepts": [
+        "ocean",
+        "city",
+        "jungle",
+        "forest",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "needles": {
+      "name": "needles",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "changes": {
+      "name": "changes",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "depths": {
+      "name": "depths",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 1.1291666666666667,
+      "concepts": [
+        "lake",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "route": {
+      "name": "route",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "generating": {
+      "name": "generating",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.7222222222222223,
+      "concepts": [
+        "river",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "shade": {
+      "name": "shade",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "tropical": {
+      "name": "tropical",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 2.266666666666667,
+      "concepts": [
+        "jungle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "body": {
+      "name": "body",
+      "feature_type": "word",
+      "frequency": 232,
+      "avg_relevance": 4.998275862068955,
+      "concepts": [
+        "lake",
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "shaping": {
+      "name": "shaping",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 1.1833333333333333,
+      "concepts": [
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "matter": {
+      "name": "matter",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "drinking": {
+      "name": "drinking",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.5333333333333333,
+      "concepts": [
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "facilitating": {
+      "name": "facilitating",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "river",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "understory": {
+      "name": "understory",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "marine": {
+      "name": "marine",
+      "feature_type": "word",
+      "frequency": 30,
+      "avg_relevance": 2.72,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "plains": {
+      "name": "plains",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "fresh": {
+      "name": "fresh",
+      "feature_type": "word",
+      "frequency": 16,
+      "avg_relevance": 0.7875000000000001,
+      "concepts": [
+        "lake",
+        "forest",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "resource": {
+      "name": "resource",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 0.6857142857142857,
+      "concepts": [
+        "lake",
+        "river",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "profound": {
+      "name": "profound",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "featuring": {
+      "name": "featuring",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "river",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "destination": {
+      "name": "destination",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "integral": {
+      "name": "integral",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "tides": {
+      "name": "tides",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "mirrors": {
+      "name": "mirrors",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.5666666666666667,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "plankton": {
+      "name": "plankton",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "densely": {
+      "name": "densely",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.76,
+      "concepts": [
+        "jungle",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "focal": {
+      "name": "focal",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "lush": {
+      "name": "lush",
+      "feature_type": "word",
+      "frequency": 21,
+      "avg_relevance": 1.3714285714285719,
+      "concepts": [
+        "lake",
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "continuously": {
+      "name": "continuously",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 1.1,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "commercial": {
+      "name": "commercial",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "festivals": {
+      "name": "festivals",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.6249999999999999,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "greatly": {
+      "name": "greatly",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.55,
+      "concepts": [
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "season": {
+      "name": "season",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "winding": {
+      "name": "winding",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "fishing": {
+      "name": "fishing",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 0.6499999999999998,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "hydroelectric": {
+      "name": "hydroelectric",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "serving": {
+      "name": "serving",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "lake",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "zones": {
+      "name": "zones",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "strongly": {
+      "name": "strongly",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "treetops": {
+      "name": "treetops",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "sky": {
+      "name": "sky",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "strong": {
+      "name": "strong",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 0.7538461538461539,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "patterns": {
+      "name": "patterns",
+      "feature_type": "word",
+      "frequency": 15,
+      "avg_relevance": 0.9714285714285714,
+      "concepts": [
+        "ocean",
+        "forest",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "slower": {
+      "name": "slower",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "canopy": {
+      "name": "canopy",
+      "feature_type": "word",
+      "frequency": 26,
+      "avg_relevance": 1.723076923076924,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "insects": {
+      "name": "insects",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.9999999999999999,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "walks": {
+      "name": "walks",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "temperature": {
+      "name": "temperature",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.96,
+      "concepts": [
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "alike": {
+      "name": "alike",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "array": {
+      "name": "array",
+      "feature_type": "word",
+      "frequency": 22,
+      "avg_relevance": 1.2272727272727277,
+      "concepts": [
+        "ocean",
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "shadows": {
+      "name": "shadows",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "social": {
+      "name": "social",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.5999999999999999,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "traditions": {
+      "name": "traditions",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 0.6733333333333333,
+      "concepts": [
+        "river",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "communal": {
+      "name": "communal",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "highly": {
+      "name": "highly",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6000000000000001,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "community": {
+      "name": "community",
+      "feature_type": "word",
+      "frequency": 61,
+      "avg_relevance": 1.2647222222222223,
+      "concepts": [
+        "city",
+        "jungle",
+        "village",
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "energy": {
+      "name": "energy",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "key": {
+      "name": "key",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "balanced": {
+      "name": "balanced",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean",
+        "city",
+        "jungle",
+        "forest",
+        "lake"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "shrouded": {
+      "name": "shrouded",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.7600000000000005,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "light": {
+      "name": "light",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.7142857142857143,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "enjoyment": {
+      "name": "enjoyment",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "soil": {
+      "name": "soil",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "high": {
+      "name": "high",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 1.0461538461538462,
+      "concepts": [
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "different": {
+      "name": "different",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.0499999999999998,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "fallen": {
+      "name": "fallen",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.1199999999999999,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "peaceful": {
+      "name": "peaceful",
+      "feature_type": "word",
+      "frequency": 26,
+      "avg_relevance": 0.8280000000000001,
+      "concepts": [
+        "lake",
+        "forest",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "come": {
+      "name": "come",
+      "feature_type": "word",
+      "frequency": 15,
+      "avg_relevance": 1.0266666666666666,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "find": {
+      "name": "find",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "path": {
+      "name": "path",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "smaller": {
+      "name": "smaller",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake",
+        "forest",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "large": {
+      "name": "large",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 0.5294117647058824,
+      "concepts": [
+        "lake",
+        "jungle",
+        "ocean",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "engage": {
+      "name": "engage",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "opportunities": {
+      "name": "opportunities",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "lake",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "flora": {
+      "name": "flora",
+      "feature_type": "word",
+      "frequency": 16,
+      "avg_relevance": 0.825,
+      "concepts": [
+        "lake",
+        "jungle",
+        "forest",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "sprawling": {
+      "name": "sprawling",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "infrastructure": {
+      "name": "infrastructure",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.9272727272727276,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "microclimate": {
+      "name": "microclimate",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "institutions": {
+      "name": "institutions",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "moss": {
+      "name": "moss",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "sea": {
+      "name": "sea",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.0500000000000003,
+      "concepts": [
+        "lake",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "overall": {
+      "name": "overall",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "immense": {
+      "name": "immense",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.7600000000000005,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "fill": {
+      "name": "fill",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "interconnected": {
+      "name": "interconnected",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.76,
+      "concepts": [
+        "jungle",
+        "forest",
+        "ocean",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "evident": {
+      "name": "evident",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "rustling": {
+      "name": "rustling",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.0999999999999999,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "connects": {
+      "name": "connects",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "sounds": {
+      "name": "sounds",
+      "feature_type": "word",
+      "frequency": 23,
+      "avg_relevance": 1.3500000000000003,
+      "concepts": [
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "close": {
+      "name": "close",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.41999999999999993,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "unique": {
+      "name": "unique",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 1.0666666666666669,
+      "concepts": [
+        "ocean",
+        "city",
+        "jungle",
+        "forest",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "dense": {
+      "name": "dense",
+      "feature_type": "word",
+      "frequency": 69,
+      "avg_relevance": 3.7739130434782604,
+      "concepts": [
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "teems": {
+      "name": "teems",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "aquatic": {
+      "name": "aquatic",
+      "feature_type": "word",
+      "frequency": 19,
+      "avg_relevance": 0.8421052631578949,
+      "concepts": [
+        "lake",
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "traffic": {
+      "name": "traffic",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "region": {
+      "name": "region",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 0.8666666666666667,
+      "concepts": [
+        "ocean",
+        "city",
+        "jungle",
+        "forest",
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "smallest": {
+      "name": "smallest",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "chirping": {
+      "name": "chirping",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "neighbors": {
+      "name": "neighbors",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.44999999999999996,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "rooted": {
+      "name": "rooted",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "terrain": {
+      "name": "terrain",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "verdant": {
+      "name": "verdant",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 1.311111111111111,
+      "concepts": [
+        "jungle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "extensive": {
+      "name": "extensive",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "planet": {
+      "name": "planet",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "intertwining": {
+      "name": "intertwining",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "jungle",
+        "forest",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "museums": {
+      "name": "museums",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "haven": {
+      "name": "haven",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "from": {
+      "name": "from",
+      "feature_type": "word",
+      "frequency": 23,
+      "avg_relevance": 0.9391304347826093,
+      "concepts": [
+        "ocean",
+        "city",
+        "jungle",
+        "forest",
+        "lake"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "continents": {
+      "name": "continents",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "knit": {
+      "name": "knit",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 0.6307692307692309,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "leaves": {
+      "name": "leaves",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 1.48,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "visited": {
+      "name": "visited",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "forms": {
+      "name": "forms",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.8222222222222222,
+      "concepts": [
+        "lake",
+        "jungle",
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "square": {
+      "name": "square",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.55,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "settlement": {
+      "name": "settlement",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.56,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "reefs": {
+      "name": "reefs",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.3333333333333333,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "globe": {
+      "name": "globe",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "between": {
+      "name": "between",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6000000000000001,
+      "concepts": [
+        "river",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "undergrowth": {
+      "name": "undergrowth",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.7999999999999999,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "vast": {
+      "name": "vast",
+      "feature_type": "word",
+      "frequency": 70,
+      "avg_relevance": 3.9542857142857137,
+      "concepts": [
+        "lake",
+        "jungle",
+        "forest",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "has": {
+      "name": "has",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.7249999999999999,
+      "concepts": [
+        "lake",
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "point": {
+      "name": "point",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "preserved": {
+      "name": "preserved",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.4000000000000001,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "activities": {
+      "name": "activities",
+      "feature_type": "word",
+      "frequency": 39,
+      "avg_relevance": 1.3435897435897437,
+      "concepts": [
+        "lake",
+        "river",
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "network": {
+      "name": "network",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 1.1294117647058823,
+      "concepts": [
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "collection": {
+      "name": "collection",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "coexist": {
+      "name": "coexist",
+      "feature_type": "word",
+      "frequency": 16,
+      "avg_relevance": 1.1600000000000001,
+      "concepts": [
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "lifestyles": {
+      "name": "lifestyles",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "massive": {
+      "name": "massive",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 1.1555555555555557,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "abundant": {
+      "name": "abundant",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "jungle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "sunlight": {
+      "name": "sunlight",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 1.142857142857143,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "forest": {
+      "name": "forest",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake",
+        "jungle",
+        "forest",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "still": {
+      "name": "still",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.6571428571428573,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "vary": {
+      "name": "vary",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 1.0799999999999998,
+      "concepts": [
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "countless": {
+      "name": "countless",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "jungle",
+        "forest",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "covers": {
+      "name": "covers",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.9,
+      "concepts": [
+        "jungle",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "migratory": {
+      "name": "migratory",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "lake",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "interaction": {
+      "name": "interaction",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6777777777777777,
+      "concepts": [
+        "forest",
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "offer": {
+      "name": "offer",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "economy": {
+      "name": "economy",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "businesses": {
+      "name": "businesses",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8500000000000001,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "around": {
+      "name": "around",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "ocean",
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "distribution": {
+      "name": "distribution",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "biodiverse": {
+      "name": "biodiverse",
+      "feature_type": "word",
+      "frequency": 30,
+      "avg_relevance": 0.9880000000000002,
+      "concepts": [
+        "ocean",
+        "jungle",
+        "forest",
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "exotic": {
+      "name": "exotic",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "jungle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "portion": {
+      "name": "portion",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.96,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "enjoy": {
+      "name": "enjoy",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "moist": {
+      "name": "moist",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "trade": {
+      "name": "trade",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.7999999999999999,
+      "concepts": [
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "spot": {
+      "name": "spot",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "educational": {
+      "name": "educational",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "found": {
+      "name": "found",
+      "feature_type": "word",
+      "frequency": 25,
+      "avg_relevance": 1.9600000000000002,
+      "concepts": [
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "provides": {
+      "name": "provides",
+      "feature_type": "word",
+      "frequency": 29,
+      "avg_relevance": 0.901449275362319,
+      "concepts": [
+        "ocean",
+        "jungle",
+        "forest",
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "maintaining": {
+      "name": "maintaining",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6599999999999999,
+      "concepts": [
+        "lake",
+        "ocean",
+        "river",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "coral": {
+      "name": "coral",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.3333333333333333,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "follows": {
+      "name": "follows",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "shelters": {
+      "name": "shelters",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "views": {
+      "name": "views",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "web": {
+      "name": "web",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.7666666666666666,
+      "concepts": [
+        "jungle",
+        "forest",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "fostering": {
+      "name": "fostering",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "forest",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "industrial": {
+      "name": "industrial",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "river",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "multitude": {
+      "name": "multitude",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "jungle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "depending": {
+      "name": "depending",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "lake",
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "tight": {
+      "name": "tight",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "boating": {
+      "name": "boating",
+      "feature_type": "word",
+      "frequency": 15,
+      "avg_relevance": 0.6266666666666666,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "landmarks": {
+      "name": "landmarks",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "turbulent": {
+      "name": "turbulent",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "course": {
+      "name": "course",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "belonging": {
+      "name": "belonging",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.43333333333333335,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "towering": {
+      "name": "towering",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.7999999999999999,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "economic": {
+      "name": "economic",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.0285714285714287,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "floor": {
+      "name": "floor",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "formations": {
+      "name": "formations",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "relaxation": {
+      "name": "relaxation",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.7999999999999999,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "feature": {
+      "name": "feature",
+      "feature_type": "word",
+      "frequency": 16,
+      "avg_relevance": 1.04,
+      "concepts": [
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "supports": {
+      "name": "supports",
+      "feature_type": "word",
+      "frequency": 121,
+      "avg_relevance": 1.7196037219485492,
+      "concepts": [
+        "ocean",
+        "city",
+        "jungle",
+        "forest",
+        "village",
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "numerous": {
+      "name": "numerous",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 0.916666666666667,
+      "concepts": [
+        "lake",
+        "ocean",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "group": {
+      "name": "group",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "both": {
+      "name": "both",
+      "feature_type": "word",
+      "frequency": 16,
+      "avg_relevance": 0.975,
+      "concepts": [
+        "lake",
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "historic": {
+      "name": "historic",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "river",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "covered": {
+      "name": "covered",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 1.37,
+      "concepts": [
+        "jungle",
+        "forest",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "subways": {
+      "name": "subways",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "irrigation": {
+      "name": "irrigation",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "flourish": {
+      "name": "flourish",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "public": {
+      "name": "public",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 1.2000000000000002,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "metropolis": {
+      "name": "metropolis",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.9,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "developed": {
+      "name": "developed",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "transportation": {
+      "name": "transportation",
+      "feature_type": "word",
+      "frequency": 26,
+      "avg_relevance": 0.9666666666666668,
+      "concepts": [
+        "ocean",
+        "river",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "green": {
+      "name": "green",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.6285714285714288,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "global": {
+      "name": "global",
+      "feature_type": "word",
+      "frequency": 26,
+      "avg_relevance": 1.8879999999999995,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "retreat": {
+      "name": "retreat",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "skyline": {
+      "name": "skyline",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "carpeted": {
+      "name": "carpeted",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.7999999999999999,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "interplay": {
+      "name": "interplay",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "regulation": {
+      "name": "regulation",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 1.6000000000000003,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "mammals": {
+      "name": "mammals",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "values": {
+      "name": "values",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.7999999999999999,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "cultural": {
+      "name": "cultural",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 1.69,
+      "concepts": [
+        "river",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "component": {
+      "name": "component",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "lake",
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "cultures": {
+      "name": "cultures",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "calm": {
+      "name": "calm",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 0.7999999999999999,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "such": {
+      "name": "such",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.9714285714285713,
+      "concepts": [
+        "lake",
+        "river",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "providing": {
+      "name": "providing",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 1.0600000000000003,
+      "concepts": [
+        "lake",
+        "ocean",
+        "forest",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "well": {
+      "name": "well",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.9333333333333332,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "watercourse": {
+      "name": "watercourse",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 4.8,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "areas": {
+      "name": "areas",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "ocean",
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "beauty": {
+      "name": "beauty",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.7555555555555554,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "mist": {
+      "name": "mist",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 2.0000000000000004,
+      "concepts": [
+        "jungle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "critical": {
+      "name": "critical",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 1.0666666666666669,
+      "concepts": [
+        "lake",
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "ocean": {
+      "name": "ocean",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.7142857142857142,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "expansive": {
+      "name": "expansive",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.6727272727272727,
+      "concepts": [
+        "jungle",
+        "forest",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "serene": {
+      "name": "serene",
+      "feature_type": "word",
+      "frequency": 30,
+      "avg_relevance": 1.0066666666666668,
+      "concepts": [
+        "lake",
+        "ocean",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "vegetation": {
+      "name": "vegetation",
+      "feature_type": "word",
+      "frequency": 28,
+      "avg_relevance": 1.7499999999999998,
+      "concepts": [
+        "lake",
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "urban": {
+      "name": "urban",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.0285714285714287,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "density": {
+      "name": "density",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.76,
+      "concepts": [
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "replenishing": {
+      "name": "replenishing",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "swimming": {
+      "name": "swimming",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.5999999999999999,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "surrounding": {
+      "name": "surrounding",
+      "feature_type": "word",
+      "frequency": 21,
+      "avg_relevance": 0.6055555555555555,
+      "concepts": [
+        "ocean",
+        "forest",
+        "village",
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "bring": {
+      "name": "bring",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "through": {
+      "name": "through",
+      "feature_type": "word",
+      "frequency": 29,
+      "avg_relevance": 1.3724137931034484,
+      "concepts": [
+        "forest",
+        "river",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "including": {
+      "name": "including",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 1.2000000000000002,
+      "concepts": [
+        "ocean",
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "roads": {
+      "name": "roads",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "known": {
+      "name": "known",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 1.866666666666667,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "moves": {
+      "name": "moves",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.9714285714285713,
+      "concepts": [
+        "river",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "like": {
+      "name": "like",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.5666666666666667,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "ferns": {
+      "name": "ferns",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "wildlife": {
+      "name": "wildlife",
+      "feature_type": "word",
+      "frequency": 48,
+      "avg_relevance": 1.4874999999999992,
+      "concepts": [
+        "lake",
+        "jungle",
+        "forest",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "teeming": {
+      "name": "teeming",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 0.8769230769230768,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "nutrients": {
+      "name": "nutrients",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "population": {
+      "name": "population",
+      "feature_type": "word",
+      "frequency": 17,
+      "avg_relevance": 1.0461538461538462,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "attractions": {
+      "name": "attractions",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.8142857142857143,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "influences": {
+      "name": "influences",
+      "feature_type": "word",
+      "frequency": 22,
+      "avg_relevance": 0.8966666666666666,
+      "concepts": [
+        "lake",
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "carve": {
+      "name": "carve",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "complex": {
+      "name": "complex",
+      "feature_type": "word",
+      "frequency": 27,
+      "avg_relevance": 1.1407407407407408,
+      "concepts": [
+        "ocean",
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "popular": {
+      "name": "popular",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.0999999999999999,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "flow": {
+      "name": "flow",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.9999999999999999,
+      "concepts": [
+        "river",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "technology": {
+      "name": "technology",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "creatures": {
+      "name": "creatures",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "jungle",
+        "forest",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "flowing": {
+      "name": "flowing",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.7999999999999999,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "bustling": {
+      "name": "bustling",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.963636363636364,
+      "concepts": [
+        "jungle",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "over": {
+      "name": "over",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 1.2923076923076922,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "typically": {
+      "name": "typically",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.48,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "waterway": {
+      "name": "waterway",
+      "feature_type": "word",
+      "frequency": 17,
+      "avg_relevance": 3.858823529411765,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "services": {
+      "name": "services",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 1.3714285714285719,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "characterized": {
+      "name": "characterized",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.9272727272727276,
+      "concepts": [
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "essential": {
+      "name": "essential",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 1.0400000000000005,
+      "concepts": [
+        "lake",
+        "ocean",
+        "river",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "thrive": {
+      "name": "thrive",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.8523809523809524,
+      "concepts": [
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "commuting": {
+      "name": "commuting",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "ecosystems": {
+      "name": "ecosystems",
+      "feature_type": "word",
+      "frequency": 109,
+      "avg_relevance": 1.8054520358868174,
+      "concepts": [
+        "ocean",
+        "jungle",
+        "forest",
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "modern": {
+      "name": "modern",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "activity": {
+      "name": "activity",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "constant": {
+      "name": "constant",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.0285714285714287,
+      "concepts": [
+        "jungle",
+        "ocean",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "source": {
+      "name": "source",
+      "feature_type": "word",
+      "frequency": 22,
+      "avg_relevance": 0.9727272727272728,
+      "concepts": [
+        "lake",
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "water": {
+      "name": "water",
+      "feature_type": "word",
+      "frequency": 280,
+      "avg_relevance": 5.0448905109489015,
+      "concepts": [
+        "lake",
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "calls": {
+      "name": "calls",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "jungle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "spirit": {
+      "name": "spirit",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "closely": {
+      "name": "closely",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "events": {
+      "name": "events",
+      "feature_type": "word",
+      "frequency": 17,
+      "avg_relevance": 0.9882352941176467,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "decomposing": {
+      "name": "decomposing",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "sediment": {
+      "name": "sediment",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.1199999999999999,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "tall": {
+      "name": "tall",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "human": {
+      "name": "human",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.6466666666666667,
+      "concepts": [
+        "lake",
+        "river",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "deeply": {
+      "name": "deeply",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "with": {
+      "name": "with",
+      "feature_type": "word",
+      "frequency": 122,
+      "avg_relevance": 3.675409836065576,
+      "concepts": [
+        "ocean",
+        "city",
+        "jungle",
+        "forest",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "ever": {
+      "name": "ever",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6999999999999998,
+      "concepts": [
+        "ocean",
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "surrounded": {
+      "name": "surrounded",
+      "feature_type": "word",
+      "frequency": 41,
+      "avg_relevance": 1.3224999999999998,
+      "concepts": [
+        "lake",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "gather": {
+      "name": "gather",
+      "feature_type": "word",
+      "frequency": 16,
+      "avg_relevance": 1.2125,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "home": {
+      "name": "home",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.9272727272727276,
+      "concepts": [
+        "jungle",
+        "forest",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "birds": {
+      "name": "birds",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.7199999999999999,
+      "concepts": [
+        "lake",
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "restaurants": {
+      "name": "restaurants",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "sustain": {
+      "name": "sustain",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "forest",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "humidity": {
+      "name": "humidity",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.7142857142857142,
+      "concepts": [
+        "jungle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "dominated": {
+      "name": "dominated",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.7550000000000001,
+      "concepts": [
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "backdrop": {
+      "name": "backdrop",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "lake",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "sustenance": {
+      "name": "sustenance",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "recreational": {
+      "name": "recreational",
+      "feature_type": "word",
+      "frequency": 29,
+      "avg_relevance": 0.6811688311688311,
+      "concepts": [
+        "lake",
+        "river",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "creating": {
+      "name": "creating",
+      "feature_type": "word",
+      "frequency": 19,
+      "avg_relevance": 1.010526315789474,
+      "concepts": [
+        "city",
+        "jungle",
+        "forest",
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "scent": {
+      "name": "scent",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.2285714285714284,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "stable": {
+      "name": "stable",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "lake",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "used": {
+      "name": "used",
+      "feature_type": "word",
+      "frequency": 17,
+      "avg_relevance": 0.9882352941176471,
+      "concepts": [
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "changing": {
+      "name": "changing",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6999999999999998,
+      "concepts": [
+        "ocean",
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "scenic": {
+      "name": "scenic",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.65,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "work": {
+      "name": "work",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6333333333333334,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "rich": {
+      "name": "rich",
+      "feature_type": "word",
+      "frequency": 48,
+      "avg_relevance": 1.9749999999999988,
+      "concepts": [
+        "ocean",
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "trees": {
+      "name": "trees",
+      "feature_type": "word",
+      "frequency": 36,
+      "avg_relevance": 2.9944444444444467,
+      "concepts": [
+        "lake",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "have": {
+      "name": "have",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.5199999999999999,
+      "concepts": [
+        "ocean",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "organism": {
+      "name": "organism",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "jungle",
+        "forest",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "often": {
+      "name": "often",
+      "feature_type": "word",
+      "frequency": 140,
+      "avg_relevance": 2.4414285714285713,
+      "concepts": [
+        "city",
+        "jungle",
+        "forest",
+        "village",
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "architecture": {
+      "name": "architecture",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "power": {
+      "name": "power",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 1.0666666666666667,
+      "concepts": [
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "vibrant": {
+      "name": "vibrant",
+      "feature_type": "word",
+      "frequency": 24,
+      "avg_relevance": 0.9750000000000005,
+      "concepts": [
+        "jungle",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "canyons": {
+      "name": "canyons",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "wide": {
+      "name": "wide",
+      "feature_type": "word",
+      "frequency": 48,
+      "avg_relevance": 1.3250000000000002,
+      "concepts": [
+        "ocean",
+        "city",
+        "jungle",
+        "forest",
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "varied": {
+      "name": "varied",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "jungle",
+        "forest",
+        "ocean"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "coastlines": {
+      "name": "coastlines",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "major": {
+      "name": "major",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "nearby": {
+      "name": "nearby",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "lake",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "roots": {
+      "name": "roots",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "currents": {
+      "name": "currents",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.9777777777777781,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "whales": {
+      "name": "whales",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "know": {
+      "name": "know",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.48888888888888893,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "vines": {
+      "name": "vines",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "jungle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "humid": {
+      "name": "humid",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 1.7000000000000004,
+      "concepts": [
+        "jungle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "organic": {
+      "name": "organic",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.3333333333333333,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "groundwater": {
+      "name": "groundwater",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "heritage": {
+      "name": "heritage",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.55,
+      "concepts": [
+        "river",
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "climate": {
+      "name": "climate",
+      "feature_type": "word",
+      "frequency": 27,
+      "avg_relevance": 2.1037037037037027,
+      "concepts": [
+        "lake",
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "range": {
+      "name": "range",
+      "feature_type": "word",
+      "frequency": 26,
+      "avg_relevance": 1.1538461538461546,
+      "concepts": [
+        "ocean",
+        "city",
+        "forest",
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "deep": {
+      "name": "deep",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 1.688888888888889,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "diverse": {
+      "name": "diverse",
+      "feature_type": "word",
+      "frequency": 92,
+      "avg_relevance": 1.7499999999999991,
+      "concepts": [
+        "ocean",
+        "city",
+        "jungle",
+        "forest",
+        "lake",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "buildings": {
+      "name": "buildings",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 1.2000000000000002,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "flows": {
+      "name": "flows",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 1.0000000000000002,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "intricate": {
+      "name": "intricate",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.7999999999999999,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "rock": {
+      "name": "rock",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "fish": {
+      "name": "fish",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "deposition": {
+      "name": "deposition",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "diversity": {
+      "name": "diversity",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.7999999999999999,
+      "concepts": [
+        "ocean",
+        "forest",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "coastal": {
+      "name": "coastal",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "impact": {
+      "name": "impact",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 1.0666666666666667,
+      "concepts": [
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "geological": {
+      "name": "geological",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "river"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "mountains": {
+      "name": "mountains",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.56,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "bonds": {
+      "name": "bonds",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.44999999999999996,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "gatherings": {
+      "name": "gatherings",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "during": {
+      "name": "during",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "blue": {
+      "name": "blue",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.2000000000000002,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "ecological": {
+      "name": "ecological",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "lake",
+        "ocean",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "skyscrapers": {
+      "name": "skyscrapers",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "down": {
+      "name": "down",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.4666666666666666,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "enjoyed": {
+      "name": "enjoyed",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "local": {
+      "name": "local",
+      "feature_type": "word",
+      "frequency": 46,
+      "avg_relevance": 1.4695652173913032,
+      "concepts": [
+        "lake",
+        "river",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "more": {
+      "name": "more",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.4000000000000001,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "usually": {
+      "name": "usually",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "shapes": {
+      "name": "shapes",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.7666666666666667,
+      "concepts": [
+        "ocean",
+        "river"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "tree": {
+      "name": "tree",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "forest"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "scene": {
+      "name": "scene",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "passed": {
+      "name": "passed",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.4666666666666666,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "buses": {
+      "name": "buses",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "each": {
+      "name": "each",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 0.9888888888888889,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "symphony": {
+      "name": "symphony",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "scenery": {
+      "name": "scenery",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "picnicking": {
+      "name": "picnicking",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "lived": {
+      "name": "lived",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.4666666666666666,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "vastness": {
+      "name": "vastness",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "filled": {
+      "name": "filled",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 1.4333333333333333,
+      "concepts": [
+        "jungle",
+        "forest"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "town": {
+      "name": "town",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.55,
+      "concepts": [
+        "village"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "millions": {
+      "name": "millions",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "river",
+        "city"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "options": {
+      "name": "options",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "nightlife": {
+      "name": "nightlife",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "theaters": {
+      "name": "theaters",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "pressure": {
+      "name": "pressure",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.3333333333333333,
+      "concepts": [
+        "ocean"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "entertainment": {
+      "name": "entertainment",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "city"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "together": {
+      "name": "together",
+      "feature_type": "word",
+      "frequency": 21,
+      "avg_relevance": 0.9619047619047618,
+      "concepts": [
+        "city",
+        "village"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "freshwater": {
+      "name": "freshwater",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "lake"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    }
+  },
+  "statistics": {
+    "total_concepts": 7,
+    "total_features": 385,
+    "total_games": 40
+  }
+}

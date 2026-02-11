@@ -1,0 +1,3648 @@
+{
+  "concepts": {
+    "baseball": {
+      "name": "baseball",
+      "category": "sports",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "object",
+        "commonly",
+        "used",
+        "athletic",
+        "competitions",
+        "object",
+        "often",
+        "associated",
+        "with",
+        "outdoor",
+        "activities",
+        "and",
+        "physical",
+        "exertion",
+        "object",
+        "often",
+        "used",
+        "games",
+        "require",
+        "skill",
+        "and",
+        "teamwork",
+        "object",
+        "often",
+        "thrown",
+        "and",
+        "caught",
+        "during",
+        "play",
+        "object",
+        "often",
+        "used",
+        "activities",
+        "involve",
+        "running",
+        "and",
+        "scoring",
+        "points",
+        "object",
+        "often",
+        "used",
+        "activities",
+        "involve",
+        "hitting",
+        "and",
+        "throwing",
+        "object",
+        "often",
+        "used",
+        "activities",
+        "involve",
+        "precise",
+        "timing",
+        "and",
+        "coordination",
+        "between",
+        "players",
+        "object",
+        "often",
+        "the",
+        "focus",
+        "strategic",
+        "plays",
+        "and",
+        "requires",
+        "quick",
+        "reflexes",
+        "object",
+        "often",
+        "the",
+        "focus",
+        "local",
+        "and",
+        "national",
+        "leagues",
+        "where",
+        "teams",
+        "compete",
+        "for",
+        "titles",
+        "piece",
+        "sports",
+        "equipment",
+        "often",
+        "used",
+        "team",
+        "games",
+        "object",
+        "often",
+        "thrown",
+        "and",
+        "caught",
+        "game",
+        "where",
+        "players",
+        "aim",
+        "score",
+        "runs",
+        "object",
+        "central"
+      ],
+      "statement_count": 90
+    },
+    "football": {
+      "name": "football",
+      "category": "sports",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "object",
+        "often",
+        "seen",
+        "competitive",
+        "activities",
+        "object",
+        "frequently",
+        "used",
+        "team",
+        "based",
+        "activities",
+        "object",
+        "often",
+        "kicked",
+        "and",
+        "can",
+        "found",
+        "fields",
+        "around",
+        "the",
+        "world",
+        "object",
+        "often",
+        "the",
+        "focus",
+        "intense",
+        "physical",
+        "activity",
+        "and",
+        "strategic",
+        "plays",
+        "object",
+        "often",
+        "the",
+        "center",
+        "attention",
+        "physical",
+        "activities",
+        "and",
+        "games",
+        "object",
+        "often",
+        "the",
+        "centerpiece",
+        "physical",
+        "activities",
+        "and",
+        "games",
+        "requiring",
+        "coordination",
+        "and",
+        "skill",
+        "object",
+        "often",
+        "the",
+        "subject",
+        "international",
+        "tournaments",
+        "and",
+        "championships",
+        "object",
+        "often",
+        "the",
+        "focus",
+        "passionate",
+        "fans",
+        "and",
+        "can",
+        "lead",
+        "intense",
+        "rivalries",
+        "and",
+        "celebrations",
+        "object",
+        "central",
+        "game",
+        "where",
+        "teams",
+        "compete",
+        "score",
+        "goals",
+        "object",
+        "often",
+        "inflated",
+        "and",
+        "has",
+        "shape",
+        "allows",
+        "passed",
+        "between",
+        "players",
+        "the",
+        "field",
+        "object",
+        "often",
+        "associated",
+        "with",
+        "sport",
+        "where",
+        "the"
+      ],
+      "statement_count": 80
+    },
+    "basketball": {
+      "name": "basketball",
+      "category": "sports",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "often",
+        "used",
+        "team",
+        "based",
+        "activities",
+        "and",
+        "games",
+        "ball",
+        "often",
+        "used",
+        "fast",
+        "paced",
+        "high",
+        "energy",
+        "games",
+        "game",
+        "requires",
+        "quick",
+        "reflexes",
+        "and",
+        "agility",
+        "outplay",
+        "opponents",
+        "game",
+        "involves",
+        "movement",
+        "and",
+        "coordination",
+        "among",
+        "team",
+        "members",
+        "game",
+        "requires",
+        "coordination",
+        "and",
+        "teamwork",
+        "achieve",
+        "success",
+        "game",
+        "requires",
+        "precise",
+        "timing",
+        "and",
+        "coordination",
+        "between",
+        "teammates",
+        "game",
+        "requires",
+        "coordination",
+        "and",
+        "quick",
+        "thinking",
+        "outsmart",
+        "the",
+        "opposition",
+        "game",
+        "requires",
+        "players",
+        "work",
+        "together",
+        "achieve",
+        "common",
+        "goal",
+        "popular",
+        "object",
+        "used",
+        "widely",
+        "played",
+        "sport",
+        "object",
+        "frequently",
+        "used",
+        "games",
+        "require",
+        "coordination",
+        "and",
+        "skill",
+        "object",
+        "often",
+        "seen",
+        "arenas",
+        "and",
+        "gyms",
+        "where",
+        "used",
+        "fast",
+        "paced",
+        "games",
+        "object",
+        "often",
+        "bounced",
+        "and",
+        "dribbled",
+        "the",
+        "court",
+        "during",
+        "intense",
+        "plays",
+        "object",
+        "often"
+      ],
+      "statement_count": 89
+    },
+    "soccer": {
+      "name": "soccer",
+      "category": "sports",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "commonly",
+        "associated",
+        "with",
+        "physical",
+        "activity",
+        "and",
+        "competition",
+        "activity",
+        "brings",
+        "people",
+        "together",
+        "competitive",
+        "spirit",
+        "game",
+        "where",
+        "teamwork",
+        "and",
+        "strategy",
+        "are",
+        "crucial",
+        "outmaneuver",
+        "the",
+        "opposing",
+        "team",
+        "sport",
+        "where",
+        "players",
+        "must",
+        "use",
+        "their",
+        "feet",
+        "control",
+        "and",
+        "pass",
+        "the",
+        "ball",
+        "game",
+        "has",
+        "gained",
+        "global",
+        "popularity",
+        "and",
+        "known",
+        "for",
+        "its",
+        "fast",
+        "paced",
+        "nature",
+        "and",
+        "strategic",
+        "plays",
+        "game",
+        "requires",
+        "combination",
+        "skill",
+        "endurance",
+        "and",
+        "mental",
+        "agility",
+        "succeed",
+        "game",
+        "where",
+        "players",
+        "must",
+        "maintain",
+        "possession",
+        "the",
+        "ball",
+        "control",
+        "the",
+        "flow",
+        "play",
+        "game",
+        "has",
+        "been",
+        "significant",
+        "part",
+        "international",
+        "competitions",
+        "and",
+        "tournaments",
+        "showcasing",
+        "the",
+        "best",
+        "players",
+        "from",
+        "around",
+        "the",
+        "world",
+        "object",
+        "often",
+        "associated",
+        "with",
+        "team",
+        "activities",
+        "and",
+        "competitive",
+        "events",
+        "object",
+        "often"
+      ],
+      "statement_count": 73
+    }
+  },
+  "features": {
+    "decisions": {
+      "name": "decisions",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.4,
+      "concepts": [
+        "football"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "teams": {
+      "name": "teams",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 0.5692307692307691,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "succeed": {
+      "name": "succeed",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.6799999999999999,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "among": {
+      "name": "among",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6666666666666665,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "running": {
+      "name": "running",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.68,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "run": {
+      "name": "run",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.3333333333333333,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "matches": {
+      "name": "matches",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.9000000000000001,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "opposition": {
+      "name": "opposition",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "individual": {
+      "name": "individual",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.8499999999999999,
+      "concepts": [
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "outscore": {
+      "name": "outscore",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "effectively": {
+      "name": "effectively",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "celebrated": {
+      "name": "celebrated",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.5625,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "gyms": {
+      "name": "gyms",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "championships": {
+      "name": "championships",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "indoor": {
+      "name": "indoor",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.6499999999999999,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "speed": {
+      "name": "speed",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "dynamic": {
+      "name": "dynamic",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "unity": {
+      "name": "unity",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "recognized": {
+      "name": "recognized",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "endurance": {
+      "name": "endurance",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.65,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "uniting": {
+      "name": "uniting",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "soccer"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "action": {
+      "name": "action",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "outsmart": {
+      "name": "outsmart",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "distinctive": {
+      "name": "distinctive",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "handling": {
+      "name": "handling",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "glove": {
+      "name": "glove",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "excitement": {
+      "name": "excitement",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "involves": {
+      "name": "involves",
+      "feature_type": "word",
+      "frequency": 37,
+      "avg_relevance": 1.686206896551723,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "pass": {
+      "name": "pass",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.9500000000000002,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "display": {
+      "name": "display",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "focal": {
+      "name": "focal",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "primarily": {
+      "name": "primarily",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6000000000000001,
+      "concepts": [
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "navigate": {
+      "name": "navigate",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "pride": {
+      "name": "pride",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.4666666666666666,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "international": {
+      "name": "international",
+      "feature_type": "word",
+      "frequency": 15,
+      "avg_relevance": 0.8933333333333332,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "fan": {
+      "name": "fan",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.95,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "goals": {
+      "name": "goals",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.56,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "strong": {
+      "name": "strong",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.0666666666666667,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "tournaments": {
+      "name": "tournaments",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 0.7166666666666667,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "focus": {
+      "name": "focus",
+      "feature_type": "word",
+      "frequency": 17,
+      "avg_relevance": 1.7176470588235293,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "opponents": {
+      "name": "opponents",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.7944444444444444,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "community": {
+      "name": "community",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.72,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "key": {
+      "name": "key",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.6571428571428569,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "perform": {
+      "name": "perform",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.8666666666666667,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "thrilling": {
+      "name": "thrilling",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.2000000000000002,
+      "concepts": [
+        "football"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "teamwork": {
+      "name": "teamwork",
+      "feature_type": "word",
+      "frequency": 35,
+      "avg_relevance": 1.0114285714285716,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "agility": {
+      "name": "agility",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "outmaneuver": {
+      "name": "outmaneuver",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "high": {
+      "name": "high",
+      "feature_type": "word",
+      "frequency": 16,
+      "avg_relevance": 0.7999999999999999,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "subject": {
+      "name": "subject",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "piece": {
+      "name": "piece",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.44999999999999996,
+      "concepts": [
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "central": {
+      "name": "central",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.5714285714285714,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "versatile": {
+      "name": "versatile",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "football"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "centerpiece": {
+      "name": "centerpiece",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.6857142857142857,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "team": {
+      "name": "team",
+      "feature_type": "word",
+      "frequency": 33,
+      "avg_relevance": 1.3212121212121208,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "reflexes": {
+      "name": "reflexes",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 0.6833333333333331,
+      "concepts": [
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "vertical": {
+      "name": "vertical",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "makes": {
+      "name": "makes",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "reach": {
+      "name": "reach",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "success": {
+      "name": "success",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.65,
+      "concepts": [
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "exhibit": {
+      "name": "exhibit",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "stamina": {
+      "name": "stamina",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "achievement": {
+      "name": "achievement",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.79,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "foster": {
+      "name": "foster",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "intense": {
+      "name": "intense",
+      "feature_type": "word",
+      "frequency": 22,
+      "avg_relevance": 1.4999999999999998,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "physical": {
+      "name": "physical",
+      "feature_type": "word",
+      "frequency": 26,
+      "avg_relevance": 1.0846153846153848,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "bases": {
+      "name": "bases",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8500000000000001,
+      "concepts": [
+        "soccer",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "caught": {
+      "name": "caught",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.48,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "fast": {
+      "name": "fast",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.7777777777777777,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "national": {
+      "name": "national",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.5333333333333333,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "unique": {
+      "name": "unique",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "combination": {
+      "name": "combination",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.3428571428571432,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "equally": {
+      "name": "equally",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "hard": {
+      "name": "hard",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.3333333333333333,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "planning": {
+      "name": "planning",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "thinking": {
+      "name": "thinking",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 1.0999999999999999,
+      "concepts": [
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "making": {
+      "name": "making",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "involving": {
+      "name": "involving",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 1.0999999999999999,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "members": {
+      "name": "members",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "from": {
+      "name": "from",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.9428571428571428,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "turns": {
+      "name": "turns",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "control": {
+      "name": "control",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.0285714285714287,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "world": {
+      "name": "world",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.54,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "mental": {
+      "name": "mental",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.65,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "forms": {
+      "name": "forms",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6333333333333334,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "associated": {
+      "name": "associated",
+      "feature_type": "word",
+      "frequency": 19,
+      "avg_relevance": 0.726315789473684,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "advance": {
+      "name": "advance",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "avoid": {
+      "name": "avoid",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "exciting": {
+      "name": "exciting",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "globe": {
+      "name": "globe",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "between": {
+      "name": "between",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.6545454545454545,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "pitcher": {
+      "name": "pitcher",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.2000000000000002,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "nations": {
+      "name": "nations",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6000000000000001,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "has": {
+      "name": "has",
+      "feature_type": "word",
+      "frequency": 21,
+      "avg_relevance": 2.1238095238095234,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "kicked": {
+      "name": "kicked",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.45,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "entire": {
+      "name": "entire",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "points": {
+      "name": "points",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 1.0880952380952382,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "dunks": {
+      "name": "dunks",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.1199999999999999,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "activities": {
+      "name": "activities",
+      "feature_type": "word",
+      "frequency": 25,
+      "avg_relevance": 1.5119999999999996,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "equipment": {
+      "name": "equipment",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.48,
+      "concepts": [
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "professional": {
+      "name": "professional",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.6222222222222222,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "bring": {
+      "name": "bring",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.525,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "handle": {
+      "name": "handle",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "goal": {
+      "name": "goal",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.6599999999999999,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "design": {
+      "name": "design",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "bounced": {
+      "name": "bounced",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "opposing": {
+      "name": "opposing",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "around": {
+      "name": "around",
+      "feature_type": "word",
+      "frequency": 17,
+      "avg_relevance": 0.6705882352941178,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "stakes": {
+      "name": "stakes",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.5250000000000001,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "sport": {
+      "name": "sport",
+      "feature_type": "word",
+      "frequency": 72,
+      "avg_relevance": 2.173076923076923,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "wear": {
+      "name": "wear",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "try": {
+      "name": "try",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "into": {
+      "name": "into",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.9,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "iconic": {
+      "name": "iconic",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "found": {
+      "name": "found",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "football"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "precision": {
+      "name": "precision",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 0.9714285714285714,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "maintain": {
+      "name": "maintain",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "shots": {
+      "name": "shots",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "field": {
+      "name": "field",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 0.6777777777777777,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "course": {
+      "name": "course",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "center": {
+      "name": "center",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6666666666666665,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "strategy": {
+      "name": "strategy",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 0.6888888888888889,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "kicking": {
+      "name": "kicking",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "football"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "emotional": {
+      "name": "emotional",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6000000000000001,
+      "concepts": [
+        "football"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "belonging": {
+      "name": "belonging",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "gameplay": {
+      "name": "gameplay",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "inflated": {
+      "name": "inflated",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "football"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "coordination": {
+      "name": "coordination",
+      "feature_type": "word",
+      "frequency": 34,
+      "avg_relevance": 0.9841379310344829,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "culture": {
+      "name": "culture",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "rules": {
+      "name": "rules",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "features": {
+      "name": "features",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "leading": {
+      "name": "leading",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.8399999999999999,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "routines": {
+      "name": "routines",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.4000000000000001,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "support": {
+      "name": "support",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "both": {
+      "name": "both",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 1.4307692307692308,
+      "concepts": [
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "ball": {
+      "name": "ball",
+      "feature_type": "word",
+      "frequency": 58,
+      "avg_relevance": 3.117241379310345,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "competitive": {
+      "name": "competitive",
+      "feature_type": "word",
+      "frequency": 41,
+      "avg_relevance": 0.8402116402116402,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "outplay": {
+      "name": "outplay",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "global": {
+      "name": "global",
+      "feature_type": "word",
+      "frequency": 15,
+      "avg_relevance": 0.7333333333333332,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "level": {
+      "name": "level",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.7066666666666668,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "organized": {
+      "name": "organized",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "requiring": {
+      "name": "requiring",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "moments": {
+      "name": "moments",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 1.1555555555555557,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "amateur": {
+      "name": "amateur",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "jumping": {
+      "name": "jumping",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "cultural": {
+      "name": "cultural",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "soccer"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "bounds": {
+      "name": "bounds",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "component": {
+      "name": "component",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "demand": {
+      "name": "demand",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "ages": {
+      "name": "ages",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "hit": {
+      "name": "hit",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 1.688888888888889,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "cheering": {
+      "name": "cheering",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "score": {
+      "name": "score",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 1.1400000000000001,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "fans": {
+      "name": "fans",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 1.0923076923076922,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "moved": {
+      "name": "moved",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.4,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "through": {
+      "name": "through",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.96,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "stadiums": {
+      "name": "stadiums",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.7428571428571429,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "impressive": {
+      "name": "impressive",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "known": {
+      "name": "known",
+      "feature_type": "word",
+      "frequency": 22,
+      "avg_relevance": 3.5818181818181802,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "moves": {
+      "name": "moves",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "played": {
+      "name": "played",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 0.99,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "emphasizing": {
+      "name": "emphasizing",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "against": {
+      "name": "against",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "showcasing": {
+      "name": "showcasing",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.775,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "practice": {
+      "name": "practice",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.2400000000000002,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "court": {
+      "name": "court",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.1199999999999999,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "games": {
+      "name": "games",
+      "feature_type": "word",
+      "frequency": 76,
+      "avg_relevance": 3.3473684210526304,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "athletic": {
+      "name": "athletic",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.76,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "universal": {
+      "name": "universal",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "soccer"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "training": {
+      "name": "training",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.2400000000000002,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "popularity": {
+      "name": "popularity",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.5041666666666667,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "flow": {
+      "name": "flow",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "soccer",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "quick": {
+      "name": "quick",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 1.0777777777777782,
+      "concepts": [
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "typically": {
+      "name": "typically",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6000000000000001,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "essential": {
+      "name": "essential",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "scoring": {
+      "name": "scoring",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.5999999999999999,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "activity": {
+      "name": "activity",
+      "feature_type": "word",
+      "frequency": 42,
+      "avg_relevance": 4.057142857142856,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "paced": {
+      "name": "paced",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.7749999999999999,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "source": {
+      "name": "source",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "rivalries": {
+      "name": "rivalries",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "need": {
+      "name": "need",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 2.466666666666667,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "history": {
+      "name": "history",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "improve": {
+      "name": "improve",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.4000000000000001,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "skill": {
+      "name": "skill",
+      "feature_type": "word",
+      "frequency": 31,
+      "avg_relevance": 0.9166666666666666,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "shaped": {
+      "name": "shaped",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.675,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "events": {
+      "name": "events",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6999999999999998,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "players": {
+      "name": "players",
+      "feature_type": "word",
+      "frequency": 79,
+      "avg_relevance": 2.7696202531645557,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "lead": {
+      "name": "lead",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "football"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "drills": {
+      "name": "drills",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.4000000000000001,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "catch": {
+      "name": "catch",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "with": {
+      "name": "with",
+      "feature_type": "word",
+      "frequency": 41,
+      "avg_relevance": 1.4390243902439026,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "requires": {
+      "name": "requires",
+      "feature_type": "word",
+      "frequency": 48,
+      "avg_relevance": 1.3941176470588235,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "passionate": {
+      "name": "passionate",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.57,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "compete": {
+      "name": "compete",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.6000000000000001,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "frequently": {
+      "name": "frequently",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.5999999999999999,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "exertion": {
+      "name": "exertion",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "crowds": {
+      "name": "crowds",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "large": {
+      "name": "large",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.6857142857142857,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "game": {
+      "name": "game",
+      "feature_type": "word",
+      "frequency": 47,
+      "avg_relevance": 3.153191489361702,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "recreational": {
+      "name": "recreational",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "batter": {
+      "name": "batter",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "arenas": {
+      "name": "arenas",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "leagues": {
+      "name": "leagues",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.6599999999999999,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "used": {
+      "name": "used",
+      "feature_type": "word",
+      "frequency": 81,
+      "avg_relevance": 2.9753086419753076,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "must": {
+      "name": "must",
+      "feature_type": "word",
+      "frequency": 22,
+      "avg_relevance": 2.263636363636364,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "possession": {
+      "name": "possession",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6499999999999999,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "simplicity": {
+      "name": "simplicity",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "soccer"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "development": {
+      "name": "development",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "appeal": {
+      "name": "appeal",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "soccer"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "work": {
+      "name": "work",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.5777777777777777,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "rich": {
+      "name": "rich",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "fitness": {
+      "name": "fitness",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.5333333333333333,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "take": {
+      "name": "take",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "have": {
+      "name": "have",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "attention": {
+      "name": "attention",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.6857142857142856,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "often": {
+      "name": "often",
+      "feature_type": "word",
+      "frequency": 205,
+      "avg_relevance": 4.478048780487803,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "brings": {
+      "name": "brings",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "item": {
+      "name": "item",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.4666666666666666,
+      "concepts": [
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "teammates": {
+      "name": "teammates",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "defenders": {
+      "name": "defenders",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "seen": {
+      "name": "seen",
+      "feature_type": "word",
+      "frequency": 50,
+      "avg_relevance": 2.915999999999999,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "slam": {
+      "name": "slam",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "major": {
+      "name": "major",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "strategic": {
+      "name": "strategic",
+      "feature_type": "word",
+      "frequency": 38,
+      "avg_relevance": 1.1444444444444448,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "outcome": {
+      "name": "outcome",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6000000000000001,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "centuries": {
+      "name": "centuries",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "soccer"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "worldwide": {
+      "name": "worldwide",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "soccer"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "debates": {
+      "name": "debates",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "timing": {
+      "name": "timing",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.76,
+      "concepts": [
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "accuracy": {
+      "name": "accuracy",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "dribbled": {
+      "name": "dribbled",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "jump": {
+      "name": "jump",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "commonly": {
+      "name": "commonly",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.54,
+      "concepts": [
+        "soccer",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "object": {
+      "name": "object",
+      "feature_type": "word",
+      "frequency": 170,
+      "avg_relevance": 5.463529411764706,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "rectangular": {
+      "name": "rectangular",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.4000000000000001,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "execute": {
+      "name": "execute",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.3333333333333333,
+      "concepts": [
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "performance": {
+      "name": "performance",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "precise": {
+      "name": "precise",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 1.0333333333333334,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "impact": {
+      "name": "impact",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.3,
+      "concepts": [
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "prowess": {
+      "name": "prowess",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "during": {
+      "name": "during",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.8888888888888888,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "passes": {
+      "name": "passes",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "thrown": {
+      "name": "thrown",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 1.7500000000000002,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "enjoyed": {
+      "name": "enjoyed",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "bouncing": {
+      "name": "bouncing",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "throwing": {
+      "name": "throwing",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "basketball",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "local": {
+      "name": "local",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.65,
+      "concepts": [
+        "soccer",
+        "baseball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "been": {
+      "name": "been",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "use": {
+      "name": "use",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 1.5,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "widely": {
+      "name": "widely",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.5599999999999999,
+      "concepts": [
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "passed": {
+      "name": "passed",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "each": {
+      "name": "each",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6000000000000001,
+      "concepts": [
+        "soccer",
+        "basketball"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "tactical": {
+      "name": "tactical",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "filled": {
+      "name": "filled",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "football"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "bat": {
+      "name": "bat",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 1.553846153846154,
+      "concepts": [
+        "baseball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "bodies": {
+      "name": "bodies",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "millions": {
+      "name": "millions",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "soccer",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "hoop": {
+      "name": "hoop",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.25,
+      "concepts": [
+        "basketball"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "together": {
+      "name": "together",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 0.7999999999999998,
+      "concepts": [
+        "soccer",
+        "basketball",
+        "baseball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "based": {
+      "name": "based",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "basketball",
+        "football"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    }
+  },
+  "statistics": {
+    "total_concepts": 4,
+    "total_features": 260,
+    "total_games": 20
+  }
+}

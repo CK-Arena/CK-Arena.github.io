@@ -1,0 +1,2692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronic Knowledge Graph</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .main {
+            flex: 1;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .legend {
+            margin-bottom: 20px;
+        }
+        
+        .legend-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+        
+        .legend-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .legend-line {
+            width: 30px;
+            height: 3px;
+            margin-right: 10px;
+            flex-shrink: 0;
+            border-radius: 2px;
+        }
+        
+        .filters {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #f39c12;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            font-size: 0.85rem;
+            color: #f39c12;
+            min-width: 30px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input {
+            accent-color: #f39c12;
+        }
+        
+        .stats {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin: 5px 0;
+        }
+        
+        .stat-value {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
+        #tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f39c12;
+        }
+        
+        .tooltip-row {
+            margin: 4px 0;
+            color: #ccc;
+        }
+        
+        .tooltip-label {
+            color: #888;
+        }
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .node-label {
+            font-size: 11px;
+            fill: #fff;
+            pointer-events: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .concept-label {
+            font-size: 16px;
+            font-weight: bold;
+            fill: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 0.8rem;
+            max-width: 300px;
+        }
+        
+        .info-panel p {
+            margin: 5px 0;
+            color: #aaa;
+        }
+        
+        .info-panel strong {
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Electronic Knowledge Graph</h1>
+            
+            <div class="legend">
+                <div class="legend-title">Node Types</div>
+                
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Amplifier</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Oscillator</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Resistor</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Capacitor</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Transistor</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Diode</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Voltmeter</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Ammeter</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Inductor</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Transformer</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Voltage</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Current</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Microprocessor</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Microcontroller</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Coil</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Light</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Bulb</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Microchip</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Processor</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e74c3c;"></div>
+                    <span>Concept 1 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Concept 2 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #2ecc71;"></div>
+                    <span>Shared Feature</span>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-title">Edge Strength</div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.8);"></div>
+                    <span>Strong (relevance > 1.0)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.4);"></div>
+                    <span>Medium</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.15);"></div>
+                    <span>Weak (relevance < 0.5)</span>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="filter-label">Min Frequency (filter low-frequency features)</label>
+                    <div class="slider-container">
+                        <input type="range" id="freqFilter" min="1" max="20" value="3">
+                        <span class="slider-value" id="freqValue">3</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Min Relevance</label>
+                    <div class="slider-container">
+                        <input type="range" id="relevanceFilter" min="0" max="100" value="50">
+                        <span class="slider-value" id="relevanceValue">0.5</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Feature Types</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showUnique" checked>
+                            <span>Unique</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showShared" checked>
+                            <span>Shared</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stats-title">Statistics</div>
+                <div class="stat-row">
+                    <span>Features Displayed</span>
+                    <span class="stat-value" id="featureCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Unique Features</span>
+                    <span class="stat-value" id="uniqueCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Shared Features</span>
+                    <span class="stat-value" id="sharedCount">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main">
+            <svg id="graph"></svg>
+            <div id="tooltip"></div>
+            <div class="info-panel">
+                <p><strong>Interactions:</strong></p>
+                <p>* Drag nodes to reposition</p>
+                <p>* Scroll to zoom</p>
+                <p>* Hover for details</p>
+                <p>* Use filters to reduce noise</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Concept data
+        const conceptsData = [
+  {
+    "id": "amplifier",
+    "name": "Amplifier 🐝",
+    "color": "#f39c12"
+  },
+  {
+    "id": "oscillator",
+    "name": "Oscillator 🦋",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "resistor",
+    "name": "Resistor 🌸",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "capacitor",
+    "name": "Capacitor 🌿",
+    "color": "#e67e22"
+  },
+  {
+    "id": "transistor",
+    "name": "Transistor 🌍",
+    "color": "#3498db"
+  },
+  {
+    "id": "diode",
+    "name": "Diode ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "voltmeter",
+    "name": "Voltmeter ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "ammeter",
+    "name": "Ammeter ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "inductor",
+    "name": "Inductor ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "transformer",
+    "name": "Transformer ",
+    "color": "#3498db"
+  },
+  {
+    "id": "voltage",
+    "name": "Voltage ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "current",
+    "name": "Current ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "microprocessor",
+    "name": "Microprocessor ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "microcontroller",
+    "name": "Microcontroller ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "coil",
+    "name": "Coil ",
+    "color": "#3498db"
+  },
+  {
+    "id": "light",
+    "name": "Light ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "bulb",
+    "name": "Bulb ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "microchip",
+    "name": "Microchip ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "processor",
+    "name": "Processor ",
+    "color": "#e67e22"
+  }
+];
+        
+        // Feature data
+        const featuresData = {
+  "enables": {
+    "name": "enables",
+    "frequency": 4,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "microchip",
+      "transistor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "magnetic": {
+    "name": "magnetic",
+    "frequency": 4,
+    "avg_relevance": 1.35,
+    "concepts": [
+      "coil",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "operates": {
+    "name": "operates",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "microchip",
+      "microcontroller"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "design": {
+    "name": "design",
+    "frequency": 3,
+    "avg_relevance": 0.6000000000000001,
+    "concepts": [
+      "transistor",
+      "inductor",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "generates": {
+    "name": "generates",
+    "frequency": 3,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "ammeter",
+      "inductor",
+      "oscillator"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "designed": {
+    "name": "designed",
+    "frequency": 5,
+    "avg_relevance": 1.06002,
+    "concepts": [
+      "microchip",
+      "capacitor",
+      "voltmeter",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "techniques": {
+    "name": "techniques",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "microchip",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "transfer": {
+    "name": "transfer",
+    "frequency": 3,
+    "avg_relevance": 1.2667,
+    "concepts": [
+      "voltage",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "performance": {
+    "name": "performance",
+    "frequency": 3,
+    "avg_relevance": 1.4000666666666666,
+    "concepts": [
+      "resistor",
+      "current"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "control": {
+    "name": "control",
+    "frequency": 3,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "diode",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "manufactured": {
+    "name": "manufactured",
+    "frequency": 3,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "microchip",
+      "bulb",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sizes": {
+    "name": "sizes",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "bulb",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "provides": {
+    "name": "provides",
+    "frequency": 3,
+    "avg_relevance": 0.825,
+    "concepts": [
+      "voltage",
+      "ammeter",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "distances": {
+    "name": "distances",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "light",
+      "transformer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "drives": {
+    "name": "drives",
+    "frequency": 3,
+    "avg_relevance": 0.9333333333333332,
+    "concepts": [
+      "voltage",
+      "bulb",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "connected": {
+    "name": "connected",
+    "frequency": 4,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "ammeter",
+      "voltmeter",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "parallel": {
+    "name": "parallel",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "voltmeter",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "store": {
+    "name": "store",
+    "frequency": 5,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "microchip",
+      "capacitor",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "with": {
+    "name": "with",
+    "frequency": 10,
+    "avg_relevance": 0.77,
+    "concepts": [
+      "bulb",
+      "voltmeter",
+      "oscillator",
+      "light",
+      "inductor",
+      "amplifier",
+      "microcontroller",
+      "voltage"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "levels": {
+    "name": "levels",
+    "frequency": 3,
+    "avg_relevance": 0.875,
+    "concepts": [
+      "voltage",
+      "transformer",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "represented": {
+    "name": "represented",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "voltage",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "measurement": {
+    "name": "measurement",
+    "frequency": 3,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "voltmeter"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "processes": {
+    "name": "processes",
+    "frequency": 8,
+    "avg_relevance": 0.8733333333333332,
+    "concepts": [
+      "voltmeter",
+      "diode",
+      "inductor",
+      "microcontroller",
+      "microchip",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "computers": {
+    "name": "computers",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "microchip",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "weak": {
+    "name": "weak",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "transistor",
+      "current"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "intricate": {
+    "name": "intricate",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "microchip",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "modify": {
+    "name": "modify",
+    "frequency": 3,
+    "avg_relevance": 0.625,
+    "concepts": [
+      "transformer",
+      "transistor",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "resonant": {
+    "name": "resonant",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "coil",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "increase": {
+    "name": "increase",
+    "frequency": 2,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "voltage",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tool": {
+    "name": "tool",
+    "frequency": 5,
+    "avg_relevance": 1.04,
+    "concepts": [
+      "ammeter",
+      "voltmeter",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "brain": {
+    "name": "brain",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "processor",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "terms": {
+    "name": "terms",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "light",
+      "current"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "operation": {
+    "name": "operation",
+    "frequency": 6,
+    "avg_relevance": 0.6444444444444445,
+    "concepts": [
+      "transistor",
+      "voltmeter",
+      "diode",
+      "microchip",
+      "voltage",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "wound": {
+    "name": "wound",
+    "frequency": 2,
+    "avg_relevance": 1.7000000000000002,
+    "concepts": [
+      "coil"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "transformers": {
+    "name": "transformers",
+    "frequency": 4,
+    "avg_relevance": 0.7000333333333333,
+    "concepts": [
+      "voltage",
+      "bulb",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "changes": {
+    "name": "changes",
+    "frequency": 3,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "light",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "material": {
+    "name": "material",
+    "frequency": 6,
+    "avg_relevance": 0.8375,
+    "concepts": [
+      "capacitor",
+      "diode",
+      "light",
+      "inductor",
+      "microchip",
+      "coil"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "inductance": {
+    "name": "inductance",
+    "frequency": 3,
+    "avg_relevance": 0.7500249999999999,
+    "concepts": [
+      "coil",
+      "current",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "distribute": {
+    "name": "distribute",
+    "frequency": 2,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "bulb",
+      "transformer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "device": {
+    "name": "device",
+    "frequency": 28,
+    "avg_relevance": 1.2661538461538464,
+    "concepts": [
+      "resistor",
+      "bulb",
+      "transistor",
+      "voltmeter",
+      "oscillator",
+      "ammeter",
+      "transformer",
+      "inductor",
+      "amplifier",
+      "processor",
+      "microcontroller",
+      "microchip",
+      "voltage",
+      "current",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "interacts": {
+    "name": "interacts",
+    "frequency": 5,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "light",
+      "inductor",
+      "voltmeter",
+      "microcontroller"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "core": {
+    "name": "core",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "processor",
+      "coil",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "involves": {
+    "name": "involves",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "diode",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "computational": {
+    "name": "computational",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "microchip"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "factor": {
+    "name": "factor",
+    "frequency": 2,
+    "avg_relevance": 0.45,
+    "concepts": [
+      "current"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "regulation": {
+    "name": "regulation",
+    "frequency": 4,
+    "avg_relevance": 0.8000166666666666,
+    "concepts": [
+      "resistor",
+      "transformer",
+      "transistor",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "primary": {
+    "name": "primary",
+    "frequency": 3,
+    "avg_relevance": 0.7999999999999999,
+    "concepts": [
+      "transformer",
+      "ammeter",
+      "voltmeter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "commonly": {
+    "name": "commonly",
+    "frequency": 5,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "ammeter",
+      "diode",
+      "transformer",
+      "inductor",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "measure": {
+    "name": "measure",
+    "frequency": 7,
+    "avg_relevance": 1.125,
+    "concepts": [
+      "resistor",
+      "ammeter",
+      "light",
+      "inductor",
+      "processor",
+      "voltage"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "performing": {
+    "name": "performing",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "microchip",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "vacuum": {
+    "name": "vacuum",
+    "frequency": 2,
+    "avg_relevance": 1.8,
+    "concepts": [
+      "light"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "associated": {
+    "name": "associated",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "voltage",
+      "bulb"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "potential": {
+    "name": "potential",
+    "frequency": 4,
+    "avg_relevance": 2.2750000000000004,
+    "concepts": [
+      "voltage",
+      "voltmeter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "systems": {
+    "name": "systems",
+    "frequency": 11,
+    "avg_relevance": 1.4727272727272727,
+    "concepts": [
+      "transistor",
+      "voltmeter",
+      "transformer",
+      "amplifier",
+      "voltage",
+      "current"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "supplies": {
+    "name": "supplies",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "diode",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "determines": {
+    "name": "determines",
+    "frequency": 3,
+    "avg_relevance": 0.7750250000000001,
+    "concepts": [
+      "light",
+      "voltage"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tasks": {
+    "name": "tasks",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "microchip",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "minimal": {
+    "name": "minimal",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "voltmeter",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "includes": {
+    "name": "includes",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "coil",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "outputs": {
+    "name": "outputs",
+    "frequency": 4,
+    "avg_relevance": 0.7666666666666667,
+    "concepts": [
+      "microcontroller",
+      "ammeter",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "often": {
+    "name": "often",
+    "frequency": 22,
+    "avg_relevance": 1.4136363636363638,
+    "concepts": [
+      "resistor",
+      "bulb",
+      "voltmeter",
+      "oscillator",
+      "ammeter",
+      "diode",
+      "transformer",
+      "inductor",
+      "amplifier",
+      "processor",
+      "microcontroller",
+      "voltage",
+      "current",
+      "coil"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "behavior": {
+    "name": "behavior",
+    "frequency": 3,
+    "avg_relevance": 0.5666666666666668,
+    "concepts": [
+      "resistor",
+      "transistor",
+      "diode"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "signal": {
+    "name": "signal",
+    "frequency": 20,
+    "avg_relevance": 2.254166666666667,
+    "concepts": [
+      "transistor",
+      "oscillator",
+      "diode",
+      "transformer",
+      "inductor",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "achieve": {
+    "name": "achieve",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "inductor"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "ensure": {
+    "name": "ensure",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "voltage",
+      "voltmeter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shaped": {
+    "name": "shaped",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "bulb"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "requires": {
+    "name": "requires",
+    "frequency": 7,
+    "avg_relevance": 1.6857142857142857,
+    "concepts": [
+      "processor",
+      "ammeter",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "widely": {
+    "name": "widely",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "transistor",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "circuit": {
+    "name": "circuit",
+    "frequency": 33,
+    "avg_relevance": 1.5854333333333335,
+    "concepts": [
+      "resistor",
+      "capacitor",
+      "transistor",
+      "voltmeter",
+      "oscillator",
+      "ammeter",
+      "diode",
+      "inductor",
+      "microchip",
+      "voltage",
+      "coil"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "properties": {
+    "name": "properties",
+    "frequency": 4,
+    "avg_relevance": 1.225,
+    "concepts": [
+      "coil",
+      "transistor",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "specific": {
+    "name": "specific",
+    "frequency": 8,
+    "avg_relevance": 1.3375374999999998,
+    "concepts": [
+      "diode",
+      "processor",
+      "ammeter",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "instrument": {
+    "name": "instrument",
+    "frequency": 4,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "ammeter",
+      "voltmeter",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "speed": {
+    "name": "speed",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "microchip",
+      "light"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "ensuring": {
+    "name": "ensuring",
+    "frequency": 2,
+    "avg_relevance": 0.65005,
+    "concepts": [
+      "resistor",
+      "voltmeter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "direction": {
+    "name": "direction",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "diode",
+      "current"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "transistors": {
+    "name": "transistors",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "microchip",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "depend": {
+    "name": "depend",
+    "frequency": 2,
+    "avg_relevance": 0.75005,
+    "concepts": [
+      "inductor"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "different": {
+    "name": "different",
+    "frequency": 8,
+    "avg_relevance": 1.0250083333333335,
+    "concepts": [
+      "bulb",
+      "transistor",
+      "voltmeter",
+      "diode",
+      "light",
+      "inductor",
+      "voltage"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "applications": {
+    "name": "applications",
+    "frequency": 4,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "diode",
+      "coil",
+      "bulb",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "transmission": {
+    "name": "transmission",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "transformer",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "electron": {
+    "name": "electron",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "transistor"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "found": {
+    "name": "found",
+    "frequency": 3,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "capacitor",
+      "transformer",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "field": {
+    "name": "field",
+    "frequency": 4,
+    "avg_relevance": 0.8333333333333333,
+    "concepts": [
+      "voltmeter",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "voltage": {
+    "name": "voltage",
+    "frequency": 6,
+    "avg_relevance": 1.7166666666666668,
+    "concepts": [
+      "resistor",
+      "transformer",
+      "diode",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "enhance": {
+    "name": "enhance",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "transistor",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "efficient": {
+    "name": "efficient",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "transformer"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "energy": {
+    "name": "energy",
+    "frequency": 11,
+    "avg_relevance": 1.4000272727272725,
+    "concepts": [
+      "resistor",
+      "bulb",
+      "capacitor",
+      "transformer",
+      "inductor",
+      "voltage"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "electronic": {
+    "name": "electronic",
+    "frequency": 18,
+    "avg_relevance": 1.17,
+    "concepts": [
+      "resistor",
+      "capacitor",
+      "transistor",
+      "oscillator",
+      "diode",
+      "inductor",
+      "amplifier",
+      "microchip",
+      "voltage",
+      "current",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "instructions": {
+    "name": "instructions",
+    "frequency": 3,
+    "avg_relevance": 1.366666666666667,
+    "concepts": [
+      "processor",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "semiconductor": {
+    "name": "semiconductor",
+    "frequency": 6,
+    "avg_relevance": 1.3800000000000003,
+    "concepts": [
+      "microchip",
+      "diode",
+      "voltage",
+      "transistor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fabricated": {
+    "name": "fabricated",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "microchip",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "used": {
+    "name": "used",
+    "frequency": 22,
+    "avg_relevance": 1.7454545454545458,
+    "concepts": [
+      "resistor",
+      "transistor",
+      "voltmeter",
+      "oscillator",
+      "ammeter",
+      "diode",
+      "transformer",
+      "inductor",
+      "amplifier",
+      "microcontroller",
+      "coil"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "responsible": {
+    "name": "responsible",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "processor",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "integrates": {
+    "name": "integrates",
+    "frequency": 3,
+    "avg_relevance": 0.825,
+    "concepts": [
+      "microchip",
+      "transistor",
+      "microcontroller"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "influenced": {
+    "name": "influenced",
+    "frequency": 5,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "resistor",
+      "coil",
+      "current",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "digital": {
+    "name": "digital",
+    "frequency": 3,
+    "avg_relevance": 1.4000000000000001,
+    "concepts": [
+      "transistor",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "determining": {
+    "name": "determining",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "voltage",
+      "voltmeter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "inputs": {
+    "name": "inputs",
+    "frequency": 4,
+    "avg_relevance": 0.7833333333333333,
+    "concepts": [
+      "microcontroller",
+      "ammeter",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "typically": {
+    "name": "typically",
+    "frequency": 4,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "transformer",
+      "voltmeter",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "using": {
+    "name": "using",
+    "frequency": 6,
+    "avg_relevance": 1.0666666666666667,
+    "concepts": [
+      "transistor",
+      "microchip",
+      "voltage",
+      "current",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "range": {
+    "name": "range",
+    "frequency": 3,
+    "avg_relevance": 0.6333333333333333,
+    "concepts": [
+      "microchip",
+      "diode",
+      "ammeter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "consists": {
+    "name": "consists",
+    "frequency": 2,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "capacitor",
+      "transformer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "components": {
+    "name": "components",
+    "frequency": 16,
+    "avg_relevance": 0.9216666666666666,
+    "concepts": [
+      "resistor",
+      "transistor",
+      "voltmeter",
+      "inductor",
+      "microchip",
+      "coil",
+      "current",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "contains": {
+    "name": "contains",
+    "frequency": 3,
+    "avg_relevance": 1.2666666666666666,
+    "concepts": [
+      "microchip",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "controlling": {
+    "name": "controlling",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "resistor",
+      "transistor",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "logical": {
+    "name": "logical",
+    "frequency": 3,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "transistor",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "functionalities": {
+    "name": "functionalities",
+    "frequency": 4,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "microchip",
+      "voltage",
+      "transistor",
+      "voltmeter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "travels": {
+    "name": "travels",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "light"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "millions": {
+    "name": "millions",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "microchip",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "responses": {
+    "name": "responses",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "inductor"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "accurately": {
+    "name": "accurately",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "ammeter"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "filters": {
+    "name": "filters",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "inductor"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "audio": {
+    "name": "audio",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "amplifier"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "within": {
+    "name": "within",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "processor",
+      "voltmeter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "unit": {
+    "name": "unit",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "processor",
+      "voltmeter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "affected": {
+    "name": "affected",
+    "frequency": 3,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "resistor",
+      "inductor",
+      "light"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "long": {
+    "name": "long",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "light",
+      "transformer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "current": {
+    "name": "current",
+    "frequency": 13,
+    "avg_relevance": 2.007692307692308,
+    "concepts": [
+      "resistor",
+      "ammeter",
+      "voltmeter",
+      "diode",
+      "inductor",
+      "voltage"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "brightness": {
+    "name": "brightness",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "light",
+      "bulb"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "calculations": {
+    "name": "calculations",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "processor",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "electrical": {
+    "name": "electrical",
+    "frequency": 31,
+    "avg_relevance": 1.7050133333333337,
+    "concepts": [
+      "resistor",
+      "bulb",
+      "capacitor",
+      "transistor",
+      "voltmeter",
+      "oscillator",
+      "diode",
+      "transformer",
+      "inductor",
+      "amplifier",
+      "voltage",
+      "current"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "meaningful": {
+    "name": "meaningful",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "ammeter"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "stability": {
+    "name": "stability",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "diode",
+      "voltage"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "across": {
+    "name": "across",
+    "frequency": 3,
+    "avg_relevance": 0.7999999999999999,
+    "concepts": [
+      "resistor",
+      "transistor",
+      "voltmeter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "between": {
+    "name": "between",
+    "frequency": 5,
+    "avg_relevance": 0.84002,
+    "concepts": [
+      "transistor",
+      "voltmeter",
+      "diode",
+      "inductor",
+      "voltage"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "communication": {
+    "name": "communication",
+    "frequency": 3,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "microchip",
+      "light",
+      "transistor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "executing": {
+    "name": "executing",
+    "frequency": 4,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "processor",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "step": {
+    "name": "step",
+    "frequency": 2,
+    "avg_relevance": 1.8,
+    "concepts": [
+      "transformer"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "adjust": {
+    "name": "adjust",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "transformer",
+      "amplifier"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "billions": {
+    "name": "billions",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "microprocessor"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "data": {
+    "name": "data",
+    "frequency": 5,
+    "avg_relevance": 1.16,
+    "concepts": [
+      "microchip",
+      "ammeter",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "function": {
+    "name": "function",
+    "frequency": 3,
+    "avg_relevance": 0.5666666666666667,
+    "concepts": [
+      "microchip",
+      "bulb",
+      "ammeter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fundamental": {
+    "name": "fundamental",
+    "frequency": 6,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "resistor",
+      "transistor",
+      "ammeter",
+      "inductor",
+      "current"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "regions": {
+    "name": "regions",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "transistor"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "intensity": {
+    "name": "intensity",
+    "frequency": 2,
+    "avg_relevance": 0.75005,
+    "concepts": [
+      "light",
+      "voltage"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "objects": {
+    "name": "objects",
+    "frequency": 3,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "light",
+      "capacitor",
+      "ammeter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "electric": {
+    "name": "electric",
+    "frequency": 4,
+    "avg_relevance": 1.2999999999999998,
+    "concepts": [
+      "resistor",
+      "voltage",
+      "ammeter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "power": {
+    "name": "power",
+    "frequency": 11,
+    "avg_relevance": 1.8727272727272732,
+    "concepts": [
+      "diode",
+      "transformer",
+      "inductor",
+      "amplifier",
+      "microcontroller"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "photolithography": {
+    "name": "photolithography",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "microchip",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "through": {
+    "name": "through",
+    "frequency": 8,
+    "avg_relevance": 1.4749999999999999,
+    "concepts": [
+      "transistor",
+      "light",
+      "inductor",
+      "microcontroller",
+      "microchip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "during": {
+    "name": "during",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "voltmeter",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "computing": {
+    "name": "computing",
+    "frequency": 2,
+    "avg_relevance": 1.3,
+    "concepts": [
+      "microprocessor"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "electromagnetic": {
+    "name": "electromagnetic",
+    "frequency": 4,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "coil",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "precise": {
+    "name": "precise",
+    "frequency": 3,
+    "avg_relevance": 0.5666666666666667,
+    "concepts": [
+      "ammeter",
+      "voltmeter",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "value": {
+    "name": "value",
+    "frequency": 3,
+    "avg_relevance": 0.7667333333333333,
+    "concepts": [
+      "resistor",
+      "voltage",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "acts": {
+    "name": "acts",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "processor",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "wide": {
+    "name": "wide",
+    "frequency": 3,
+    "avg_relevance": 1.0666666666666667,
+    "concepts": [
+      "microchip",
+      "diode"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "from": {
+    "name": "from",
+    "frequency": 9,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "resistor",
+      "bulb",
+      "voltmeter",
+      "diode",
+      "light",
+      "inductor",
+      "amplifier",
+      "microchip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "certain": {
+    "name": "certain",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "light",
+      "processor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "key": {
+    "name": "key",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "coil",
+      "transistor",
+      "current"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "modern": {
+    "name": "modern",
+    "frequency": 3,
+    "avg_relevance": 0.46666666666666673,
+    "concepts": [
+      "microchip",
+      "transistor",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "miniaturization": {
+    "name": "miniaturization",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "transistor",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "technology": {
+    "name": "technology",
+    "frequency": 3,
+    "avg_relevance": 0.5666666666666667,
+    "concepts": [
+      "microchip",
+      "transistor",
+      "microprocessor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "controlled": {
+    "name": "controlled",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "transistor",
+      "inductor",
+      "current"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "release": {
+    "name": "release",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "inductor"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "manage": {
+    "name": "manage",
+    "frequency": 3,
+    "avg_relevance": 0.8666666666666667,
+    "concepts": [
+      "processor",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "points": {
+    "name": "points",
+    "frequency": 3,
+    "avg_relevance": 0.9666666666666667,
+    "concepts": [
+      "voltage",
+      "voltmeter",
+      "inductor"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  }
+};
+        
+        // Feature color mapping
+        const uniqueColors = ['#e74c3c', '#3498db', '#e67e22', '#1abc9c', '#9b59b6'];
+        const sharedColor = '#2ecc71';
+        
+        // Prepare node and edge data
+        let nodes = [];
+        let links = [];
+
+        function prepareData(minFreq, minRelevance, showUnique, showShared) {
+            nodes = [];
+            links = [];
+            
+            // Add concept nodes
+            conceptsData.forEach(concept => {
+                nodes.push({
+                    id: concept.id,
+                    name: concept.name,
+                    type: 'concept',
+                    color: concept.color,
+                    radius: 40
+                });
+            });
+
+            // Add feature nodes
+            Object.entries(featuresData).forEach(([key, feature]) => {
+                if (feature.frequency < minFreq) return;
+                if (feature.avg_relevance < minRelevance) return;
+                
+                const isShared = feature.is_shared;
+                
+                if (!isShared && !showUnique) return;
+                if (isShared && !showShared) return;
+                
+                let color;
+                if (isShared) {
+                    color = sharedColor;
+                } else {
+                    // Determine color based on first related concept
+                    const conceptIndex = conceptsData.findIndex(c => c.id === feature.concepts[0]);
+                    color = uniqueColors[conceptIndex % uniqueColors.length];
+                }
+                
+                const radius = Math.max(8, Math.min(25, feature.frequency * 1.2));
+                
+                nodes.push({
+                    id: key,
+                    name: feature.name,
+                    type: 'feature',
+                    color: color,
+                    radius: radius,
+                    frequency: feature.frequency,
+                    relevance: feature.avg_relevance,
+                    concepts: feature.concepts,
+                    isShared: isShared,
+                    featureType: feature.feature_type
+                });
+                
+                // Add connections
+                feature.concepts.forEach(concept => {
+                    links.push({
+                        source: key,
+                        target: concept,
+                        relevance: feature.avg_relevance,
+                        strength: Math.min(1, feature.avg_relevance / 2)
+                    });
+                });
+            });
+            
+            // Update statistics
+            const featureNodes = nodes.filter(n => n.type === 'feature');
+            document.getElementById('featureCount').textContent = featureNodes.length;
+            document.getElementById('uniqueCount').textContent = featureNodes.filter(n => !n.isShared).length;
+            document.getElementById('sharedCount').textContent = featureNodes.filter(n => n.isShared).length;
+        }
+
+        // D3 visualization
+        const svg = d3.select('#graph');
+        const width = document.querySelector('.main').clientWidth;
+        const height = document.querySelector('.main').clientHeight;
+        
+        const g = svg.append('g');
+        
+        // Zoom
+        const zoom = d3.zoom()
+            .scaleExtent([0.3, 3])
+            .on('zoom', (event) => {
+                g.attr('transform', event.transform);
+            });
+        
+        svg.call(zoom);
+        
+        // Initial zoom to center
+        svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.8));
+
+        let simulation;
+        
+        function updateGraph() {
+            const minFreq = parseInt(document.getElementById('freqFilter').value);
+            const minRelevance = parseInt(document.getElementById('relevanceFilter').value) / 100;
+            const showUnique = document.getElementById('showUnique').checked;
+            const showShared = document.getElementById('showShared').checked;
+            
+            prepareData(minFreq, minRelevance, showUnique, showShared);
+            
+            // Clear old elements
+            g.selectAll('*').remove();
+            
+            // Force-directed simulation
+            simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
+                    return d.relevance > 1 ? 80 : 120;
+                }).strength(d => d.strength * 0.5))
+                .force('charge', d3.forceManyBody().strength(d => d.type === 'concept' ? -500 : -100))
+                .force('center', d3.forceCenter(0, 0))
+                .force('collision', d3.forceCollide().radius(d => d.radius + 5));
+            
+            // Draw edges
+            const link = g.append('g')
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('stroke', d => {
+                    if (d.relevance > 1) return 'rgba(255,255,255,0.6)';
+                    if (d.relevance > 0.7) return 'rgba(255,255,255,0.35)';
+                    return 'rgba(255,255,255,0.15)';
+                })
+                .attr('stroke-width', d => Math.max(1, d.relevance * 2));
+            
+            // Draw nodes
+            const node = g.append('g')
+                .selectAll('g')
+                .data(nodes)
+                .join('g')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            // Node glow effect
+            const defs = svg.select('defs').empty() ? svg.append('defs') : svg.select('defs');
+            defs.selectAll('*').remove();
+            
+            nodes.forEach((n, i) => {
+                const filter = defs.append('filter')
+                    .attr('id', `glow-${i}`)
+                    .attr('x', '-50%')
+                    .attr('y', '-50%')
+                    .attr('width', '200%')
+                    .attr('height', '200%');
+                
+                filter.append('feGaussianBlur')
+                    .attr('stdDeviation', '3')
+                    .attr('result', 'coloredBlur');
+                
+                const feMerge = filter.append('feMerge');
+                feMerge.append('feMergeNode').attr('in', 'coloredBlur');
+                feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+            });
+            
+            node.append('circle')
+                .attr('r', d => d.radius)
+                .attr('fill', d => d.color)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', d => d.type === 'concept' ? 3 : 1.5)
+                .attr('opacity', d => d.type === 'concept' ? 1 : 0.85)
+                .style('filter', (d, i) => `url(#glow-${i})`)
+                .style('cursor', 'pointer');
+            
+            // Node labels
+            node.append('text')
+                .attr('class', d => d.type === 'concept' ? 'concept-label' : 'node-label')
+                .attr('text-anchor', 'middle')
+                .attr('dy', d => d.type === 'concept' ? 5 : (d.radius + 14))
+                .text(d => d.name.length > 20 ? d.name.substring(0, 18) + '...' : d.name);
+            
+            // Tooltip
+            const tooltip = document.getElementById('tooltip');
+            
+            node.on('mouseover', (event, d) => {
+                if (d.type === 'feature') {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Frequency: </span>${d.frequency}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Relevance: </span>${d.relevance.toFixed(2)}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Type: </span>${d.isShared ? 'Shared' : 'Unique'}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Feature Type: </span>${d.featureType}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Related Concepts: </span>${d.concepts.join(', ')}</div>
+                    `;
+                } else {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row">Core Concept Node</div>
+                    `;
+                }
+                tooltip.style.opacity = 1;
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mousemove', (event) => {
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mouseout', () => {
+                tooltip.style.opacity = 0;
+            });
+            
+            // Update positions
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node.attr('transform', d => `translate(${d.x},${d.y})`);
+            });
+        }
+        
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // Event listeners
+        document.getElementById('freqFilter').addEventListener('input', (e) => {
+            document.getElementById('freqValue').textContent = e.target.value;
+            updateGraph();
+        });
+        
+        document.getElementById('relevanceFilter').addEventListener('input', (e) => {
+            document.getElementById('relevanceValue').textContent = (e.target.value / 100).toFixed(1);
+            updateGraph();
+        });
+        
+        document.getElementById('showUnique').addEventListener('change', updateGraph);
+        document.getElementById('showShared').addEventListener('change', updateGraph);
+        
+        // Initialize
+        updateGraph();
+    </script>
+</body>
+</html>

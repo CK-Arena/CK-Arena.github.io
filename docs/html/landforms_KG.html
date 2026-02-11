@@ -1,0 +1,2847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landforms Knowledge Graph</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .main {
+            flex: 1;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .legend {
+            margin-bottom: 20px;
+        }
+        
+        .legend-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+        
+        .legend-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .legend-line {
+            width: 30px;
+            height: 3px;
+            margin-right: 10px;
+            flex-shrink: 0;
+            border-radius: 2px;
+        }
+        
+        .filters {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #f39c12;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            font-size: 0.85rem;
+            color: #f39c12;
+            min-width: 30px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input {
+            accent-color: #f39c12;
+        }
+        
+        .stats {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin: 5px 0;
+        }
+        
+        .stat-value {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
+        #tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f39c12;
+        }
+        
+        .tooltip-row {
+            margin: 4px 0;
+            color: #ccc;
+        }
+        
+        .tooltip-label {
+            color: #888;
+        }
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .node-label {
+            font-size: 11px;
+            fill: #fff;
+            pointer-events: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .concept-label {
+            font-size: 16px;
+            font-weight: bold;
+            fill: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 0.8rem;
+            max-width: 300px;
+        }
+        
+        .info-panel p {
+            margin: 5px 0;
+            color: #aaa;
+        }
+        
+        .info-panel strong {
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Landforms Knowledge Graph</h1>
+            
+            <div class="legend">
+                <div class="legend-title">Node Types</div>
+                
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Continent</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Island</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Desert</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Oasis</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Mountain</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Hill</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>River</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Lake</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Valley</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Plain</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Peninsula</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Isthmus</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Canyon</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Cape</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Archipelago</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Sand</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Stream</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Ocean</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Sea</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Sandbeach</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e74c3c;"></div>
+                    <span>Concept 1 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Concept 2 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #2ecc71;"></div>
+                    <span>Shared Feature</span>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-title">Edge Strength</div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.8);"></div>
+                    <span>Strong (relevance > 1.0)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.4);"></div>
+                    <span>Medium</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.15);"></div>
+                    <span>Weak (relevance < 0.5)</span>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="filter-label">Min Frequency (filter low-frequency features)</label>
+                    <div class="slider-container">
+                        <input type="range" id="freqFilter" min="1" max="20" value="3">
+                        <span class="slider-value" id="freqValue">3</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Min Relevance</label>
+                    <div class="slider-container">
+                        <input type="range" id="relevanceFilter" min="0" max="100" value="50">
+                        <span class="slider-value" id="relevanceValue">0.5</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Feature Types</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showUnique" checked>
+                            <span>Unique</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showShared" checked>
+                            <span>Shared</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stats-title">Statistics</div>
+                <div class="stat-row">
+                    <span>Features Displayed</span>
+                    <span class="stat-value" id="featureCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Unique Features</span>
+                    <span class="stat-value" id="uniqueCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Shared Features</span>
+                    <span class="stat-value" id="sharedCount">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main">
+            <svg id="graph"></svg>
+            <div id="tooltip"></div>
+            <div class="info-panel">
+                <p><strong>Interactions:</strong></p>
+                <p>* Drag nodes to reposition</p>
+                <p>* Scroll to zoom</p>
+                <p>* Hover for details</p>
+                <p>* Use filters to reduce noise</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Concept data
+        const conceptsData = [
+  {
+    "id": "continent",
+    "name": "Continent 🐝",
+    "color": "#f39c12"
+  },
+  {
+    "id": "island",
+    "name": "Island 🦋",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "desert",
+    "name": "Desert 🌸",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "oasis",
+    "name": "Oasis 🌿",
+    "color": "#e67e22"
+  },
+  {
+    "id": "mountain",
+    "name": "Mountain 🌍",
+    "color": "#3498db"
+  },
+  {
+    "id": "hill",
+    "name": "Hill ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "river",
+    "name": "River ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "lake",
+    "name": "Lake ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "valley",
+    "name": "Valley ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "plain",
+    "name": "Plain ",
+    "color": "#3498db"
+  },
+  {
+    "id": "peninsula",
+    "name": "Peninsula ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "isthmus",
+    "name": "Isthmus ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "canyon",
+    "name": "Canyon ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "cape",
+    "name": "Cape ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "archipelago",
+    "name": "Archipelago ",
+    "color": "#3498db"
+  },
+  {
+    "id": "sand",
+    "name": "Sand ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "stream",
+    "name": "Stream ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "ocean",
+    "name": "Ocean ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "sea",
+    "name": "Sea ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "sandbeach",
+    "name": "Sandbeach ",
+    "color": "#3498db"
+  }
+];
+        
+        // Feature data
+        const featuresData = {
+  "adapted": {
+    "name": "adapted",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "desert",
+      "mountain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "river": {
+    "name": "river",
+    "frequency": 6,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "valley",
+      "continent"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "surrounded": {
+    "name": "surrounded",
+    "frequency": 9,
+    "avg_relevance": 0.9444444444444444,
+    "concepts": [
+      "island",
+      "river",
+      "valley",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sparse": {
+    "name": "sparse",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "desert"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "unique": {
+    "name": "unique",
+    "frequency": 13,
+    "avg_relevance": 1.3769230769230771,
+    "concepts": [
+      "desert",
+      "mountain",
+      "canyon",
+      "cape",
+      "peninsula",
+      "island"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "geographic": {
+    "name": "geographic",
+    "frequency": 14,
+    "avg_relevance": 1.2075757575757575,
+    "concepts": [
+      "valley",
+      "desert",
+      "canyon",
+      "continent",
+      "river",
+      "peninsula",
+      "isthmus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "bridges": {
+    "name": "bridges",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "isthmus",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "distinct": {
+    "name": "distinct",
+    "frequency": 5,
+    "avg_relevance": 0.9875000000000002,
+    "concepts": [
+      "valley",
+      "island",
+      "continent",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "position": {
+    "name": "position",
+    "frequency": 3,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "isthmus",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "frequently": {
+    "name": "frequently",
+    "frequency": 3,
+    "avg_relevance": 0.8000000000000002,
+    "concepts": [
+      "valley",
+      "hill"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "supporting": {
+    "name": "supporting",
+    "frequency": 15,
+    "avg_relevance": 0.82834,
+    "concepts": [
+      "valley",
+      "mountain",
+      "lake",
+      "sea",
+      "peninsula",
+      "island",
+      "ocean",
+      "stream"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "provided": {
+    "name": "provided",
+    "frequency": 6,
+    "avg_relevance": 0.7111111111111111,
+    "concepts": [
+      "valley",
+      "cape",
+      "stream",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "soil": {
+    "name": "soil",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "valley",
+      "plain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "horizontal": {
+    "name": "horizontal",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "ocean",
+      "desert"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "connects": {
+    "name": "connects",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "isthmus",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "views": {
+    "name": "views",
+    "frequency": 3,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "river",
+      "hill",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "temperatures": {
+    "name": "temperatures",
+    "frequency": 5,
+    "avg_relevance": 0.7749999999999999,
+    "concepts": [
+      "desert",
+      "mountain",
+      "ocean"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "flora": {
+    "name": "flora",
+    "frequency": 8,
+    "avg_relevance": 0.5750000000000001,
+    "concepts": [
+      "valley",
+      "desert",
+      "mountain",
+      "peninsula",
+      "island"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "with": {
+    "name": "with",
+    "frequency": 22,
+    "avg_relevance": 1.2000045454545456,
+    "concepts": [
+      "valley",
+      "desert",
+      "mountain",
+      "plain",
+      "canyon",
+      "sand",
+      "peninsula",
+      "island",
+      "ocean"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "levels": {
+    "name": "levels",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "sea",
+      "mountain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "represents": {
+    "name": "represents",
+    "frequency": 3,
+    "avg_relevance": 0.825,
+    "concepts": [
+      "desert",
+      "canyon",
+      "isthmus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "home": {
+    "name": "home",
+    "frequency": 4,
+    "avg_relevance": 0.7749999999999999,
+    "concepts": [
+      "valley",
+      "desert",
+      "ocean"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "communities": {
+    "name": "communities",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "island",
+      "river"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "strategic": {
+    "name": "strategic",
+    "frequency": 3,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "desert",
+      "isthmus",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "rocky": {
+    "name": "rocky",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "mountain",
+      "canyon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "popular": {
+    "name": "popular",
+    "frequency": 5,
+    "avg_relevance": 0.68,
+    "concepts": [
+      "river",
+      "hill",
+      "canyon",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "contain": {
+    "name": "contain",
+    "frequency": 4,
+    "avg_relevance": 0.7833333333333333,
+    "concepts": [
+      "valley",
+      "ocean",
+      "continent"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "forces": {
+    "name": "forces",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "valley",
+      "sand"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tectonic": {
+    "name": "tectonic",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "continent",
+      "isthmus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "impact": {
+    "name": "impact",
+    "frequency": 7,
+    "avg_relevance": 0.8285714285714285,
+    "concepts": [
+      "mountain",
+      "canyon",
+      "river",
+      "peninsula",
+      "ocean"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "currents": {
+    "name": "currents",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "river",
+      "desert",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "changes": {
+    "name": "changes",
+    "frequency": 2,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "valley",
+      "plain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "dunes": {
+    "name": "dunes",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "sand",
+      "desert"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "region": {
+    "name": "region",
+    "frequency": 10,
+    "avg_relevance": 1.0222222222222224,
+    "concepts": [
+      "valley",
+      "desert",
+      "mountain",
+      "plain",
+      "canyon",
+      "continent",
+      "river"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "body": {
+    "name": "body",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "ocean",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "both": {
+    "name": "both",
+    "frequency": 2,
+    "avg_relevance": 0.65005,
+    "concepts": [
+      "mountain",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "landmark": {
+    "name": "landmark",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "island",
+      "hill"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "transportation": {
+    "name": "transportation",
+    "frequency": 4,
+    "avg_relevance": 0.675,
+    "concepts": [
+      "valley",
+      "river",
+      "sea"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "hot": {
+    "name": "hot",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "sand",
+      "desert"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sunlight": {
+    "name": "sunlight",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "sand",
+      "desert"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "navigation": {
+    "name": "navigation",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "hill",
+      "isthmus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "prominent": {
+    "name": "prominent",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "mountain",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "terrain": {
+    "name": "terrain",
+    "frequency": 7,
+    "avg_relevance": 0.7571428571428571,
+    "concepts": [
+      "valley",
+      "desert",
+      "mountain",
+      "river",
+      "stream"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "elevated": {
+    "name": "elevated",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "valley"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "maritime": {
+    "name": "maritime",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "isthmus",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "associated": {
+    "name": "associated",
+    "frequency": 7,
+    "avg_relevance": 0.6143000000000001,
+    "concepts": [
+      "desert",
+      "mountain",
+      "plain",
+      "sand",
+      "peninsula",
+      "ocean"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "settlement": {
+    "name": "settlement",
+    "frequency": 4,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "valley",
+      "plain",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "species": {
+    "name": "species",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "ocean",
+      "mountain",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "offer": {
+    "name": "offer",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "hill",
+      "cape"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "water": {
+    "name": "water",
+    "frequency": 22,
+    "avg_relevance": 1.218190909090909,
+    "concepts": [
+      "valley",
+      "desert",
+      "canyon",
+      "cape",
+      "sand",
+      "lake",
+      "river",
+      "peninsula",
+      "island",
+      "ocean",
+      "stream"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "feature": {
+    "name": "feature",
+    "frequency": 18,
+    "avg_relevance": 0.7694805194805194,
+    "concepts": [
+      "valley",
+      "mountain",
+      "canyon",
+      "continent",
+      "river",
+      "oasis",
+      "peninsula",
+      "island",
+      "archipelago"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "critical": {
+    "name": "critical",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "stream",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "minimal": {
+    "name": "minimal",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "desert"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "coastlines": {
+    "name": "coastlines",
+    "frequency": 4,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "island",
+      "ocean",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "often": {
+    "name": "often",
+    "frequency": 62,
+    "avg_relevance": 2.419354838709676,
+    "concepts": [
+      "valley",
+      "desert",
+      "mountain",
+      "hill",
+      "plain",
+      "canyon",
+      "sand",
+      "continent",
+      "sandbeach",
+      "river",
+      "sea",
+      "stream",
+      "peninsula",
+      "island",
+      "ocean",
+      "isthmus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "route": {
+    "name": "route",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "valley",
+      "isthmus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "microclimates": {
+    "name": "microclimates",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "valley",
+      "mountain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "limited": {
+    "name": "limited",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "sand",
+      "desert"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sand": {
+    "name": "sand",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "desert",
+      "sandbeach"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shaping": {
+    "name": "shaping",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "ocean",
+      "mountain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "basin": {
+    "name": "basin",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "valley"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "survival": {
+    "name": "survival",
+    "frequency": 4,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "lake",
+      "desert"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "known": {
+    "name": "known",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "desert",
+      "ocean"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shapes": {
+    "name": "shapes",
+    "frequency": 4,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "sand",
+      "river",
+      "valley"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "challenging": {
+    "name": "challenging",
+    "frequency": 6,
+    "avg_relevance": 1.15,
+    "concepts": [
+      "sand",
+      "desert",
+      "mountain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "dramatic": {
+    "name": "dramatic",
+    "frequency": 5,
+    "avg_relevance": 1.2166666666666668,
+    "concepts": [
+      "valley",
+      "desert",
+      "mountain",
+      "canyon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "precipitation": {
+    "name": "precipitation",
+    "frequency": 3,
+    "avg_relevance": 0.7999999999999999,
+    "concepts": [
+      "desert",
+      "mountain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "carve": {
+    "name": "carve",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "river",
+      "canyon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "seasonal": {
+    "name": "seasonal",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "valley",
+      "river"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "surfaces": {
+    "name": "surfaces",
+    "frequency": 4,
+    "avg_relevance": 0.7500166666666668,
+    "concepts": [
+      "ocean",
+      "continent",
+      "mountain",
+      "canyon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "thousand": {
+    "name": "thousand",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "river",
+      "canyon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "depending": {
+    "name": "depending",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "lake",
+      "river"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "landmasses": {
+    "name": "landmasses",
+    "frequency": 3,
+    "avg_relevance": 0.9333333333333332,
+    "concepts": [
+      "ocean",
+      "continent",
+      "isthmus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "extreme": {
+    "name": "extreme",
+    "frequency": 9,
+    "avg_relevance": 1.1928571428571426,
+    "concepts": [
+      "lake",
+      "desert"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "stream": {
+    "name": "stream",
+    "frequency": 3,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "valley"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "characterized": {
+    "name": "characterized",
+    "frequency": 8,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "valley",
+      "desert",
+      "continent",
+      "hill"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "activities": {
+    "name": "activities",
+    "frequency": 6,
+    "avg_relevance": 0.6833333333333332,
+    "concepts": [
+      "canyon",
+      "mountain",
+      "plain",
+      "river",
+      "sea",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "mountains": {
+    "name": "mountains",
+    "frequency": 4,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "valley",
+      "continent"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "larger": {
+    "name": "larger",
+    "frequency": 9,
+    "avg_relevance": 1.045,
+    "concepts": [
+      "mountain",
+      "sand",
+      "continent",
+      "lake",
+      "peninsula",
+      "island",
+      "ocean",
+      "isthmus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cultural": {
+    "name": "cultural",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "island",
+      "continent",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "geological": {
+    "name": "geological",
+    "frequency": 4,
+    "avg_relevance": 0.675,
+    "concepts": [
+      "valley",
+      "continent",
+      "archipelago",
+      "isthmus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "have": {
+    "name": "have",
+    "frequency": 10,
+    "avg_relevance": 1.1999999999999997,
+    "concepts": [
+      "valley",
+      "mountain",
+      "canyon",
+      "river",
+      "peninsula",
+      "island"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "bodies": {
+    "name": "bodies",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "island",
+      "cape"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "wind": {
+    "name": "wind",
+    "frequency": 3,
+    "avg_relevance": 1.3,
+    "concepts": [
+      "sand",
+      "desert"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "widths": {
+    "name": "widths",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "valley",
+      "river"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "found": {
+    "name": "found",
+    "frequency": 7,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "valley",
+      "plain",
+      "canyon",
+      "cape",
+      "sand",
+      "sandbeach",
+      "island"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "agriculture": {
+    "name": "agriculture",
+    "frequency": 5,
+    "avg_relevance": 0.7916666666666667,
+    "concepts": [
+      "valley",
+      "river",
+      "plain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "processes": {
+    "name": "processes",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "archipelago",
+      "isthmus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "point": {
+    "name": "point",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "ocean",
+      "cape"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "local": {
+    "name": "local",
+    "frequency": 7,
+    "avg_relevance": 1.0285714285714285,
+    "concepts": [
+      "mountain",
+      "canyon",
+      "peninsula",
+      "island",
+      "stream"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "population": {
+    "name": "population",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "desert",
+      "continent"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "formed": {
+    "name": "formed",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "valley",
+      "island",
+      "archipelago"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "scarce": {
+    "name": "scarce",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "desert"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "varying": {
+    "name": "varying",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "sea",
+      "mountain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "climates": {
+    "name": "climates",
+    "frequency": 9,
+    "avg_relevance": 0.775,
+    "concepts": [
+      "valley",
+      "desert",
+      "mountain",
+      "canyon",
+      "river",
+      "peninsula",
+      "island",
+      "ocean"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "multiple": {
+    "name": "multiple",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "valley",
+      "continent",
+      "archipelago"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "global": {
+    "name": "global",
+    "frequency": 2,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "ocean"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "open": {
+    "name": "open",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "desert",
+      "hill"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "used": {
+    "name": "used",
+    "frequency": 5,
+    "avg_relevance": 1.02,
+    "concepts": [
+      "valley",
+      "river",
+      "sea",
+      "mountain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "influence": {
+    "name": "influence",
+    "frequency": 6,
+    "avg_relevance": 0.9500000000000001,
+    "concepts": [
+      "river",
+      "mountain",
+      "isthmus",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "such": {
+    "name": "such",
+    "frequency": 4,
+    "avg_relevance": 0.7749999999999999,
+    "concepts": [
+      "island",
+      "ocean",
+      "continent",
+      "sand"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shaped": {
+    "name": "shaped",
+    "frequency": 5,
+    "avg_relevance": 0.5599999999999999,
+    "concepts": [
+      "valley",
+      "canyon",
+      "sand",
+      "island",
+      "stream"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "flat": {
+    "name": "flat",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "plain"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "boundaries": {
+    "name": "boundaries",
+    "frequency": 4,
+    "avg_relevance": 1.075,
+    "concepts": [
+      "island",
+      "river",
+      "continent"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "typically": {
+    "name": "typically",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "valley",
+      "canyon",
+      "stream"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "range": {
+    "name": "range",
+    "frequency": 5,
+    "avg_relevance": 0.875,
+    "concepts": [
+      "continent",
+      "mountain",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "patterns": {
+    "name": "patterns",
+    "frequency": 6,
+    "avg_relevance": 1.0166666666666666,
+    "concepts": [
+      "mountain",
+      "canyon",
+      "river",
+      "peninsula",
+      "ocean"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "source": {
+    "name": "source",
+    "frequency": 5,
+    "avg_relevance": 1.54,
+    "concepts": [
+      "lake",
+      "river",
+      "mountain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "wave": {
+    "name": "wave",
+    "frequency": 3,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "sandbeach",
+      "ocean",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "usually": {
+    "name": "usually",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "valley",
+      "archipelago"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "plates": {
+    "name": "plates",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "continent",
+      "isthmus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "mainland": {
+    "name": "mainland",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "peninsula"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "cliffs": {
+    "name": "cliffs",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "island",
+      "canyon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "altitude": {
+    "name": "altitude",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "mountain"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "vary": {
+    "name": "vary",
+    "frequency": 3,
+    "avg_relevance": 0.5666666666666668,
+    "concepts": [
+      "lake",
+      "island",
+      "valley"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "elevation": {
+    "name": "elevation",
+    "frequency": 6,
+    "avg_relevance": 0.9400000000000001,
+    "concepts": [
+      "valley",
+      "river",
+      "hill",
+      "plain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "areas": {
+    "name": "areas",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "valley",
+      "river",
+      "sand"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "flowing": {
+    "name": "flowing",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "valley",
+      "stream"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "earth": {
+    "name": "earth",
+    "frequency": 8,
+    "avg_relevance": 2.062525,
+    "concepts": [
+      "river",
+      "continent",
+      "mountain",
+      "ocean"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "very": {
+    "name": "very",
+    "frequency": 4,
+    "avg_relevance": 0.675,
+    "concepts": [
+      "lake",
+      "desert",
+      "valley",
+      "island"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "recreational": {
+    "name": "recreational",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "river"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "coastal": {
+    "name": "coastal",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "cape",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "relatively": {
+    "name": "relatively",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "archipelago",
+      "plain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "ecological": {
+    "name": "ecological",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "valley",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "destination": {
+    "name": "destination",
+    "frequency": 4,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "island",
+      "river",
+      "canyon",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sediment": {
+    "name": "sediment",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "river",
+      "isthmus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "hills": {
+    "name": "hills",
+    "frequency": 4,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "valley"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "walls": {
+    "name": "walls",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "valley",
+      "canyon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "drainage": {
+    "name": "drainage",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "valley"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "across": {
+    "name": "across",
+    "frequency": 3,
+    "avg_relevance": 0.6000333333333333,
+    "concepts": [
+      "sand",
+      "continent",
+      "archipelago"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "flows": {
+    "name": "flows",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "river"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "between": {
+    "name": "between",
+    "frequency": 9,
+    "avg_relevance": 0.8444444444444444,
+    "concepts": [
+      "valley",
+      "desert",
+      "mountain",
+      "canyon",
+      "river",
+      "peninsula",
+      "archipelago"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "rich": {
+    "name": "rich",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "valley",
+      "island"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "lush": {
+    "name": "lush",
+    "frequency": 2,
+    "avg_relevance": 0.6000000000000001,
+    "concepts": [
+      "valley",
+      "river"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "affecting": {
+    "name": "affecting",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "ocean",
+      "mountain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "diverse": {
+    "name": "diverse",
+    "frequency": 9,
+    "avg_relevance": 0.6000111111111112,
+    "concepts": [
+      "valley",
+      "continent",
+      "lake",
+      "peninsula",
+      "island",
+      "ocean"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "slopes": {
+    "name": "slopes",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "plain",
+      "canyon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "due": {
+    "name": "due",
+    "frequency": 16,
+    "avg_relevance": 1.75625,
+    "concepts": [
+      "valley",
+      "desert",
+      "hill",
+      "canyon",
+      "plain",
+      "sand",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "geography": {
+    "name": "geography",
+    "frequency": 5,
+    "avg_relevance": 0.64,
+    "concepts": [
+      "island",
+      "river",
+      "continent",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "over": {
+    "name": "over",
+    "frequency": 7,
+    "avg_relevance": 0.6142857142857144,
+    "concepts": [
+      "valley",
+      "canyon",
+      "isthmus",
+      "river",
+      "stream"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "depth": {
+    "name": "depth",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "valley",
+      "canyon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fertile": {
+    "name": "fertile",
+    "frequency": 4,
+    "avg_relevance": 0.7999999999999999,
+    "concepts": [
+      "valley",
+      "plain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "steep": {
+    "name": "steep",
+    "frequency": 3,
+    "avg_relevance": 0.8000000000000002,
+    "concepts": [
+      "valley",
+      "canyon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "vertical": {
+    "name": "vertical",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "canyon"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "human": {
+    "name": "human",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "valley"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "fauna": {
+    "name": "fauna",
+    "frequency": 8,
+    "avg_relevance": 0.5750000000000001,
+    "concepts": [
+      "valley",
+      "desert",
+      "mountain",
+      "peninsula",
+      "island"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "hiking": {
+    "name": "hiking",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "mountain",
+      "canyon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "creating": {
+    "name": "creating",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "valley",
+      "mountain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "vast": {
+    "name": "vast",
+    "frequency": 4,
+    "avg_relevance": 1.1,
+    "concepts": [
+      "desert",
+      "ocean"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "diversity": {
+    "name": "diversity",
+    "frequency": 4,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "valley",
+      "ocean",
+      "mountain",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "marine": {
+    "name": "marine",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "ocean",
+      "cape"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "scenic": {
+    "name": "scenic",
+    "frequency": 4,
+    "avg_relevance": 0.625,
+    "concepts": [
+      "valley",
+      "river",
+      "hill",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "into": {
+    "name": "into",
+    "frequency": 5,
+    "avg_relevance": 1.1,
+    "concepts": [
+      "sand",
+      "continent",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "deep": {
+    "name": "deep",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "river",
+      "canyon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "different": {
+    "name": "different",
+    "frequency": 4,
+    "avg_relevance": 0.925,
+    "concepts": [
+      "river",
+      "sea",
+      "mountain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "divided": {
+    "name": "divided",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "continent"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "vegetation": {
+    "name": "vegetation",
+    "frequency": 10,
+    "avg_relevance": 0.8699999999999999,
+    "concepts": [
+      "valley",
+      "desert",
+      "mountain",
+      "sand",
+      "river",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "through": {
+    "name": "through",
+    "frequency": 6,
+    "avg_relevance": 0.7833333333333333,
+    "concepts": [
+      "valley",
+      "river",
+      "sand",
+      "archipelago"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "ecosystems": {
+    "name": "ecosystems",
+    "frequency": 15,
+    "avg_relevance": 0.7666750000000001,
+    "concepts": [
+      "valley",
+      "mountain",
+      "lake",
+      "sea",
+      "peninsula",
+      "island",
+      "ocean",
+      "stream"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "higher": {
+    "name": "higher",
+    "frequency": 3,
+    "avg_relevance": 1.4000000000000001,
+    "concepts": [
+      "valley",
+      "river"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "arid": {
+    "name": "arid",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "desert",
+      "canyon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "variations": {
+    "name": "variations",
+    "frequency": 4,
+    "avg_relevance": 1.1500000000000001,
+    "concepts": [
+      "valley",
+      "river",
+      "mountain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sea": {
+    "name": "sea",
+    "frequency": 3,
+    "avg_relevance": 2.3,
+    "concepts": [
+      "peninsula"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "wide": {
+    "name": "wide",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "mountain",
+      "plain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "from": {
+    "name": "from",
+    "frequency": 7,
+    "avg_relevance": 0.6857142857142857,
+    "concepts": [
+      "hill",
+      "sand",
+      "lake",
+      "river",
+      "peninsula",
+      "island",
+      "stream"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "surrounding": {
+    "name": "surrounding",
+    "frequency": 13,
+    "avg_relevance": 0.9846153846153846,
+    "concepts": [
+      "valley",
+      "mountain",
+      "hill",
+      "river",
+      "peninsula",
+      "stream"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "forms": {
+    "name": "forms",
+    "frequency": 5,
+    "avg_relevance": 1.06,
+    "concepts": [
+      "sand",
+      "mountain",
+      "stream",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sides": {
+    "name": "sides",
+    "frequency": 5,
+    "avg_relevance": 0.8800000000000001,
+    "concepts": [
+      "valley",
+      "mountain",
+      "peninsula"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  }
+};
+        
+        // Feature color mapping
+        const uniqueColors = ['#e74c3c', '#3498db', '#e67e22', '#1abc9c', '#9b59b6'];
+        const sharedColor = '#2ecc71';
+        
+        // Prepare node and edge data
+        let nodes = [];
+        let links = [];
+
+        function prepareData(minFreq, minRelevance, showUnique, showShared) {
+            nodes = [];
+            links = [];
+            
+            // Add concept nodes
+            conceptsData.forEach(concept => {
+                nodes.push({
+                    id: concept.id,
+                    name: concept.name,
+                    type: 'concept',
+                    color: concept.color,
+                    radius: 40
+                });
+            });
+
+            // Add feature nodes
+            Object.entries(featuresData).forEach(([key, feature]) => {
+                if (feature.frequency < minFreq) return;
+                if (feature.avg_relevance < minRelevance) return;
+                
+                const isShared = feature.is_shared;
+                
+                if (!isShared && !showUnique) return;
+                if (isShared && !showShared) return;
+                
+                let color;
+                if (isShared) {
+                    color = sharedColor;
+                } else {
+                    // Determine color based on first related concept
+                    const conceptIndex = conceptsData.findIndex(c => c.id === feature.concepts[0]);
+                    color = uniqueColors[conceptIndex % uniqueColors.length];
+                }
+                
+                const radius = Math.max(8, Math.min(25, feature.frequency * 1.2));
+                
+                nodes.push({
+                    id: key,
+                    name: feature.name,
+                    type: 'feature',
+                    color: color,
+                    radius: radius,
+                    frequency: feature.frequency,
+                    relevance: feature.avg_relevance,
+                    concepts: feature.concepts,
+                    isShared: isShared,
+                    featureType: feature.feature_type
+                });
+                
+                // Add connections
+                feature.concepts.forEach(concept => {
+                    links.push({
+                        source: key,
+                        target: concept,
+                        relevance: feature.avg_relevance,
+                        strength: Math.min(1, feature.avg_relevance / 2)
+                    });
+                });
+            });
+            
+            // Update statistics
+            const featureNodes = nodes.filter(n => n.type === 'feature');
+            document.getElementById('featureCount').textContent = featureNodes.length;
+            document.getElementById('uniqueCount').textContent = featureNodes.filter(n => !n.isShared).length;
+            document.getElementById('sharedCount').textContent = featureNodes.filter(n => n.isShared).length;
+        }
+
+        // D3 visualization
+        const svg = d3.select('#graph');
+        const width = document.querySelector('.main').clientWidth;
+        const height = document.querySelector('.main').clientHeight;
+        
+        const g = svg.append('g');
+        
+        // Zoom
+        const zoom = d3.zoom()
+            .scaleExtent([0.3, 3])
+            .on('zoom', (event) => {
+                g.attr('transform', event.transform);
+            });
+        
+        svg.call(zoom);
+        
+        // Initial zoom to center
+        svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.8));
+
+        let simulation;
+        
+        function updateGraph() {
+            const minFreq = parseInt(document.getElementById('freqFilter').value);
+            const minRelevance = parseInt(document.getElementById('relevanceFilter').value) / 100;
+            const showUnique = document.getElementById('showUnique').checked;
+            const showShared = document.getElementById('showShared').checked;
+            
+            prepareData(minFreq, minRelevance, showUnique, showShared);
+            
+            // Clear old elements
+            g.selectAll('*').remove();
+            
+            // Force-directed simulation
+            simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
+                    return d.relevance > 1 ? 80 : 120;
+                }).strength(d => d.strength * 0.5))
+                .force('charge', d3.forceManyBody().strength(d => d.type === 'concept' ? -500 : -100))
+                .force('center', d3.forceCenter(0, 0))
+                .force('collision', d3.forceCollide().radius(d => d.radius + 5));
+            
+            // Draw edges
+            const link = g.append('g')
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('stroke', d => {
+                    if (d.relevance > 1) return 'rgba(255,255,255,0.6)';
+                    if (d.relevance > 0.7) return 'rgba(255,255,255,0.35)';
+                    return 'rgba(255,255,255,0.15)';
+                })
+                .attr('stroke-width', d => Math.max(1, d.relevance * 2));
+            
+            // Draw nodes
+            const node = g.append('g')
+                .selectAll('g')
+                .data(nodes)
+                .join('g')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            // Node glow effect
+            const defs = svg.select('defs').empty() ? svg.append('defs') : svg.select('defs');
+            defs.selectAll('*').remove();
+            
+            nodes.forEach((n, i) => {
+                const filter = defs.append('filter')
+                    .attr('id', `glow-${i}`)
+                    .attr('x', '-50%')
+                    .attr('y', '-50%')
+                    .attr('width', '200%')
+                    .attr('height', '200%');
+                
+                filter.append('feGaussianBlur')
+                    .attr('stdDeviation', '3')
+                    .attr('result', 'coloredBlur');
+                
+                const feMerge = filter.append('feMerge');
+                feMerge.append('feMergeNode').attr('in', 'coloredBlur');
+                feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+            });
+            
+            node.append('circle')
+                .attr('r', d => d.radius)
+                .attr('fill', d => d.color)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', d => d.type === 'concept' ? 3 : 1.5)
+                .attr('opacity', d => d.type === 'concept' ? 1 : 0.85)
+                .style('filter', (d, i) => `url(#glow-${i})`)
+                .style('cursor', 'pointer');
+            
+            // Node labels
+            node.append('text')
+                .attr('class', d => d.type === 'concept' ? 'concept-label' : 'node-label')
+                .attr('text-anchor', 'middle')
+                .attr('dy', d => d.type === 'concept' ? 5 : (d.radius + 14))
+                .text(d => d.name.length > 20 ? d.name.substring(0, 18) + '...' : d.name);
+            
+            // Tooltip
+            const tooltip = document.getElementById('tooltip');
+            
+            node.on('mouseover', (event, d) => {
+                if (d.type === 'feature') {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Frequency: </span>${d.frequency}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Relevance: </span>${d.relevance.toFixed(2)}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Type: </span>${d.isShared ? 'Shared' : 'Unique'}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Feature Type: </span>${d.featureType}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Related Concepts: </span>${d.concepts.join(', ')}</div>
+                    `;
+                } else {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row">Core Concept Node</div>
+                    `;
+                }
+                tooltip.style.opacity = 1;
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mousemove', (event) => {
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mouseout', () => {
+                tooltip.style.opacity = 0;
+            });
+            
+            // Update positions
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node.attr('transform', d => `translate(${d.x},${d.y})`);
+            });
+        }
+        
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // Event listeners
+        document.getElementById('freqFilter').addEventListener('input', (e) => {
+            document.getElementById('freqValue').textContent = e.target.value;
+            updateGraph();
+        });
+        
+        document.getElementById('relevanceFilter').addEventListener('input', (e) => {
+            document.getElementById('relevanceValue').textContent = (e.target.value / 100).toFixed(1);
+            updateGraph();
+        });
+        
+        document.getElementById('showUnique').addEventListener('change', updateGraph);
+        document.getElementById('showShared').addEventListener('change', updateGraph);
+        
+        // Initialize
+        updateGraph();
+    </script>
+</body>
+</html>

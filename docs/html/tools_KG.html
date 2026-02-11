@@ -1,0 +1,3909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools Knowledge Graph</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .main {
+            flex: 1;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .legend {
+            margin-bottom: 20px;
+        }
+        
+        .legend-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+        
+        .legend-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .legend-line {
+            width: 30px;
+            height: 3px;
+            margin-right: 10px;
+            flex-shrink: 0;
+            border-radius: 2px;
+        }
+        
+        .filters {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #f39c12;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            font-size: 0.85rem;
+            color: #f39c12;
+            min-width: 30px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input {
+            accent-color: #f39c12;
+        }
+        
+        .stats {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin: 5px 0;
+        }
+        
+        .stat-value {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
+        #tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f39c12;
+        }
+        
+        .tooltip-row {
+            margin: 4px 0;
+            color: #ccc;
+        }
+        
+        .tooltip-label {
+            color: #888;
+        }
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .node-label {
+            font-size: 11px;
+            fill: #fff;
+            pointer-events: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .concept-label {
+            font-size: 16px;
+            font-weight: bold;
+            fill: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 0.8rem;
+            max-width: 300px;
+        }
+        
+        .info-panel p {
+            margin: 5px 0;
+            color: #aaa;
+        }
+        
+        .info-panel strong {
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Tools Knowledge Graph</h1>
+            
+            <div class="legend">
+                <div class="legend-title">Node Types</div>
+                
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Saw</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Chisel</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>File</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Grinder</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Hammer</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Axe</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Screwdriver</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Drill</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Plane</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Blade</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Pliers</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Tongs</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Scissors</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Shovel</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Rake</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Scalpel</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Eraser</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Sharpener</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Wrench</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Spanner</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Forceps</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Bandage</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Gauze</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Syringe</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Needle</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Stethoscope</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Thermometer</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e74c3c;"></div>
+                    <span>Concept 1 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Concept 2 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #2ecc71;"></div>
+                    <span>Shared Feature</span>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-title">Edge Strength</div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.8);"></div>
+                    <span>Strong (relevance > 1.0)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.4);"></div>
+                    <span>Medium</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.15);"></div>
+                    <span>Weak (relevance < 0.5)</span>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="filter-label">Min Frequency (filter low-frequency features)</label>
+                    <div class="slider-container">
+                        <input type="range" id="freqFilter" min="1" max="20" value="3">
+                        <span class="slider-value" id="freqValue">3</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Min Relevance</label>
+                    <div class="slider-container">
+                        <input type="range" id="relevanceFilter" min="0" max="100" value="50">
+                        <span class="slider-value" id="relevanceValue">0.5</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Feature Types</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showUnique" checked>
+                            <span>Unique</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showShared" checked>
+                            <span>Shared</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stats-title">Statistics</div>
+                <div class="stat-row">
+                    <span>Features Displayed</span>
+                    <span class="stat-value" id="featureCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Unique Features</span>
+                    <span class="stat-value" id="uniqueCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Shared Features</span>
+                    <span class="stat-value" id="sharedCount">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main">
+            <svg id="graph"></svg>
+            <div id="tooltip"></div>
+            <div class="info-panel">
+                <p><strong>Interactions:</strong></p>
+                <p>* Drag nodes to reposition</p>
+                <p>* Scroll to zoom</p>
+                <p>* Hover for details</p>
+                <p>* Use filters to reduce noise</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Concept data
+        const conceptsData = [
+  {
+    "id": "saw",
+    "name": "Saw 🐝",
+    "color": "#f39c12"
+  },
+  {
+    "id": "chisel",
+    "name": "Chisel 🦋",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "file",
+    "name": "File 🌸",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "grinder",
+    "name": "Grinder 🌿",
+    "color": "#e67e22"
+  },
+  {
+    "id": "hammer",
+    "name": "Hammer 🌍",
+    "color": "#3498db"
+  },
+  {
+    "id": "axe",
+    "name": "Axe ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "screwdriver",
+    "name": "Screwdriver ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "drill",
+    "name": "Drill ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "plane",
+    "name": "Plane ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "blade",
+    "name": "Blade ",
+    "color": "#3498db"
+  },
+  {
+    "id": "pliers",
+    "name": "Pliers ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "tongs",
+    "name": "Tongs ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "scissors",
+    "name": "Scissors ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "shovel",
+    "name": "Shovel ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "rake",
+    "name": "Rake ",
+    "color": "#3498db"
+  },
+  {
+    "id": "scalpel",
+    "name": "Scalpel ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "eraser",
+    "name": "Eraser ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "sharpener",
+    "name": "Sharpener ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "wrench",
+    "name": "Wrench ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "spanner",
+    "name": "Spanner ",
+    "color": "#3498db"
+  },
+  {
+    "id": "forceps",
+    "name": "Forceps ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "bandage",
+    "name": "Bandage ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "gauze",
+    "name": "Gauze ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "syringe",
+    "name": "Syringe ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "needle",
+    "name": "Needle ",
+    "color": "#3498db"
+  },
+  {
+    "id": "stethoscope",
+    "name": "Stethoscope ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "thermometer",
+    "name": "Thermometer ",
+    "color": "#9b59b6"
+  }
+];
+        
+        // Feature data
+        const featuresData = {
+  "preventing": {
+    "name": "preventing",
+    "frequency": 4,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "saw",
+      "bandage",
+      "blade"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "wood": {
+    "name": "wood",
+    "frequency": 3,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "saw",
+      "plane",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tighten": {
+    "name": "tighten",
+    "frequency": 4,
+    "avg_relevance": 0.825,
+    "concepts": [
+      "wrench",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "healthcare": {
+    "name": "healthcare",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "syringe",
+      "stethoscope"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "secured": {
+    "name": "secured",
+    "frequency": 6,
+    "avg_relevance": 1.3625,
+    "concepts": [
+      "spanner",
+      "bandage",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "precise": {
+    "name": "precise",
+    "frequency": 20,
+    "avg_relevance": 0.9368447368421051,
+    "concepts": [
+      "tongs",
+      "scissors",
+      "chisel",
+      "saw",
+      "hammer",
+      "forceps",
+      "spanner",
+      "needle",
+      "wrench",
+      "scalpel",
+      "syringe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "rotational": {
+    "name": "rotational",
+    "frequency": 2,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "screwdriver"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "listening": {
+    "name": "listening",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "stethoscope"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "healing": {
+    "name": "healing",
+    "frequency": 3,
+    "avg_relevance": 1.8999999999999997,
+    "concepts": [
+      "bandage"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "motion": {
+    "name": "motion",
+    "frequency": 4,
+    "avg_relevance": 0.775,
+    "concepts": [
+      "rake",
+      "saw",
+      "wrench",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "designed": {
+    "name": "designed",
+    "frequency": 13,
+    "avg_relevance": 1.5384615384615388,
+    "concepts": [
+      "saw",
+      "chisel",
+      "blade",
+      "pliers",
+      "bandage",
+      "grinder",
+      "needle",
+      "scalpel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "repair": {
+    "name": "repair",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "wrench",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "withstand": {
+    "name": "withstand",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "chisel",
+      "blade"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shaft": {
+    "name": "shaft",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "chisel",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "employed": {
+    "name": "employed",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "scalpel",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "comes": {
+    "name": "comes",
+    "frequency": 4,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "bandage",
+      "gauze",
+      "eraser",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sizes": {
+    "name": "sizes",
+    "frequency": 6,
+    "avg_relevance": 0.6333333333333334,
+    "concepts": [
+      "saw",
+      "pliers",
+      "screwdriver",
+      "wrench",
+      "gauze"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "frequently": {
+    "name": "frequently",
+    "frequency": 3,
+    "avg_relevance": 1.133333333333333,
+    "concepts": [
+      "scalpel",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "exerting": {
+    "name": "exerting",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "pliers",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "kits": {
+    "name": "kits",
+    "frequency": 2,
+    "avg_relevance": 0.65005,
+    "concepts": [
+      "scalpel",
+      "gauze"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "provide": {
+    "name": "provide",
+    "frequency": 7,
+    "avg_relevance": 0.7666666666666667,
+    "concepts": [
+      "stethoscope",
+      "pliers",
+      "bandage",
+      "thermometer",
+      "wrench"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "documents": {
+    "name": "documents",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "file"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "connects": {
+    "name": "connects",
+    "frequency": 6,
+    "avg_relevance": 0.811111111111111,
+    "concepts": [
+      "scissors",
+      "stethoscope",
+      "hammer",
+      "pliers",
+      "syringe",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "internal": {
+    "name": "internal",
+    "frequency": 3,
+    "avg_relevance": 2.5,
+    "concepts": [
+      "stethoscope"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "store": {
+    "name": "store",
+    "frequency": 4,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "wrench",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "involved": {
+    "name": "involved",
+    "frequency": 3,
+    "avg_relevance": 0.6667,
+    "concepts": [
+      "saw",
+      "needle",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "working": {
+    "name": "working",
+    "frequency": 2,
+    "avg_relevance": 0.80005,
+    "concepts": [
+      "pliers",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "substances": {
+    "name": "substances",
+    "frequency": 3,
+    "avg_relevance": 2.3,
+    "concepts": [
+      "syringe"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "with": {
+    "name": "with",
+    "frequency": 33,
+    "avg_relevance": 1.4303030303030295,
+    "concepts": [
+      "tongs",
+      "scissors",
+      "saw",
+      "chisel",
+      "blade",
+      "hammer",
+      "stethoscope",
+      "pliers",
+      "shovel",
+      "bandage",
+      "forceps",
+      "spanner",
+      "axe",
+      "thermometer",
+      "wrench",
+      "scalpel",
+      "syringe",
+      "rake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "manipulating": {
+    "name": "manipulating",
+    "frequency": 9,
+    "avg_relevance": 0.7208333333333333,
+    "concepts": [
+      "scissors",
+      "chisel",
+      "pliers",
+      "screwdriver",
+      "forceps",
+      "wrench",
+      "syringe",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "action": {
+    "name": "action",
+    "frequency": 3,
+    "avg_relevance": 0.675,
+    "concepts": [
+      "pliers",
+      "scissors",
+      "syringe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "applications": {
+    "name": "applications",
+    "frequency": 7,
+    "avg_relevance": 0.7083333333333333,
+    "concepts": [
+      "saw",
+      "blade",
+      "bandage",
+      "wrench",
+      "scalpel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "process": {
+    "name": "process",
+    "frequency": 4,
+    "avg_relevance": 0.8166666666666665,
+    "concepts": [
+      "grinder",
+      "bandage",
+      "syringe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cutting": {
+    "name": "cutting",
+    "frequency": 19,
+    "avg_relevance": 1.5421052631578949,
+    "concepts": [
+      "scissors",
+      "saw",
+      "chisel",
+      "blade",
+      "pliers",
+      "bandage",
+      "axe",
+      "scalpel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "types": {
+    "name": "types",
+    "frequency": 5,
+    "avg_relevance": 0.8200000000000001,
+    "concepts": [
+      "gauze",
+      "screwdriver",
+      "saw",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "situations": {
+    "name": "situations",
+    "frequency": 4,
+    "avg_relevance": 0.9749999999999999,
+    "concepts": [
+      "tongs",
+      "scalpel",
+      "gauze"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "requires": {
+    "name": "requires",
+    "frequency": 18,
+    "avg_relevance": 0.7166857142857143,
+    "concepts": [
+      "tongs",
+      "saw",
+      "chisel",
+      "stethoscope",
+      "drill",
+      "forceps",
+      "axe",
+      "wrench",
+      "scalpel",
+      "syringe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fingers": {
+    "name": "fingers",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "tongs",
+      "eraser"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "loosening": {
+    "name": "loosening",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "wrench",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "useful": {
+    "name": "useful",
+    "frequency": 3,
+    "avg_relevance": 0.5000333333333334,
+    "concepts": [
+      "shovel",
+      "pliers",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "directly": {
+    "name": "directly",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "stethoscope"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "access": {
+    "name": "access",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "file"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "modify": {
+    "name": "modify",
+    "frequency": 3,
+    "avg_relevance": 0.525,
+    "concepts": [
+      "grinder",
+      "axe",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tool": {
+    "name": "tool",
+    "frequency": 57,
+    "avg_relevance": 1.924570175438596,
+    "concepts": [
+      "scissors",
+      "shovel",
+      "thermometer",
+      "syringe",
+      "file",
+      "stethoscope",
+      "tongs",
+      "plane",
+      "eraser",
+      "hammer",
+      "needle",
+      "scalpel",
+      "chisel",
+      "saw",
+      "pliers",
+      "grinder",
+      "sharpener",
+      "axe",
+      "wrench"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "adhesive": {
+    "name": "adhesive",
+    "frequency": 3,
+    "avg_relevance": 2.3,
+    "concepts": [
+      "bandage"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "maintenance": {
+    "name": "maintenance",
+    "frequency": 3,
+    "avg_relevance": 0.5666666666666667,
+    "concepts": [
+      "shovel",
+      "blade",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "leaves": {
+    "name": "leaves",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "eraser",
+      "rake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "turning": {
+    "name": "turning",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "wrench"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "wounds": {
+    "name": "wounds",
+    "frequency": 4,
+    "avg_relevance": 0.675025,
+    "concepts": [
+      "bandage",
+      "gauze"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "impact": {
+    "name": "impact",
+    "frequency": 5,
+    "avg_relevance": 0.8625,
+    "concepts": [
+      "axe",
+      "chisel",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "screws": {
+    "name": "screws",
+    "frequency": 2,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "drill",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "wooden": {
+    "name": "wooden",
+    "frequency": 3,
+    "avg_relevance": 1.3333333333333333,
+    "concepts": [
+      "plane",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "effectively": {
+    "name": "effectively",
+    "frequency": 7,
+    "avg_relevance": 0.7583333333333333,
+    "concepts": [
+      "chisel",
+      "saw",
+      "hammer",
+      "forceps",
+      "wrench"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "handle": {
+    "name": "handle",
+    "frequency": 9,
+    "avg_relevance": 0.8500071428571429,
+    "concepts": [
+      "tongs",
+      "chisel",
+      "hammer",
+      "pliers",
+      "shovel",
+      "wrench",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "materials": {
+    "name": "materials",
+    "frequency": 37,
+    "avg_relevance": 1.292887931034483,
+    "concepts": [
+      "scissors",
+      "plane",
+      "saw",
+      "chisel",
+      "eraser",
+      "hammer",
+      "blade",
+      "shovel",
+      "drill",
+      "pliers",
+      "bandage",
+      "grinder",
+      "axe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "body": {
+    "name": "body",
+    "frequency": 10,
+    "avg_relevance": 2.0599999999999996,
+    "concepts": [
+      "thermometer",
+      "bandage",
+      "syringe",
+      "stethoscope"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "facilitate": {
+    "name": "facilitate",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "grinder",
+      "pliers"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "detailed": {
+    "name": "detailed",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "chisel"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "driving": {
+    "name": "driving",
+    "frequency": 2,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "drill",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "personal": {
+    "name": "personal",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "file"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "jaws": {
+    "name": "jaws",
+    "frequency": 3,
+    "avg_relevance": 1.4333333333333336,
+    "concepts": [
+      "pliers"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "devices": {
+    "name": "devices",
+    "frequency": 8,
+    "avg_relevance": 0.7857428571428571,
+    "concepts": [
+      "stethoscope",
+      "pliers",
+      "spanner",
+      "thermometer",
+      "syringe",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "transforming": {
+    "name": "transforming",
+    "frequency": 4,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "grinder",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "bolts": {
+    "name": "bolts",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "wrench",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "both": {
+    "name": "both",
+    "frequency": 7,
+    "avg_relevance": 0.7285714285714285,
+    "concepts": [
+      "saw",
+      "chisel",
+      "pliers",
+      "spanner",
+      "axe",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "adjustable": {
+    "name": "adjustable",
+    "frequency": 5,
+    "avg_relevance": 1.2000000000000002,
+    "concepts": [
+      "wrench",
+      "pliers",
+      "scissors"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "rubber": {
+    "name": "rubber",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "pliers",
+      "eraser"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "effectiveness": {
+    "name": "effectiveness",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "saw",
+      "blade"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "purpose": {
+    "name": "purpose",
+    "frequency": 5,
+    "avg_relevance": 0.5583333333333333,
+    "concepts": [
+      "wrench",
+      "bandage",
+      "file",
+      "rake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "firmly": {
+    "name": "firmly",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "pliers",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "commonly": {
+    "name": "commonly",
+    "frequency": 21,
+    "avg_relevance": 0.900014285714286,
+    "concepts": [
+      "scissors",
+      "plane",
+      "saw",
+      "chisel",
+      "stethoscope",
+      "hammer",
+      "pliers",
+      "shovel",
+      "spanner",
+      "sharpener",
+      "axe",
+      "wrench",
+      "scalpel",
+      "syringe",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "surgical": {
+    "name": "surgical",
+    "frequency": 3,
+    "avg_relevance": 1.5999999999999999,
+    "concepts": [
+      "scalpel"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "edge": {
+    "name": "edge",
+    "frequency": 6,
+    "avg_relevance": 1.32003,
+    "concepts": [
+      "pliers",
+      "scalpel",
+      "chisel",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "deliver": {
+    "name": "deliver",
+    "frequency": 2,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "syringe"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "loose": {
+    "name": "loose",
+    "frequency": 4,
+    "avg_relevance": 1.3,
+    "concepts": [
+      "wrench",
+      "shovel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "without": {
+    "name": "without",
+    "frequency": 4,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "wrench",
+      "bandage",
+      "eraser"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "disassembling": {
+    "name": "disassembling",
+    "frequency": 4,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "screwdriver",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "marks": {
+    "name": "marks",
+    "frequency": 2,
+    "avg_relevance": 1.8,
+    "concepts": [
+      "eraser"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "associated": {
+    "name": "associated",
+    "frequency": 5,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "scalpel",
+      "axe",
+      "chisel",
+      "stethoscope"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "versatile": {
+    "name": "versatile",
+    "frequency": 6,
+    "avg_relevance": 0.5333333333333333,
+    "concepts": [
+      "tongs",
+      "saw",
+      "chisel",
+      "pliers",
+      "axe",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "opening": {
+    "name": "opening",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "pliers",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "pivot": {
+    "name": "pivot",
+    "frequency": 3,
+    "avg_relevance": 1.4666666666666668,
+    "concepts": [
+      "pliers",
+      "scissors"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "contents": {
+    "name": "contents",
+    "frequency": 4,
+    "avg_relevance": 0.8250000000000001,
+    "concepts": [
+      "syringe",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tasks": {
+    "name": "tasks",
+    "frequency": 18,
+    "avg_relevance": 0.8277888888888891,
+    "concepts": [
+      "tongs",
+      "chisel",
+      "saw",
+      "hammer",
+      "pliers",
+      "shovel",
+      "grinder",
+      "axe",
+      "needle",
+      "wrench",
+      "scalpel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "critical": {
+    "name": "critical",
+    "frequency": 3,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "scalpel",
+      "syringe",
+      "thermometer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "bending": {
+    "name": "bending",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "pliers"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "manner": {
+    "name": "manner",
+    "frequency": 2,
+    "avg_relevance": 0.65005,
+    "concepts": [
+      "tongs",
+      "stethoscope"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "careful": {
+    "name": "careful",
+    "frequency": 5,
+    "avg_relevance": 0.76002,
+    "concepts": [
+      "tongs",
+      "scalpel",
+      "syringe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "work": {
+    "name": "work",
+    "frequency": 8,
+    "avg_relevance": 0.6749999999999999,
+    "concepts": [
+      "chisel",
+      "saw",
+      "pliers",
+      "wrench",
+      "scalpel",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "applying": {
+    "name": "applying",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "wrench"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "protect": {
+    "name": "protect",
+    "frequency": 5,
+    "avg_relevance": 0.9499999999999998,
+    "concepts": [
+      "bandage",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "often": {
+    "name": "often",
+    "frequency": 71,
+    "avg_relevance": 2.146492957746478,
+    "concepts": [
+      "scissors",
+      "blade",
+      "shovel",
+      "drill",
+      "spanner",
+      "thermometer",
+      "syringe",
+      "file",
+      "stethoscope",
+      "tongs",
+      "plane",
+      "eraser",
+      "hammer",
+      "needle",
+      "scalpel",
+      "gauze",
+      "saw",
+      "chisel",
+      "pliers",
+      "bandage",
+      "sharpener",
+      "grinder",
+      "wrench",
+      "screwdriver",
+      "rake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "patients": {
+    "name": "patients",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "stethoscope"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "shaping": {
+    "name": "shaping",
+    "frequency": 4,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "grinder",
+      "saw",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "achieve": {
+    "name": "achieve",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "plane",
+      "rake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shapes": {
+    "name": "shapes",
+    "frequency": 6,
+    "avg_relevance": 0.6833333333333332,
+    "concepts": [
+      "chisel",
+      "eraser",
+      "saw",
+      "pliers",
+      "wrench",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "related": {
+    "name": "related",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "file"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "smooth": {
+    "name": "smooth",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "plane"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "manually": {
+    "name": "manually",
+    "frequency": 5,
+    "avg_relevance": 0.5875125,
+    "concepts": [
+      "saw",
+      "chisel",
+      "shovel",
+      "pliers",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "hexagonal": {
+    "name": "hexagonal",
+    "frequency": 2,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "wrench"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "adjustments": {
+    "name": "adjustments",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "wrench",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "specific": {
+    "name": "specific",
+    "frequency": 3,
+    "avg_relevance": 1.1,
+    "concepts": [
+      "wrench",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "measure": {
+    "name": "measure",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "syringe",
+      "thermometer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "instrument": {
+    "name": "instrument",
+    "frequency": 11,
+    "avg_relevance": 1.4272909090909092,
+    "concepts": [
+      "tongs",
+      "chisel",
+      "stethoscope",
+      "forceps",
+      "wrench",
+      "scalpel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "diy": {
+    "name": "diy",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "saw"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "surfaces": {
+    "name": "surfaces",
+    "frequency": 5,
+    "avg_relevance": 1.4000000000000004,
+    "concepts": [
+      "eraser",
+      "plane",
+      "blade"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "gather": {
+    "name": "gather",
+    "frequency": 3,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "thermometer",
+      "stethoscope",
+      "rake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "injuries": {
+    "name": "injuries",
+    "frequency": 4,
+    "avg_relevance": 1.7499999999999998,
+    "concepts": [
+      "bandage",
+      "gauze"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "depend": {
+    "name": "depend",
+    "frequency": 3,
+    "avg_relevance": 0.7749999999999999,
+    "concepts": [
+      "drill",
+      "saw"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fine": {
+    "name": "fine",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "saw",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "remove": {
+    "name": "remove",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "eraser",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "workshop": {
+    "name": "workshop",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "grinder",
+      "tongs"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "held": {
+    "name": "held",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "scalpel",
+      "eraser",
+      "blade"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "handheld": {
+    "name": "handheld",
+    "frequency": 5,
+    "avg_relevance": 0.62002,
+    "concepts": [
+      "pliers",
+      "drill",
+      "scalpel",
+      "saw"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "projects": {
+    "name": "projects",
+    "frequency": 4,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "chisel",
+      "saw"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "larger": {
+    "name": "larger",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "saw",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "operation": {
+    "name": "operation",
+    "frequency": 3,
+    "avg_relevance": 0.575,
+    "concepts": [
+      "drill",
+      "saw",
+      "needle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "skill": {
+    "name": "skill",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "scalpel",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "found": {
+    "name": "found",
+    "frequency": 8,
+    "avg_relevance": 0.45002499999999995,
+    "concepts": [
+      "scissors",
+      "saw",
+      "chisel",
+      "pliers",
+      "sharpener",
+      "grinder",
+      "wrench",
+      "gauze"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "paper": {
+    "name": "paper",
+    "frequency": 2,
+    "avg_relevance": 1.8,
+    "concepts": [
+      "eraser"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "management": {
+    "name": "management",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "file"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "safety": {
+    "name": "safety",
+    "frequency": 3,
+    "avg_relevance": 0.6333333333333333,
+    "concepts": [
+      "pliers",
+      "blade",
+      "syringe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "firm": {
+    "name": "firm",
+    "frequency": 3,
+    "avg_relevance": 0.7333666666666666,
+    "concepts": [
+      "tongs",
+      "pliers",
+      "wrench"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "desired": {
+    "name": "desired",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "grinder",
+      "bandage"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "household": {
+    "name": "household",
+    "frequency": 2,
+    "avg_relevance": 0.45,
+    "concepts": [
+      "scissors"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "force": {
+    "name": "force",
+    "frequency": 12,
+    "avg_relevance": 0.9250166666666666,
+    "concepts": [
+      "saw",
+      "chisel",
+      "hammer",
+      "pliers",
+      "spanner",
+      "grinder",
+      "axe",
+      "wrench",
+      "scalpel",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "mallet": {
+    "name": "mallet",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "chisel"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "insulated": {
+    "name": "insulated",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "pliers"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "fastening": {
+    "name": "fastening",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "wrench",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "enhance": {
+    "name": "enhance",
+    "frequency": 2,
+    "avg_relevance": 0.65005,
+    "concepts": [
+      "pliers"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "point": {
+    "name": "point",
+    "frequency": 4,
+    "avg_relevance": 1.0833333333333335,
+    "concepts": [
+      "pliers",
+      "scissors",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "making": {
+    "name": "making",
+    "frequency": 9,
+    "avg_relevance": 1.6333333333333333,
+    "concepts": [
+      "scalpel",
+      "drill",
+      "saw",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "efficiently": {
+    "name": "efficiently",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "saw",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "separate": {
+    "name": "separate",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "saw",
+      "screwdriver",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "external": {
+    "name": "external",
+    "frequency": 2,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "bandage"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "hard": {
+    "name": "hard",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "tongs",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "energy": {
+    "name": "energy",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "drill",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "gripping": {
+    "name": "gripping",
+    "frequency": 9,
+    "avg_relevance": 2.6222222222222227,
+    "concepts": [
+      "pliers",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "structures": {
+    "name": "structures",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "file",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "multiple": {
+    "name": "multiple",
+    "frequency": 3,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "file"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "used": {
+    "name": "used",
+    "frequency": 98,
+    "avg_relevance": 2.6724653061224495,
+    "concepts": [
+      "scissors",
+      "blade",
+      "shovel",
+      "drill",
+      "spanner",
+      "thermometer",
+      "syringe",
+      "file",
+      "stethoscope",
+      "tongs",
+      "plane",
+      "eraser",
+      "hammer",
+      "forceps",
+      "needle",
+      "scalpel",
+      "gauze",
+      "saw",
+      "chisel",
+      "pliers",
+      "bandage",
+      "sharpener",
+      "grinder",
+      "axe",
+      "wrench",
+      "screwdriver",
+      "rake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "professional": {
+    "name": "professional",
+    "frequency": 6,
+    "avg_relevance": 0.48,
+    "concepts": [
+      "scalpel",
+      "file",
+      "saw",
+      "stethoscope"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "organized": {
+    "name": "organized",
+    "frequency": 4,
+    "avg_relevance": 1.25,
+    "concepts": [
+      "file"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "shaped": {
+    "name": "shaped",
+    "frequency": 3,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "chisel",
+      "screwdriver",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "moving": {
+    "name": "moving",
+    "frequency": 2,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "shovel"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "flat": {
+    "name": "flat",
+    "frequency": 3,
+    "avg_relevance": 0.8666666666666667,
+    "concepts": [
+      "plane",
+      "blade",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "digital": {
+    "name": "digital",
+    "frequency": 3,
+    "avg_relevance": 1.2666666666666666,
+    "concepts": [
+      "file"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "friction": {
+    "name": "friction",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "grinder",
+      "blade"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "plastic": {
+    "name": "plastic",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "pliers",
+      "needle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "typically": {
+    "name": "typically",
+    "frequency": 19,
+    "avg_relevance": 1.052636842105263,
+    "concepts": [
+      "chisel",
+      "saw",
+      "blade",
+      "hammer",
+      "eraser",
+      "pliers",
+      "drill",
+      "stethoscope",
+      "bandage",
+      "wrench",
+      "scalpel",
+      "syringe",
+      "rake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sharp": {
+    "name": "sharp",
+    "frequency": 6,
+    "avg_relevance": 0.7999999999999999,
+    "concepts": [
+      "saw",
+      "chisel",
+      "blade",
+      "needle",
+      "scalpel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fit": {
+    "name": "fit",
+    "frequency": 2,
+    "avg_relevance": 1.8,
+    "concepts": [
+      "wrench"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "cuts": {
+    "name": "cuts",
+    "frequency": 5,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "chisel",
+      "scalpel",
+      "saw"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "components": {
+    "name": "components",
+    "frequency": 4,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "grinder",
+      "pliers",
+      "wrench",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "contains": {
+    "name": "contains",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "syringe",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "about": {
+    "name": "about",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "thermometer",
+      "stethoscope"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "usually": {
+    "name": "usually",
+    "frequency": 4,
+    "avg_relevance": 0.7750250000000001,
+    "concepts": [
+      "wrench",
+      "bandage",
+      "chisel",
+      "needle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "made": {
+    "name": "made",
+    "frequency": 5,
+    "avg_relevance": 0.7600000000000001,
+    "concepts": [
+      "eraser",
+      "chisel",
+      "blade",
+      "bandage",
+      "needle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "primarily": {
+    "name": "primarily",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "pliers",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "mechanism": {
+    "name": "mechanism",
+    "frequency": 3,
+    "avg_relevance": 1.3333333333333333,
+    "concepts": [
+      "wrench",
+      "pliers"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sterile": {
+    "name": "sterile",
+    "frequency": 3,
+    "avg_relevance": 0.6667,
+    "concepts": [
+      "scalpel",
+      "gauze"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "involving": {
+    "name": "involving",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "grinder",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "use": {
+    "name": "use",
+    "frequency": 6,
+    "avg_relevance": 0.6166666666666667,
+    "concepts": [
+      "saw",
+      "stethoscope",
+      "shovel",
+      "grinder",
+      "wrench"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "organizing": {
+    "name": "organizing",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "grinder",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "medical": {
+    "name": "medical",
+    "frequency": 9,
+    "avg_relevance": 1.377777777777778,
+    "concepts": [
+      "scalpel",
+      "bandage",
+      "syringe",
+      "stethoscope"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "serrated": {
+    "name": "serrated",
+    "frequency": 3,
+    "avg_relevance": 1.4333333333333336,
+    "concepts": [
+      "pliers"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "hold": {
+    "name": "hold",
+    "frequency": 4,
+    "avg_relevance": 0.825,
+    "concepts": [
+      "pliers",
+      "bandage",
+      "forceps",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fixed": {
+    "name": "fixed",
+    "frequency": 2,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "wrench"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "accurately": {
+    "name": "accurately",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "syringe"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "more": {
+    "name": "more",
+    "frequency": 3,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "grinder",
+      "bandage",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "metal": {
+    "name": "metal",
+    "frequency": 4,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "saw",
+      "chisel",
+      "needle",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fluids": {
+    "name": "fluids",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "syringe",
+      "gauze"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "blades": {
+    "name": "blades",
+    "frequency": 6,
+    "avg_relevance": 0.9166666666666666,
+    "concepts": [
+      "shovel",
+      "scissors",
+      "saw",
+      "forceps"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "removing": {
+    "name": "removing",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "plane",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "physical": {
+    "name": "physical",
+    "frequency": 7,
+    "avg_relevance": 0.8857285714285714,
+    "concepts": [
+      "scissors",
+      "saw",
+      "stethoscope",
+      "shovel",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "contact": {
+    "name": "contact",
+    "frequency": 2,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "stethoscope"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "user": {
+    "name": "user",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "pliers",
+      "saw"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "within": {
+    "name": "within",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "stethoscope",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "better": {
+    "name": "better",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "pliers"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "end": {
+    "name": "end",
+    "frequency": 3,
+    "avg_relevance": 0.8667000000000001,
+    "concepts": [
+      "shovel",
+      "chisel",
+      "needle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "long": {
+    "name": "long",
+    "frequency": 4,
+    "avg_relevance": 0.875,
+    "concepts": [
+      "wrench",
+      "shovel",
+      "file",
+      "rake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "procedures": {
+    "name": "procedures",
+    "frequency": 4,
+    "avg_relevance": 1.325,
+    "concepts": [
+      "scalpel",
+      "syringe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "jaw": {
+    "name": "jaw",
+    "frequency": 2,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "wrench"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "handling": {
+    "name": "handling",
+    "frequency": 6,
+    "avg_relevance": 0.9166833333333333,
+    "concepts": [
+      "tongs",
+      "pliers",
+      "grinder",
+      "scalpel",
+      "syringe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "applies": {
+    "name": "applies",
+    "frequency": 3,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "grinder",
+      "pliers",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "electrical": {
+    "name": "electrical",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "pliers"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "control": {
+    "name": "control",
+    "frequency": 5,
+    "avg_relevance": 0.7200000000000001,
+    "concepts": [
+      "plane",
+      "saw",
+      "wrench",
+      "scalpel",
+      "gauze"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "information": {
+    "name": "information",
+    "frequency": 7,
+    "avg_relevance": 1.6428571428571428,
+    "concepts": [
+      "stethoscope",
+      "thermometer",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cross": {
+    "name": "cross",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "screwdriver",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "care": {
+    "name": "care",
+    "frequency": 2,
+    "avg_relevance": 0.45,
+    "concepts": [
+      "stethoscope",
+      "gauze"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "specialized": {
+    "name": "specialized",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "scalpel",
+      "saw"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "between": {
+    "name": "between",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "bandage",
+      "eraser"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "features": {
+    "name": "features",
+    "frequency": 4,
+    "avg_relevance": 0.800025,
+    "concepts": [
+      "pliers",
+      "chisel",
+      "blade",
+      "stethoscope"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "grip": {
+    "name": "grip",
+    "frequency": 5,
+    "avg_relevance": 1.24004,
+    "concepts": [
+      "wrench",
+      "pliers"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "grasp": {
+    "name": "grasp",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "tongs",
+      "forceps"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "industrial": {
+    "name": "industrial",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "saw",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "adjusted": {
+    "name": "adjusted",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "pliers",
+      "plane"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "diagnostic": {
+    "name": "diagnostic",
+    "frequency": 2,
+    "avg_relevance": 0.45,
+    "concepts": [
+      "thermometer",
+      "stethoscope"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "data": {
+    "name": "data",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "file"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "function": {
+    "name": "function",
+    "frequency": 5,
+    "avg_relevance": 0.6416666666666666,
+    "concepts": [
+      "stethoscope",
+      "pliers",
+      "forceps",
+      "scalpel",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "together": {
+    "name": "together",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "forceps",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "monitor": {
+    "name": "monitor",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "thermometer",
+      "stethoscope"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "office": {
+    "name": "office",
+    "frequency": 2,
+    "avg_relevance": 0.6000000000000001,
+    "concepts": [
+      "scissors",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "accuracy": {
+    "name": "accuracy",
+    "frequency": 3,
+    "avg_relevance": 0.5333333333333333,
+    "concepts": [
+      "scalpel",
+      "syringe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "human": {
+    "name": "human",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "syringe",
+      "stethoscope"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "wires": {
+    "name": "wires",
+    "frequency": 3,
+    "avg_relevance": 2.7000000000000006,
+    "concepts": [
+      "pliers"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "easy": {
+    "name": "easy",
+    "frequency": 4,
+    "avg_relevance": 0.825,
+    "concepts": [
+      "pliers",
+      "bandage",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "records": {
+    "name": "records",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "file"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "contexts": {
+    "name": "contexts",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "scalpel",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "support": {
+    "name": "support",
+    "frequency": 2,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "bandage"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "incisions": {
+    "name": "incisions",
+    "frequency": 2,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "scalpel"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "into": {
+    "name": "into",
+    "frequency": 5,
+    "avg_relevance": 1.1,
+    "concepts": [
+      "grinder",
+      "syringe",
+      "screwdriver",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "keep": {
+    "name": "keep",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "file"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "cover": {
+    "name": "cover",
+    "frequency": 2,
+    "avg_relevance": 0.75005,
+    "concepts": [
+      "bandage",
+      "gauze"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "objects": {
+    "name": "objects",
+    "frequency": 22,
+    "avg_relevance": 1.2890609523809524,
+    "concepts": [
+      "tongs",
+      "hammer",
+      "pliers",
+      "forceps",
+      "spanner",
+      "grinder",
+      "sharpener",
+      "wrench",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "apply": {
+    "name": "apply",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "wrench",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "machine": {
+    "name": "machine",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "saw",
+      "blade"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "around": {
+    "name": "around",
+    "frequency": 3,
+    "avg_relevance": 1.0333333333333332,
+    "concepts": [
+      "pliers",
+      "bandage"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "high": {
+    "name": "high",
+    "frequency": 3,
+    "avg_relevance": 1.0333333333333332,
+    "concepts": [
+      "scalpel",
+      "blade"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "precision": {
+    "name": "precision",
+    "frequency": 16,
+    "avg_relevance": 1.29375625,
+    "concepts": [
+      "tongs",
+      "chisel",
+      "saw",
+      "pliers",
+      "forceps",
+      "axe",
+      "needle",
+      "wrench",
+      "scalpel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "different": {
+    "name": "different",
+    "frequency": 12,
+    "avg_relevance": 1.3166666666666664,
+    "concepts": [
+      "saw",
+      "pliers",
+      "drill",
+      "screwdriver",
+      "bandage",
+      "gauze",
+      "wrench",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "maintaining": {
+    "name": "maintaining",
+    "frequency": 4,
+    "avg_relevance": 0.7166666666666667,
+    "concepts": [
+      "sharpener",
+      "scalpel",
+      "blade",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "carve": {
+    "name": "carve",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "chisel"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "needs": {
+    "name": "needs",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "saw",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "requiring": {
+    "name": "requiring",
+    "frequency": 8,
+    "avg_relevance": 1.0000125,
+    "concepts": [
+      "tongs",
+      "blade",
+      "bandage",
+      "axe",
+      "scalpel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "through": {
+    "name": "through",
+    "frequency": 6,
+    "avg_relevance": 1.0000000000000002,
+    "concepts": [
+      "scissors",
+      "saw",
+      "pliers",
+      "grinder",
+      "needle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "during": {
+    "name": "during",
+    "frequency": 4,
+    "avg_relevance": 0.7249999999999999,
+    "concepts": [
+      "bandage",
+      "pliers",
+      "saw",
+      "stethoscope"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "torque": {
+    "name": "torque",
+    "frequency": 2,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "wrench"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "clean": {
+    "name": "clean",
+    "frequency": 3,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "scalpel",
+      "eraser"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "mechanical": {
+    "name": "mechanical",
+    "frequency": 8,
+    "avg_relevance": 1.4125,
+    "concepts": [
+      "wrench",
+      "pliers",
+      "screwdriver",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "woodworking": {
+    "name": "woodworking",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "saw",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "leverage": {
+    "name": "leverage",
+    "frequency": 4,
+    "avg_relevance": 1.050025,
+    "concepts": [
+      "wrench",
+      "pliers",
+      "axe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "like": {
+    "name": "like",
+    "frequency": 4,
+    "avg_relevance": 0.7750000000000001,
+    "concepts": [
+      "wrench",
+      "bandage",
+      "chisel",
+      "blade"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "layers": {
+    "name": "layers",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "plane"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "from": {
+    "name": "from",
+    "frequency": 10,
+    "avg_relevance": 0.73,
+    "concepts": [
+      "tongs",
+      "chisel",
+      "saw",
+      "blade",
+      "eraser",
+      "bandage",
+      "syringe",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "electronic": {
+    "name": "electronic",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "file",
+      "screwdriver"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "modern": {
+    "name": "modern",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "saw",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "wrapped": {
+    "name": "wrapped",
+    "frequency": 2,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "bandage"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "construction": {
+    "name": "construction",
+    "frequency": 6,
+    "avg_relevance": 1.1500166666666665,
+    "concepts": [
+      "shovel",
+      "saw",
+      "hammer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "efficiency": {
+    "name": "efficiency",
+    "frequency": 2,
+    "avg_relevance": 0.7000500000000001,
+    "concepts": [
+      "grinder",
+      "chisel"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fasteners": {
+    "name": "fasteners",
+    "frequency": 4,
+    "avg_relevance": 2.2,
+    "concepts": [
+      "wrench"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "controlled": {
+    "name": "controlled",
+    "frequency": 4,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "forceps",
+      "syringe",
+      "chisel",
+      "blade"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "manage": {
+    "name": "manage",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "file"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "nuts": {
+    "name": "nuts",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "wrench",
+      "spanner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "holding": {
+    "name": "holding",
+    "frequency": 3,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "tongs",
+      "pliers"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "item": {
+    "name": "item",
+    "frequency": 6,
+    "avg_relevance": 0.5000166666666667,
+    "concepts": [
+      "scissors",
+      "eraser",
+      "pliers",
+      "gauze",
+      "wrench",
+      "file"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "teeth": {
+    "name": "teeth",
+    "frequency": 3,
+    "avg_relevance": 0.9666666666666667,
+    "concepts": [
+      "saw",
+      "rake"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "toolbox": {
+    "name": "toolbox",
+    "frequency": 3,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "wrench",
+      "pliers"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  }
+};
+        
+        // Feature color mapping
+        const uniqueColors = ['#e74c3c', '#3498db', '#e67e22', '#1abc9c', '#9b59b6'];
+        const sharedColor = '#2ecc71';
+        
+        // Prepare node and edge data
+        let nodes = [];
+        let links = [];
+
+        function prepareData(minFreq, minRelevance, showUnique, showShared) {
+            nodes = [];
+            links = [];
+            
+            // Add concept nodes
+            conceptsData.forEach(concept => {
+                nodes.push({
+                    id: concept.id,
+                    name: concept.name,
+                    type: 'concept',
+                    color: concept.color,
+                    radius: 40
+                });
+            });
+
+            // Add feature nodes
+            Object.entries(featuresData).forEach(([key, feature]) => {
+                if (feature.frequency < minFreq) return;
+                if (feature.avg_relevance < minRelevance) return;
+                
+                const isShared = feature.is_shared;
+                
+                if (!isShared && !showUnique) return;
+                if (isShared && !showShared) return;
+                
+                let color;
+                if (isShared) {
+                    color = sharedColor;
+                } else {
+                    // Determine color based on first related concept
+                    const conceptIndex = conceptsData.findIndex(c => c.id === feature.concepts[0]);
+                    color = uniqueColors[conceptIndex % uniqueColors.length];
+                }
+                
+                const radius = Math.max(8, Math.min(25, feature.frequency * 1.2));
+                
+                nodes.push({
+                    id: key,
+                    name: feature.name,
+                    type: 'feature',
+                    color: color,
+                    radius: radius,
+                    frequency: feature.frequency,
+                    relevance: feature.avg_relevance,
+                    concepts: feature.concepts,
+                    isShared: isShared,
+                    featureType: feature.feature_type
+                });
+                
+                // Add connections
+                feature.concepts.forEach(concept => {
+                    links.push({
+                        source: key,
+                        target: concept,
+                        relevance: feature.avg_relevance,
+                        strength: Math.min(1, feature.avg_relevance / 2)
+                    });
+                });
+            });
+            
+            // Update statistics
+            const featureNodes = nodes.filter(n => n.type === 'feature');
+            document.getElementById('featureCount').textContent = featureNodes.length;
+            document.getElementById('uniqueCount').textContent = featureNodes.filter(n => !n.isShared).length;
+            document.getElementById('sharedCount').textContent = featureNodes.filter(n => n.isShared).length;
+        }
+
+        // D3 visualization
+        const svg = d3.select('#graph');
+        const width = document.querySelector('.main').clientWidth;
+        const height = document.querySelector('.main').clientHeight;
+        
+        const g = svg.append('g');
+        
+        // Zoom
+        const zoom = d3.zoom()
+            .scaleExtent([0.3, 3])
+            .on('zoom', (event) => {
+                g.attr('transform', event.transform);
+            });
+        
+        svg.call(zoom);
+        
+        // Initial zoom to center
+        svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.8));
+
+        let simulation;
+        
+        function updateGraph() {
+            const minFreq = parseInt(document.getElementById('freqFilter').value);
+            const minRelevance = parseInt(document.getElementById('relevanceFilter').value) / 100;
+            const showUnique = document.getElementById('showUnique').checked;
+            const showShared = document.getElementById('showShared').checked;
+            
+            prepareData(minFreq, minRelevance, showUnique, showShared);
+            
+            // Clear old elements
+            g.selectAll('*').remove();
+            
+            // Force-directed simulation
+            simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
+                    return d.relevance > 1 ? 80 : 120;
+                }).strength(d => d.strength * 0.5))
+                .force('charge', d3.forceManyBody().strength(d => d.type === 'concept' ? -500 : -100))
+                .force('center', d3.forceCenter(0, 0))
+                .force('collision', d3.forceCollide().radius(d => d.radius + 5));
+            
+            // Draw edges
+            const link = g.append('g')
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('stroke', d => {
+                    if (d.relevance > 1) return 'rgba(255,255,255,0.6)';
+                    if (d.relevance > 0.7) return 'rgba(255,255,255,0.35)';
+                    return 'rgba(255,255,255,0.15)';
+                })
+                .attr('stroke-width', d => Math.max(1, d.relevance * 2));
+            
+            // Draw nodes
+            const node = g.append('g')
+                .selectAll('g')
+                .data(nodes)
+                .join('g')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            // Node glow effect
+            const defs = svg.select('defs').empty() ? svg.append('defs') : svg.select('defs');
+            defs.selectAll('*').remove();
+            
+            nodes.forEach((n, i) => {
+                const filter = defs.append('filter')
+                    .attr('id', `glow-${i}`)
+                    .attr('x', '-50%')
+                    .attr('y', '-50%')
+                    .attr('width', '200%')
+                    .attr('height', '200%');
+                
+                filter.append('feGaussianBlur')
+                    .attr('stdDeviation', '3')
+                    .attr('result', 'coloredBlur');
+                
+                const feMerge = filter.append('feMerge');
+                feMerge.append('feMergeNode').attr('in', 'coloredBlur');
+                feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+            });
+            
+            node.append('circle')
+                .attr('r', d => d.radius)
+                .attr('fill', d => d.color)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', d => d.type === 'concept' ? 3 : 1.5)
+                .attr('opacity', d => d.type === 'concept' ? 1 : 0.85)
+                .style('filter', (d, i) => `url(#glow-${i})`)
+                .style('cursor', 'pointer');
+            
+            // Node labels
+            node.append('text')
+                .attr('class', d => d.type === 'concept' ? 'concept-label' : 'node-label')
+                .attr('text-anchor', 'middle')
+                .attr('dy', d => d.type === 'concept' ? 5 : (d.radius + 14))
+                .text(d => d.name.length > 20 ? d.name.substring(0, 18) + '...' : d.name);
+            
+            // Tooltip
+            const tooltip = document.getElementById('tooltip');
+            
+            node.on('mouseover', (event, d) => {
+                if (d.type === 'feature') {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Frequency: </span>${d.frequency}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Relevance: </span>${d.relevance.toFixed(2)}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Type: </span>${d.isShared ? 'Shared' : 'Unique'}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Feature Type: </span>${d.featureType}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Related Concepts: </span>${d.concepts.join(', ')}</div>
+                    `;
+                } else {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row">Core Concept Node</div>
+                    `;
+                }
+                tooltip.style.opacity = 1;
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mousemove', (event) => {
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mouseout', () => {
+                tooltip.style.opacity = 0;
+            });
+            
+            // Update positions
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node.attr('transform', d => `translate(${d.x},${d.y})`);
+            });
+        }
+        
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // Event listeners
+        document.getElementById('freqFilter').addEventListener('input', (e) => {
+            document.getElementById('freqValue').textContent = e.target.value;
+            updateGraph();
+        });
+        
+        document.getElementById('relevanceFilter').addEventListener('input', (e) => {
+            document.getElementById('relevanceValue').textContent = (e.target.value / 100).toFixed(1);
+            updateGraph();
+        });
+        
+        document.getElementById('showUnique').addEventListener('change', updateGraph);
+        document.getElementById('showShared').addEventListener('change', updateGraph);
+        
+        // Initialize
+        updateGraph();
+    </script>
+</body>
+</html>

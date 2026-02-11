@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plants Knowledge Graph</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .main {
+            flex: 1;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .legend {
+            margin-bottom: 20px;
+        }
+        
+        .legend-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+        
+        .legend-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .legend-line {
+            width: 30px;
+            height: 3px;
+            margin-right: 10px;
+            flex-shrink: 0;
+            border-radius: 2px;
+        }
+        
+        .filters {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #f39c12;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            font-size: 0.85rem;
+            color: #f39c12;
+            min-width: 30px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input {
+            accent-color: #f39c12;
+        }
+        
+        .stats {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin: 5px 0;
+        }
+        
+        .stat-value {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
+        #tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f39c12;
+        }
+        
+        .tooltip-row {
+            margin: 4px 0;
+            color: #ccc;
+        }
+        
+        .tooltip-label {
+            color: #888;
+        }
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .node-label {
+            font-size: 11px;
+            fill: #fff;
+            pointer-events: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .concept-label {
+            font-size: 16px;
+            font-weight: bold;
+            fill: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 0.8rem;
+            max-width: 300px;
+        }
+        
+        .info-panel p {
+            margin: 5px 0;
+            color: #aaa;
+        }
+        
+        .info-panel strong {
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Plants Knowledge Graph</h1>
+            
+            <div class="legend">
+                <div class="legend-title">Node Types</div>
+                
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Fern</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Palm</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Tree</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Bush</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Rose</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Tulip</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Maple</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Oak</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Birch</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Willow</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Cherry</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Walnut</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Aspen</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Pine</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Cypress</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e74c3c;"></div>
+                    <span>Concept 1 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Concept 2 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #2ecc71;"></div>
+                    <span>Shared Feature</span>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-title">Edge Strength</div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.8);"></div>
+                    <span>Strong (relevance > 1.0)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.4);"></div>
+                    <span>Medium</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.15);"></div>
+                    <span>Weak (relevance < 0.5)</span>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="filter-label">Min Frequency (filter low-frequency features)</label>
+                    <div class="slider-container">
+                        <input type="range" id="freqFilter" min="1" max="20" value="3">
+                        <span class="slider-value" id="freqValue">3</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Min Relevance</label>
+                    <div class="slider-container">
+                        <input type="range" id="relevanceFilter" min="0" max="100" value="50">
+                        <span class="slider-value" id="relevanceValue">0.5</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Feature Types</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showUnique" checked>
+                            <span>Unique</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showShared" checked>
+                            <span>Shared</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stats-title">Statistics</div>
+                <div class="stat-row">
+                    <span>Features Displayed</span>
+                    <span class="stat-value" id="featureCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Unique Features</span>
+                    <span class="stat-value" id="uniqueCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Shared Features</span>
+                    <span class="stat-value" id="sharedCount">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main">
+            <svg id="graph"></svg>
+            <div id="tooltip"></div>
+            <div class="info-panel">
+                <p><strong>Interactions:</strong></p>
+                <p>* Drag nodes to reposition</p>
+                <p>* Scroll to zoom</p>
+                <p>* Hover for details</p>
+                <p>* Use filters to reduce noise</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Concept data
+        const conceptsData = [
+  {
+    "id": "fern",
+    "name": "Fern 🐝",
+    "color": "#f39c12"
+  },
+  {
+    "id": "palm",
+    "name": "Palm 🦋",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "tree",
+    "name": "Tree 🌸",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "bush",
+    "name": "Bush 🌿",
+    "color": "#e67e22"
+  },
+  {
+    "id": "rose",
+    "name": "Rose 🌍",
+    "color": "#3498db"
+  },
+  {
+    "id": "tulip",
+    "name": "Tulip ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "maple",
+    "name": "Maple ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "oak",
+    "name": "Oak ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "birch",
+    "name": "Birch ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "willow",
+    "name": "Willow ",
+    "color": "#3498db"
+  },
+  {
+    "id": "cherry",
+    "name": "Cherry ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "walnut",
+    "name": "Walnut ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "aspen",
+    "name": "Aspen ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "Pine",
+    "name": "Pine ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "cypress",
+    "name": "Cypress ",
+    "color": "#3498db"
+  }
+];
+        
+        // Feature data
+        const featuresData = {
+  "thrive": {
+    "name": "thrive",
+    "frequency": 5,
+    "avg_relevance": 0.5583333333333333,
+    "concepts": [
+      "cypress",
+      "birch",
+      "fern",
+      "Pine"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "wood": {
+    "name": "wood",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "birch"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "branches": {
+    "name": "branches",
+    "frequency": 4,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "birch",
+      "willow",
+      "cherry",
+      "tree"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "environmental": {
+    "name": "environmental",
+    "frequency": 10,
+    "avg_relevance": 0.6666833333333333,
+    "concepts": [
+      "cypress",
+      "Pine",
+      "birch",
+      "fern",
+      "tree",
+      "tulip",
+      "palm"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "pattern": {
+    "name": "pattern",
+    "frequency": 3,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "rose",
+      "birch",
+      "fern"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "texture": {
+    "name": "texture",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "birch",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "arrangements": {
+    "name": "arrangements",
+    "frequency": 3,
+    "avg_relevance": 1.2666666666666666,
+    "concepts": [
+      "rose",
+      "fern"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "distinctive": {
+    "name": "distinctive",
+    "frequency": 6,
+    "avg_relevance": 0.98,
+    "concepts": [
+      "rose",
+      "Pine",
+      "birch",
+      "fern",
+      "palm"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "provide": {
+    "name": "provide",
+    "frequency": 7,
+    "avg_relevance": 0.7000500000000001,
+    "concepts": [
+      "Pine",
+      "aspen",
+      "birch",
+      "tree",
+      "oak"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "soil": {
+    "name": "soil",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "aspen",
+      "palm",
+      "tree"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "floral": {
+    "name": "floral",
+    "frequency": 4,
+    "avg_relevance": 0.7833333333333333,
+    "concepts": [
+      "rose",
+      "birch",
+      "fern"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "with": {
+    "name": "with",
+    "frequency": 14,
+    "avg_relevance": 1.0000000000000002,
+    "concepts": [
+      "rose",
+      "cypress",
+      "willow",
+      "aspen",
+      "birch",
+      "maple",
+      "cherry",
+      "walnut",
+      "palm"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tree": {
+    "name": "tree",
+    "frequency": 4,
+    "avg_relevance": 0.7749999999999999,
+    "concepts": [
+      "birch",
+      "maple",
+      "willow",
+      "Pine"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "green": {
+    "name": "green",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "birch",
+      "fern"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "slightly": {
+    "name": "slightly",
+    "frequency": 2,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "cherry"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "fragrance": {
+    "name": "fragrance",
+    "frequency": 3,
+    "avg_relevance": 1.10005,
+    "concepts": [
+      "rose"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "popular": {
+    "name": "popular",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "rose",
+      "tulip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "leaves": {
+    "name": "leaves",
+    "frequency": 9,
+    "avg_relevance": 1.3444444444444446,
+    "concepts": [
+      "birch",
+      "fern",
+      "maple",
+      "Pine"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shelter": {
+    "name": "shelter",
+    "frequency": 2,
+    "avg_relevance": 0.4,
+    "concepts": [
+      "oak",
+      "aspen"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "season": {
+    "name": "season",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "birch",
+      "aspen"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "protection": {
+    "name": "protection",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "rose",
+      "tree"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "pleasant": {
+    "name": "pleasant",
+    "frequency": 2,
+    "avg_relevance": 0.9001,
+    "concepts": [
+      "birch"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "involves": {
+    "name": "involves",
+    "frequency": 2,
+    "avg_relevance": 1.9,
+    "concepts": [
+      "fern"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "both": {
+    "name": "both",
+    "frequency": 3,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "birch",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "edges": {
+    "name": "edges",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "birch"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "harvested": {
+    "name": "harvested",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "maple",
+      "cherry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "places": {
+    "name": "places",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "palm"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "vibrant": {
+    "name": "vibrant",
+    "frequency": 5,
+    "avg_relevance": 0.9200000000000002,
+    "concepts": [
+      "birch",
+      "maple",
+      "cherry",
+      "tulip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "autumn": {
+    "name": "autumn",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "birch",
+      "maple",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "aesthetic": {
+    "name": "aesthetic",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "fern",
+      "willow"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "associated": {
+    "name": "associated",
+    "frequency": 9,
+    "avg_relevance": 0.8111111111111112,
+    "concepts": [
+      "rose",
+      "cypress",
+      "willow",
+      "aspen",
+      "maple",
+      "walnut",
+      "palm"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "often": {
+    "name": "often",
+    "frequency": 47,
+    "avg_relevance": 3.889402127659572,
+    "concepts": [
+      "rose",
+      "cypress",
+      "willow",
+      "aspen",
+      "birch",
+      "fern",
+      "maple",
+      "cherry",
+      "tree",
+      "tulip",
+      "oak",
+      "walnut",
+      "palm"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "known": {
+    "name": "known",
+    "frequency": 7,
+    "avg_relevance": 0.9428857142857142,
+    "concepts": [
+      "rose",
+      "cypress",
+      "fern",
+      "tulip",
+      "oak",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "elegant": {
+    "name": "elegant",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "fern",
+      "willow"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shapes": {
+    "name": "shapes",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "bush",
+      "willow"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "smooth": {
+    "name": "smooth",
+    "frequency": 3,
+    "avg_relevance": 0.8666666666666667,
+    "concepts": [
+      "birch",
+      "cherry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "forested": {
+    "name": "forested",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "birch",
+      "fern"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "desserts": {
+    "name": "desserts",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "cherry"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "fresh": {
+    "name": "fresh",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "birch",
+      "cherry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "traditional": {
+    "name": "traditional",
+    "frequency": 2,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "rose"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "bark": {
+    "name": "bark",
+    "frequency": 5,
+    "avg_relevance": 1.1800000000000002,
+    "concepts": [
+      "birch",
+      "oak",
+      "tree"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "quality": {
+    "name": "quality",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "birch",
+      "tree"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "red": {
+    "name": "red",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "cherry"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "tropical": {
+    "name": "tropical",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "palm"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "found": {
+    "name": "found",
+    "frequency": 10,
+    "avg_relevance": 1.3700400000000004,
+    "concepts": [
+      "bush",
+      "birch",
+      "fern",
+      "tulip",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "gardens": {
+    "name": "gardens",
+    "frequency": 3,
+    "avg_relevance": 0.7500000000000001,
+    "concepts": [
+      "bush",
+      "tulip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "grows": {
+    "name": "grows",
+    "frequency": 7,
+    "avg_relevance": 0.9428571428571428,
+    "concepts": [
+      "willow",
+      "fern",
+      "cherry",
+      "tulip",
+      "palm"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "perfumes": {
+    "name": "perfumes",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "rose"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "choice": {
+    "name": "choice",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "rose",
+      "tulip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "lacy": {
+    "name": "lacy",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "fern"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "making": {
+    "name": "making",
+    "frequency": 4,
+    "avg_relevance": 0.7749999999999999,
+    "concepts": [
+      "rose",
+      "birch",
+      "maple",
+      "tulip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "used": {
+    "name": "used",
+    "frequency": 13,
+    "avg_relevance": 1.3076923076923075,
+    "concepts": [
+      "bush",
+      "rose",
+      "birch",
+      "fern",
+      "maple",
+      "cherry",
+      "tulip",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shaded": {
+    "name": "shaded",
+    "frequency": 3,
+    "avg_relevance": 0.625,
+    "concepts": [
+      "birch",
+      "fern",
+      "tree"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "unfurl": {
+    "name": "unfurl",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "fern"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "layers": {
+    "name": "layers",
+    "frequency": 4,
+    "avg_relevance": 0.8833333333333333,
+    "concepts": [
+      "rose",
+      "birch",
+      "walnut",
+      "tree"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "typically": {
+    "name": "typically",
+    "frequency": 5,
+    "avg_relevance": 0.8200000000000001,
+    "concepts": [
+      "birch",
+      "fern",
+      "cherry",
+      "tulip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "range": {
+    "name": "range",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "cherry",
+      "tulip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "spores": {
+    "name": "spores",
+    "frequency": 3,
+    "avg_relevance": 1.5999999999999999,
+    "concepts": [
+      "fern"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "reproducing": {
+    "name": "reproducing",
+    "frequency": 2,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "fern",
+      "tree"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "source": {
+    "name": "source",
+    "frequency": 2,
+    "avg_relevance": 0.4,
+    "concepts": [
+      "Pine",
+      "aspen"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "reproduces": {
+    "name": "reproduces",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "birch",
+      "fern"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "white": {
+    "name": "white",
+    "frequency": 3,
+    "avg_relevance": 0.8666666666666667,
+    "concepts": [
+      "birch",
+      "tulip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "areas": {
+    "name": "areas",
+    "frequency": 7,
+    "avg_relevance": 0.8857142857142856,
+    "concepts": [
+      "birch",
+      "fern",
+      "palm"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "serrated": {
+    "name": "serrated",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "birch"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "admired": {
+    "name": "admired",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "maple",
+      "willow"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "very": {
+    "name": "very",
+    "frequency": 2,
+    "avg_relevance": 0.6000000000000001,
+    "concepts": [
+      "cypress",
+      "palm"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "dishes": {
+    "name": "dishes",
+    "frequency": 2,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "walnut"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "woodland": {
+    "name": "woodland",
+    "frequency": 3,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "birch",
+      "oak",
+      "fern"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "prevent": {
+    "name": "prevent",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "aspen",
+      "tree"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tall": {
+    "name": "tall",
+    "frequency": 3,
+    "avg_relevance": 0.5666666666666668,
+    "concepts": [
+      "cypress",
+      "birch",
+      "palm"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "flavor": {
+    "name": "flavor",
+    "frequency": 3,
+    "avg_relevance": 1.1333333333333333,
+    "concepts": [
+      "walnut",
+      "cherry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "long": {
+    "name": "long",
+    "frequency": 2,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "fern",
+      "willow"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "savory": {
+    "name": "savory",
+    "frequency": 2,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "walnut"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "rich": {
+    "name": "rich",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "rose"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "sweet": {
+    "name": "sweet",
+    "frequency": 5,
+    "avg_relevance": 1.24,
+    "concepts": [
+      "maple",
+      "cherry",
+      "walnut"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "due": {
+    "name": "due",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "birch"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "humid": {
+    "name": "humid",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "fern"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "feathery": {
+    "name": "feathery",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "fern"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "climates": {
+    "name": "climates",
+    "frequency": 3,
+    "avg_relevance": 0.5666666666666665,
+    "concepts": [
+      "cypress",
+      "birch",
+      "palm"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "regions": {
+    "name": "regions",
+    "frequency": 4,
+    "avg_relevance": 1.5000749999999998,
+    "concepts": [
+      "birch",
+      "aspen"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "creating": {
+    "name": "creating",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "rose",
+      "fern"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "temperate": {
+    "name": "temperate",
+    "frequency": 3,
+    "avg_relevance": 1.8000999999999998,
+    "concepts": [
+      "birch"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "trunk": {
+    "name": "trunk",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "palm",
+      "tree"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "into": {
+    "name": "into",
+    "frequency": 5,
+    "avg_relevance": 1.22,
+    "concepts": [
+      "bush",
+      "fern",
+      "tree"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fruit": {
+    "name": "fruit",
+    "frequency": 2,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "cherry"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "clusters": {
+    "name": "clusters",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "fern",
+      "cherry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "deep": {
+    "name": "deep",
+    "frequency": 5,
+    "avg_relevance": 1.16,
+    "concepts": [
+      "rose",
+      "cherry",
+      "tree",
+      "tulip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "improving": {
+    "name": "improving",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "birch",
+      "tree"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "during": {
+    "name": "during",
+    "frequency": 5,
+    "avg_relevance": 0.9799999999999999,
+    "concepts": [
+      "birch",
+      "cherry",
+      "aspen",
+      "tulip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "moist": {
+    "name": "moist",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "fern"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "furniture": {
+    "name": "furniture",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "birch",
+      "maple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "decorative": {
+    "name": "decorative",
+    "frequency": 4,
+    "avg_relevance": 1.0999999999999999,
+    "concepts": [
+      "bush",
+      "cherry",
+      "tulip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "from": {
+    "name": "from",
+    "frequency": 5,
+    "avg_relevance": 0.9400000000000001,
+    "concepts": [
+      "fern",
+      "cherry",
+      "tree",
+      "tulip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "certain": {
+    "name": "certain",
+    "frequency": 2,
+    "avg_relevance": 0.6000000000000001,
+    "concepts": [
+      "cypress",
+      "maple"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "petals": {
+    "name": "petals",
+    "frequency": 4,
+    "avg_relevance": 2.7001,
+    "concepts": [
+      "rose"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "bouquets": {
+    "name": "bouquets",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "rose",
+      "tulip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  }
+};
+        
+        // Feature color mapping
+        const uniqueColors = ['#e74c3c', '#3498db', '#e67e22', '#1abc9c', '#9b59b6'];
+        const sharedColor = '#2ecc71';
+        
+        // Prepare node and edge data
+        let nodes = [];
+        let links = [];
+
+        function prepareData(minFreq, minRelevance, showUnique, showShared) {
+            nodes = [];
+            links = [];
+            
+            // Add concept nodes
+            conceptsData.forEach(concept => {
+                nodes.push({
+                    id: concept.id,
+                    name: concept.name,
+                    type: 'concept',
+                    color: concept.color,
+                    radius: 40
+                });
+            });
+
+            // Add feature nodes
+            Object.entries(featuresData).forEach(([key, feature]) => {
+                if (feature.frequency < minFreq) return;
+                if (feature.avg_relevance < minRelevance) return;
+                
+                const isShared = feature.is_shared;
+                
+                if (!isShared && !showUnique) return;
+                if (isShared && !showShared) return;
+                
+                let color;
+                if (isShared) {
+                    color = sharedColor;
+                } else {
+                    // Determine color based on first related concept
+                    const conceptIndex = conceptsData.findIndex(c => c.id === feature.concepts[0]);
+                    color = uniqueColors[conceptIndex % uniqueColors.length];
+                }
+                
+                const radius = Math.max(8, Math.min(25, feature.frequency * 1.2));
+                
+                nodes.push({
+                    id: key,
+                    name: feature.name,
+                    type: 'feature',
+                    color: color,
+                    radius: radius,
+                    frequency: feature.frequency,
+                    relevance: feature.avg_relevance,
+                    concepts: feature.concepts,
+                    isShared: isShared,
+                    featureType: feature.feature_type
+                });
+                
+                // Add connections
+                feature.concepts.forEach(concept => {
+                    links.push({
+                        source: key,
+                        target: concept,
+                        relevance: feature.avg_relevance,
+                        strength: Math.min(1, feature.avg_relevance / 2)
+                    });
+                });
+            });
+            
+            // Update statistics
+            const featureNodes = nodes.filter(n => n.type === 'feature');
+            document.getElementById('featureCount').textContent = featureNodes.length;
+            document.getElementById('uniqueCount').textContent = featureNodes.filter(n => !n.isShared).length;
+            document.getElementById('sharedCount').textContent = featureNodes.filter(n => n.isShared).length;
+        }
+
+        // D3 visualization
+        const svg = d3.select('#graph');
+        const width = document.querySelector('.main').clientWidth;
+        const height = document.querySelector('.main').clientHeight;
+        
+        const g = svg.append('g');
+        
+        // Zoom
+        const zoom = d3.zoom()
+            .scaleExtent([0.3, 3])
+            .on('zoom', (event) => {
+                g.attr('transform', event.transform);
+            });
+        
+        svg.call(zoom);
+        
+        // Initial zoom to center
+        svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.8));
+
+        let simulation;
+        
+        function updateGraph() {
+            const minFreq = parseInt(document.getElementById('freqFilter').value);
+            const minRelevance = parseInt(document.getElementById('relevanceFilter').value) / 100;
+            const showUnique = document.getElementById('showUnique').checked;
+            const showShared = document.getElementById('showShared').checked;
+            
+            prepareData(minFreq, minRelevance, showUnique, showShared);
+            
+            // Clear old elements
+            g.selectAll('*').remove();
+            
+            // Force-directed simulation
+            simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
+                    return d.relevance > 1 ? 80 : 120;
+                }).strength(d => d.strength * 0.5))
+                .force('charge', d3.forceManyBody().strength(d => d.type === 'concept' ? -500 : -100))
+                .force('center', d3.forceCenter(0, 0))
+                .force('collision', d3.forceCollide().radius(d => d.radius + 5));
+            
+            // Draw edges
+            const link = g.append('g')
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('stroke', d => {
+                    if (d.relevance > 1) return 'rgba(255,255,255,0.6)';
+                    if (d.relevance > 0.7) return 'rgba(255,255,255,0.35)';
+                    return 'rgba(255,255,255,0.15)';
+                })
+                .attr('stroke-width', d => Math.max(1, d.relevance * 2));
+            
+            // Draw nodes
+            const node = g.append('g')
+                .selectAll('g')
+                .data(nodes)
+                .join('g')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            // Node glow effect
+            const defs = svg.select('defs').empty() ? svg.append('defs') : svg.select('defs');
+            defs.selectAll('*').remove();
+            
+            nodes.forEach((n, i) => {
+                const filter = defs.append('filter')
+                    .attr('id', `glow-${i}`)
+                    .attr('x', '-50%')
+                    .attr('y', '-50%')
+                    .attr('width', '200%')
+                    .attr('height', '200%');
+                
+                filter.append('feGaussianBlur')
+                    .attr('stdDeviation', '3')
+                    .attr('result', 'coloredBlur');
+                
+                const feMerge = filter.append('feMerge');
+                feMerge.append('feMergeNode').attr('in', 'coloredBlur');
+                feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+            });
+            
+            node.append('circle')
+                .attr('r', d => d.radius)
+                .attr('fill', d => d.color)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', d => d.type === 'concept' ? 3 : 1.5)
+                .attr('opacity', d => d.type === 'concept' ? 1 : 0.85)
+                .style('filter', (d, i) => `url(#glow-${i})`)
+                .style('cursor', 'pointer');
+            
+            // Node labels
+            node.append('text')
+                .attr('class', d => d.type === 'concept' ? 'concept-label' : 'node-label')
+                .attr('text-anchor', 'middle')
+                .attr('dy', d => d.type === 'concept' ? 5 : (d.radius + 14))
+                .text(d => d.name.length > 20 ? d.name.substring(0, 18) + '...' : d.name);
+            
+            // Tooltip
+            const tooltip = document.getElementById('tooltip');
+            
+            node.on('mouseover', (event, d) => {
+                if (d.type === 'feature') {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Frequency: </span>${d.frequency}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Relevance: </span>${d.relevance.toFixed(2)}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Type: </span>${d.isShared ? 'Shared' : 'Unique'}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Feature Type: </span>${d.featureType}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Related Concepts: </span>${d.concepts.join(', ')}</div>
+                    `;
+                } else {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row">Core Concept Node</div>
+                    `;
+                }
+                tooltip.style.opacity = 1;
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mousemove', (event) => {
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mouseout', () => {
+                tooltip.style.opacity = 0;
+            });
+            
+            // Update positions
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node.attr('transform', d => `translate(${d.x},${d.y})`);
+            });
+        }
+        
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // Event listeners
+        document.getElementById('freqFilter').addEventListener('input', (e) => {
+            document.getElementById('freqValue').textContent = e.target.value;
+            updateGraph();
+        });
+        
+        document.getElementById('relevanceFilter').addEventListener('input', (e) => {
+            document.getElementById('relevanceValue').textContent = (e.target.value / 100).toFixed(1);
+            updateGraph();
+        });
+        
+        document.getElementById('showUnique').addEventListener('change', updateGraph);
+        document.getElementById('showShared').addEventListener('change', updateGraph);
+        
+        // Initialize
+        updateGraph();
+    </script>
+</body>
+</html>

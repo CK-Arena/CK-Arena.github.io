@@ -1,0 +1,3727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artifacts Knowledge Graph</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .main {
+            flex: 1;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .legend {
+            margin-bottom: 20px;
+        }
+        
+        .legend-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+        
+        .legend-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .legend-line {
+            width: 30px;
+            height: 3px;
+            margin-right: 10px;
+            flex-shrink: 0;
+            border-radius: 2px;
+        }
+        
+        .filters {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #f39c12;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            font-size: 0.85rem;
+            color: #f39c12;
+            min-width: 30px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input {
+            accent-color: #f39c12;
+        }
+        
+        .stats {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin: 5px 0;
+        }
+        
+        .stat-value {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
+        #tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f39c12;
+        }
+        
+        .tooltip-row {
+            margin: 4px 0;
+            color: #ccc;
+        }
+        
+        .tooltip-label {
+            color: #888;
+        }
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .node-label {
+            font-size: 11px;
+            fill: #fff;
+            pointer-events: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .concept-label {
+            font-size: 16px;
+            font-weight: bold;
+            fill: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 0.8rem;
+            max-width: 300px;
+        }
+        
+        .info-panel p {
+            margin: 5px 0;
+            color: #aaa;
+        }
+        
+        .info-panel strong {
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Artifacts Knowledge Graph</h1>
+            
+            <div class="legend">
+                <div class="legend-title">Node Types</div>
+                
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Cup</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Bowl</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Chair</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Table</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Car</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Bus</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Boat</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Ship</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Bike</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Scooter</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Plane</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Helicopter</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Truck</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Train</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Subway</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Desk</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Cabinet</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Wardrobe</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Stool</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Bench</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Paperclip</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Flannel</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Fork</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Spoon</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Bed</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Pillow</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Lamp</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Lightbulb</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Camera</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Lens</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Mattress</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Cushion</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e74c3c;"></div>
+                    <span>Concept 1 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Concept 2 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #2ecc71;"></div>
+                    <span>Shared Feature</span>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-title">Edge Strength</div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.8);"></div>
+                    <span>Strong (relevance > 1.0)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.4);"></div>
+                    <span>Medium</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.15);"></div>
+                    <span>Weak (relevance < 0.5)</span>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="filter-label">Min Frequency (filter low-frequency features)</label>
+                    <div class="slider-container">
+                        <input type="range" id="freqFilter" min="1" max="20" value="3">
+                        <span class="slider-value" id="freqValue">3</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Min Relevance</label>
+                    <div class="slider-container">
+                        <input type="range" id="relevanceFilter" min="0" max="100" value="50">
+                        <span class="slider-value" id="relevanceValue">0.5</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Feature Types</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showUnique" checked>
+                            <span>Unique</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showShared" checked>
+                            <span>Shared</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stats-title">Statistics</div>
+                <div class="stat-row">
+                    <span>Features Displayed</span>
+                    <span class="stat-value" id="featureCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Unique Features</span>
+                    <span class="stat-value" id="uniqueCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Shared Features</span>
+                    <span class="stat-value" id="sharedCount">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main">
+            <svg id="graph"></svg>
+            <div id="tooltip"></div>
+            <div class="info-panel">
+                <p><strong>Interactions:</strong></p>
+                <p>* Drag nodes to reposition</p>
+                <p>* Scroll to zoom</p>
+                <p>* Hover for details</p>
+                <p>* Use filters to reduce noise</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Concept data
+        const conceptsData = [
+  {
+    "id": "cup",
+    "name": "Cup 🐝",
+    "color": "#f39c12"
+  },
+  {
+    "id": "bowl",
+    "name": "Bowl 🦋",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "chair",
+    "name": "Chair 🌸",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "table",
+    "name": "Table 🌿",
+    "color": "#e67e22"
+  },
+  {
+    "id": "car",
+    "name": "Car 🌍",
+    "color": "#3498db"
+  },
+  {
+    "id": "bus",
+    "name": "Bus ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "boat",
+    "name": "Boat ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "ship",
+    "name": "Ship ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "bike",
+    "name": "Bike ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "scooter",
+    "name": "Scooter ",
+    "color": "#3498db"
+  },
+  {
+    "id": "plane",
+    "name": "Plane ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "helicopter",
+    "name": "Helicopter ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "truck",
+    "name": "Truck ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "train",
+    "name": "Train ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "subway",
+    "name": "Subway ",
+    "color": "#3498db"
+  },
+  {
+    "id": "desk",
+    "name": "Desk ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "cabinet",
+    "name": "Cabinet ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "wardrobe",
+    "name": "Wardrobe ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "stool",
+    "name": "Stool ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "bench",
+    "name": "Bench ",
+    "color": "#3498db"
+  },
+  {
+    "id": "paperclip",
+    "name": "Paperclip ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "flannel",
+    "name": "Flannel ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "fork",
+    "name": "Fork ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "spoon",
+    "name": "Spoon ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "bed",
+    "name": "Bed ",
+    "color": "#3498db"
+  },
+  {
+    "id": "pillow",
+    "name": "Pillow ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "lamp",
+    "name": "Lamp ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "lightbulb",
+    "name": "Lightbulb ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "camera",
+    "name": "Camera ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "lens",
+    "name": "Lens ",
+    "color": "#3498db"
+  },
+  {
+    "id": "mattress",
+    "name": "Mattress ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "cushion",
+    "name": "Cushion ",
+    "color": "#9b59b6"
+  }
+];
+        
+        // Feature data
+        const featuresData = {
+  "wood": {
+    "name": "wood",
+    "frequency": 7,
+    "avg_relevance": 0.7000571428571429,
+    "concepts": [
+      "table",
+      "cabinet",
+      "bowl",
+      "boat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "driveways": {
+    "name": "driveways",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "car"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "operates": {
+    "name": "operates",
+    "frequency": 7,
+    "avg_relevance": 0.98001,
+    "concepts": [
+      "plane",
+      "subway",
+      "train",
+      "bike",
+      "car",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "military": {
+    "name": "military",
+    "frequency": 2,
+    "avg_relevance": 0.45005,
+    "concepts": [
+      "helicopter",
+      "ship"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "designs": {
+    "name": "designs",
+    "frequency": 7,
+    "avg_relevance": 0.91501,
+    "concepts": [
+      "bowl",
+      "bed",
+      "bike",
+      "stool",
+      "chair",
+      "cup"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "transporting": {
+    "name": "transporting",
+    "frequency": 4,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "plane",
+      "fork",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "industries": {
+    "name": "industries",
+    "frequency": 3,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "train",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "parts": {
+    "name": "parts",
+    "frequency": 2,
+    "avg_relevance": 0.55005,
+    "concepts": [
+      "subway",
+      "cushion"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "designed": {
+    "name": "designed",
+    "frequency": 10,
+    "avg_relevance": 1.03004,
+    "concepts": [
+      "pillow",
+      "cabinet",
+      "spoon",
+      "bed",
+      "boat",
+      "chair",
+      "wardrobe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "vehicle": {
+    "name": "vehicle",
+    "frequency": 4,
+    "avg_relevance": 0.8000333333333334,
+    "concepts": [
+      "plane",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "positioning": {
+    "name": "positioning",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "chair",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sizes": {
+    "name": "sizes",
+    "frequency": 7,
+    "avg_relevance": 0.6857285714285715,
+    "concepts": [
+      "bowl",
+      "cushion",
+      "bed",
+      "bike",
+      "boat",
+      "chair",
+      "cup"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "frequently": {
+    "name": "frequently",
+    "frequency": 7,
+    "avg_relevance": 0.8714571428571428,
+    "concepts": [
+      "cabinet",
+      "train",
+      "desk",
+      "paperclip",
+      "camera"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "provide": {
+    "name": "provide",
+    "frequency": 12,
+    "avg_relevance": 0.6875249999999999,
+    "concepts": [
+      "pillow",
+      "table",
+      "flannel",
+      "cushion",
+      "mattress",
+      "car",
+      "bench",
+      "chair",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "support": {
+    "name": "support",
+    "frequency": 10,
+    "avg_relevance": 0.8222333333333334,
+    "concepts": [
+      "pillow",
+      "table",
+      "cushion",
+      "bed",
+      "mattress",
+      "stool",
+      "chair"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "distance": {
+    "name": "distance",
+    "frequency": 5,
+    "avg_relevance": 0.575,
+    "concepts": [
+      "bike",
+      "train",
+      "plane",
+      "scooter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "focus": {
+    "name": "focus",
+    "frequency": 2,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "camera"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "additional": {
+    "name": "additional",
+    "frequency": 6,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "bike",
+      "pillow",
+      "cabinet",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "internal": {
+    "name": "internal",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "plane",
+      "mattress"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "good": {
+    "name": "good",
+    "frequency": 3,
+    "avg_relevance": 0.725,
+    "concepts": [
+      "plane",
+      "train",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "store": {
+    "name": "store",
+    "frequency": 10,
+    "avg_relevance": 1.1444444444444444,
+    "concepts": [
+      "table",
+      "cabinet",
+      "wardrobe",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "with": {
+    "name": "with",
+    "frequency": 35,
+    "avg_relevance": 1.6857171428571425,
+    "concepts": [
+      "pillow",
+      "cabinet",
+      "plane",
+      "helicopter",
+      "train",
+      "bowl",
+      "flannel",
+      "fork",
+      "bed",
+      "cushion",
+      "bike",
+      "car",
+      "lens",
+      "chair",
+      "cup",
+      "wardrobe",
+      "camera",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "may": {
+    "name": "may",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "cup",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "kitchens": {
+    "name": "kitchens",
+    "frequency": 6,
+    "avg_relevance": 1.2200000000000002,
+    "concepts": [
+      "cabinet",
+      "cup",
+      "bowl"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "homes": {
+    "name": "homes",
+    "frequency": 4,
+    "avg_relevance": 0.5250250000000001,
+    "concepts": [
+      "lamp",
+      "chair",
+      "cushion",
+      "stool"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sometimes": {
+    "name": "sometimes",
+    "frequency": 4,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "chair",
+      "bowl",
+      "cabinet",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "visual": {
+    "name": "visual",
+    "frequency": 5,
+    "avg_relevance": 1.0499999999999998,
+    "concepts": [
+      "camera",
+      "lens"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "types": {
+    "name": "types",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "wardrobe",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "connecting": {
+    "name": "connecting",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "plane",
+      "subway"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tool": {
+    "name": "tool",
+    "frequency": 4,
+    "avg_relevance": 1.05,
+    "concepts": [
+      "lens",
+      "spoon",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "coffee": {
+    "name": "coffee",
+    "frequency": 3,
+    "avg_relevance": 2.6,
+    "concepts": [
+      "cup"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "inside": {
+    "name": "inside",
+    "frequency": 2,
+    "avg_relevance": 0.6000000000000001,
+    "concepts": [
+      "lamp",
+      "wardrobe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "handles": {
+    "name": "handles",
+    "frequency": 4,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "cabinet",
+      "cup",
+      "fork",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "materials": {
+    "name": "materials",
+    "frequency": 14,
+    "avg_relevance": 0.6500375,
+    "concepts": [
+      "cabinet",
+      "table",
+      "bowl",
+      "flannel",
+      "cushion",
+      "bed",
+      "boat",
+      "stool",
+      "chair",
+      "cup",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "body": {
+    "name": "body",
+    "frequency": 4,
+    "avg_relevance": 1.050025,
+    "concepts": [
+      "chair",
+      "cushion",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "personal": {
+    "name": "personal",
+    "frequency": 10,
+    "avg_relevance": 0.86,
+    "concepts": [
+      "cabinet",
+      "bed",
+      "car",
+      "boat",
+      "camera",
+      "wardrobe",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "conditioning": {
+    "name": "conditioning",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "car",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "navigate": {
+    "name": "navigate",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "subway",
+      "helicopter",
+      "boat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "both": {
+    "name": "both",
+    "frequency": 8,
+    "avg_relevance": 0.6249999999999999,
+    "concepts": [
+      "helicopter",
+      "train",
+      "bowl",
+      "bike",
+      "boat",
+      "camera",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "transportation": {
+    "name": "transportation",
+    "frequency": 9,
+    "avg_relevance": 1.188888888888889,
+    "concepts": [
+      "plane",
+      "train",
+      "bike",
+      "bus",
+      "boat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "adjustable": {
+    "name": "adjustable",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "cabinet",
+      "camera"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "purposes": {
+    "name": "purposes",
+    "frequency": 10,
+    "avg_relevance": 0.76001,
+    "concepts": [
+      "cabinet",
+      "helicopter",
+      "truck",
+      "bike",
+      "boat",
+      "cup",
+      "camera",
+      "ship"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "head": {
+    "name": "head",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "pillow"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "primary": {
+    "name": "primary",
+    "frequency": 2,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "bike",
+      "lamp"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "hot": {
+    "name": "hot",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "bowl",
+      "cup"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "commonly": {
+    "name": "commonly",
+    "frequency": 12,
+    "avg_relevance": 0.8583333333333333,
+    "concepts": [
+      "pillow",
+      "cabinet",
+      "table",
+      "lamp",
+      "car",
+      "boat",
+      "paperclip",
+      "chair",
+      "cup",
+      "wardrobe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "accessories": {
+    "name": "accessories",
+    "frequency": 4,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "bike",
+      "wardrobe",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "capture": {
+    "name": "capture",
+    "frequency": 3,
+    "avg_relevance": 1.0999999999999999,
+    "concepts": [
+      "camera",
+      "lens"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "paired": {
+    "name": "paired",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "cup",
+      "fork",
+      "camera"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "food": {
+    "name": "food",
+    "frequency": 6,
+    "avg_relevance": 1.8833333333333335,
+    "concepts": [
+      "bowl",
+      "fork",
+      "spoon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "associated": {
+    "name": "associated",
+    "frequency": 6,
+    "avg_relevance": 0.7166666666666668,
+    "concepts": [
+      "pillow",
+      "plane",
+      "train",
+      "flannel",
+      "bed",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "versatility": {
+    "name": "versatility",
+    "frequency": 9,
+    "avg_relevance": 0.66875,
+    "concepts": [
+      "cabinet",
+      "wardrobe",
+      "bike",
+      "boat",
+      "paperclip",
+      "cup",
+      "fork",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "glass": {
+    "name": "glass",
+    "frequency": 3,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "table",
+      "cup"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "construction": {
+    "name": "construction",
+    "frequency": 4,
+    "avg_relevance": 1.05,
+    "concepts": [
+      "cabinet",
+      "boat",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "water": {
+    "name": "water",
+    "frequency": 3,
+    "avg_relevance": 1.3999999999999997,
+    "concepts": [
+      "boat"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "portions": {
+    "name": "portions",
+    "frequency": 3,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "bowl",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "ranging": {
+    "name": "ranging",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "plane",
+      "boat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "engines": {
+    "name": "engines",
+    "frequency": 6,
+    "avg_relevance": 0.6666666666666667,
+    "concepts": [
+      "plane",
+      "train",
+      "scooter",
+      "car",
+      "boat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "terrains": {
+    "name": "terrains",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "bike",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "features": {
+    "name": "features",
+    "frequency": 8,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "pillow",
+      "cabinet",
+      "desk",
+      "car",
+      "chair",
+      "cup",
+      "camera"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tasks": {
+    "name": "tasks",
+    "frequency": 5,
+    "avg_relevance": 1.2000600000000001,
+    "concepts": [
+      "paperclip",
+      "cup",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "seen": {
+    "name": "seen",
+    "frequency": 3,
+    "avg_relevance": 0.6000333333333333,
+    "concepts": [
+      "bike",
+      "helicopter",
+      "bench"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "items": {
+    "name": "items",
+    "frequency": 12,
+    "avg_relevance": 1.1000250000000003,
+    "concepts": [
+      "cabinet",
+      "table",
+      "bowl",
+      "desk",
+      "bed",
+      "cup",
+      "wardrobe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "includes": {
+    "name": "includes",
+    "frequency": 3,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "camera",
+      "mattress",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sheets": {
+    "name": "sheets",
+    "frequency": 3,
+    "avg_relevance": 1.5666666666666667,
+    "concepts": [
+      "mattress",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "work": {
+    "name": "work",
+    "frequency": 2,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "desk"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "protect": {
+    "name": "protect",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "car",
+      "cabinet"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "often": {
+    "name": "often",
+    "frequency": 86,
+    "avg_relevance": 2.3383906976744213,
+    "concepts": [
+      "scooter",
+      "helicopter",
+      "train",
+      "spoon",
+      "lamp",
+      "desk",
+      "bike",
+      "fork",
+      "cushion",
+      "mattress",
+      "boat",
+      "stool",
+      "paperclip",
+      "plane",
+      "subway",
+      "car",
+      "lens",
+      "chair",
+      "cup",
+      "wardrobe",
+      "camera",
+      "pillow",
+      "cabinet",
+      "table",
+      "bowl",
+      "flannel",
+      "bed",
+      "bench",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "significantly": {
+    "name": "significantly",
+    "frequency": 5,
+    "avg_relevance": 0.5875,
+    "concepts": [
+      "plane",
+      "train",
+      "bed",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "infrastructure": {
+    "name": "infrastructure",
+    "frequency": 3,
+    "avg_relevance": 1.0000666666666664,
+    "concepts": [
+      "plane",
+      "train"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "typically": {
+    "name": "typically",
+    "frequency": 12,
+    "avg_relevance": 0.9181818181818181,
+    "concepts": [
+      "cabinet",
+      "subway",
+      "fork",
+      "bed",
+      "bus",
+      "cup",
+      "wardrobe",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shape": {
+    "name": "shape",
+    "frequency": 5,
+    "avg_relevance": 0.7916916666666667,
+    "concepts": [
+      "pillow",
+      "spoon",
+      "cushion",
+      "paperclip",
+      "cup"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "requires": {
+    "name": "requires",
+    "frequency": 11,
+    "avg_relevance": 1.090918181818182,
+    "concepts": [
+      "plane",
+      "train",
+      "bed",
+      "mattress",
+      "bike",
+      "car",
+      "lightbulb",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "effort": {
+    "name": "effort",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "bike",
+      "scooter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "wheel": {
+    "name": "wheel",
+    "frequency": 4,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "bike",
+      "car"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "world": {
+    "name": "world",
+    "frequency": 2,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "plane"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "designated": {
+    "name": "designated",
+    "frequency": 3,
+    "avg_relevance": 0.6333333333333333,
+    "concepts": [
+      "train",
+      "bus",
+      "subway"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "powered": {
+    "name": "powered",
+    "frequency": 4,
+    "avg_relevance": 0.675,
+    "concepts": [
+      "car",
+      "train",
+      "boat",
+      "scooter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "specific": {
+    "name": "specific",
+    "frequency": 5,
+    "avg_relevance": 0.70002,
+    "concepts": [
+      "plane",
+      "train",
+      "mattress",
+      "boat",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "mattress": {
+    "name": "mattress",
+    "frequency": 2,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "bed"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "quality": {
+    "name": "quality",
+    "frequency": 4,
+    "avg_relevance": 1.025,
+    "concepts": [
+      "pillow",
+      "camera"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "piece": {
+    "name": "piece",
+    "frequency": 10,
+    "avg_relevance": 0.5611611111111111,
+    "concepts": [
+      "cabinet",
+      "desk",
+      "bed",
+      "stool",
+      "paperclip",
+      "wardrobe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "formal": {
+    "name": "formal",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "cup",
+      "fork"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "safe": {
+    "name": "safe",
+    "frequency": 2,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "helicopter"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "traveling": {
+    "name": "traveling",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "car",
+      "plane"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "held": {
+    "name": "held",
+    "frequency": 2,
+    "avg_relevance": 0.4,
+    "concepts": [
+      "lightbulb",
+      "camera"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "activities": {
+    "name": "activities",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "table",
+      "flannel",
+      "boat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "models": {
+    "name": "models",
+    "frequency": 3,
+    "avg_relevance": 0.8000000000000002,
+    "concepts": [
+      "chair",
+      "plane",
+      "camera"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "while": {
+    "name": "while",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "bike",
+      "car"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "liquids": {
+    "name": "liquids",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "cup",
+      "spoon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "commuting": {
+    "name": "commuting",
+    "frequency": 3,
+    "avg_relevance": 0.8000333333333334,
+    "concepts": [
+      "bike",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "stops": {
+    "name": "stops",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "bus",
+      "subway"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "larger": {
+    "name": "larger",
+    "frequency": 6,
+    "avg_relevance": 0.77,
+    "concepts": [
+      "plane",
+      "truck",
+      "bus",
+      "wardrobe",
+      "ship"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "versions": {
+    "name": "versions",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "camera"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "customized": {
+    "name": "customized",
+    "frequency": 4,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "chair",
+      "bed",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "have": {
+    "name": "have",
+    "frequency": 7,
+    "avg_relevance": 0.7571428571428571,
+    "concepts": [
+      "plane",
+      "scooter",
+      "table",
+      "bowl",
+      "bed",
+      "camera",
+      "wardrobe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "storing": {
+    "name": "storing",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "cup",
+      "desk"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "found": {
+    "name": "found",
+    "frequency": 17,
+    "avg_relevance": 0.9588294117647059,
+    "concepts": [
+      "cabinet",
+      "scooter",
+      "table",
+      "lamp",
+      "cushion",
+      "bed",
+      "stool",
+      "paperclip",
+      "chair",
+      "cup",
+      "wardrobe",
+      "lens"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "safety": {
+    "name": "safety",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "car",
+      "helicopter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "household": {
+    "name": "household",
+    "frequency": 5,
+    "avg_relevance": 0.5625000000000001,
+    "concepts": [
+      "table",
+      "cabinet",
+      "cup",
+      "wardrobe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "electricity": {
+    "name": "electricity",
+    "frequency": 3,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "car",
+      "lightbulb",
+      "train"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "come": {
+    "name": "come",
+    "frequency": 2,
+    "avg_relevance": 0.60005,
+    "concepts": [
+      "cabinet",
+      "cushion"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "enhance": {
+    "name": "enhance",
+    "frequency": 5,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "pillow",
+      "mattress",
+      "bike",
+      "chair",
+      "camera"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "memories": {
+    "name": "memories",
+    "frequency": 2,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "camera"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "positioned": {
+    "name": "positioned",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "chair",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "off": {
+    "name": "off",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "plane",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "eating": {
+    "name": "eating",
+    "frequency": 2,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "fork"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "utensils": {
+    "name": "utensils",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "cabinet",
+      "fork"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "legs": {
+    "name": "legs",
+    "frequency": 3,
+    "avg_relevance": 0.7000333333333334,
+    "concepts": [
+      "table",
+      "stool"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "structure": {
+    "name": "structure",
+    "frequency": 3,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "boat",
+      "mattress",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tracks": {
+    "name": "tracks",
+    "frequency": 2,
+    "avg_relevance": 1.5001,
+    "concepts": [
+      "train"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "drawers": {
+    "name": "drawers",
+    "frequency": 5,
+    "avg_relevance": 0.7799999999999999,
+    "concepts": [
+      "table",
+      "cabinet",
+      "desk",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "clothing": {
+    "name": "clothing",
+    "frequency": 5,
+    "avg_relevance": 1.56,
+    "concepts": [
+      "flannel",
+      "wardrobe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "multiple": {
+    "name": "multiple",
+    "frequency": 4,
+    "avg_relevance": 0.675025,
+    "concepts": [
+      "table",
+      "wardrobe",
+      "train",
+      "fork"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "global": {
+    "name": "global",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "plane",
+      "ship"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "against": {
+    "name": "against",
+    "frequency": 2,
+    "avg_relevance": 0.60005,
+    "concepts": [
+      "cabinet",
+      "scooter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "used": {
+    "name": "used",
+    "frequency": 62,
+    "avg_relevance": 2.0870999999999986,
+    "concepts": [
+      "scooter",
+      "helicopter",
+      "train",
+      "spoon",
+      "lamp",
+      "desk",
+      "bike",
+      "fork",
+      "cushion",
+      "boat",
+      "stool",
+      "paperclip",
+      "car",
+      "lens",
+      "chair",
+      "cup",
+      "wardrobe",
+      "camera",
+      "pillow",
+      "cabinet",
+      "ship",
+      "bowl",
+      "flannel",
+      "bed",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "serving": {
+    "name": "serving",
+    "frequency": 3,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "bowl",
+      "cup"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "professional": {
+    "name": "professional",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "plane",
+      "camera"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "organized": {
+    "name": "organized",
+    "frequency": 6,
+    "avg_relevance": 0.6000125000000001,
+    "concepts": [
+      "cabinet",
+      "wardrobe",
+      "bed",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "such": {
+    "name": "such",
+    "frequency": 7,
+    "avg_relevance": 1.1428571428571426,
+    "concepts": [
+      "bowl",
+      "cushion",
+      "bed",
+      "car",
+      "boat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "passenger": {
+    "name": "passenger",
+    "frequency": 8,
+    "avg_relevance": 0.8833333333333333,
+    "concepts": [
+      "plane",
+      "train",
+      "subway",
+      "car",
+      "bus",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "commercial": {
+    "name": "commercial",
+    "frequency": 5,
+    "avg_relevance": 1.22,
+    "concepts": [
+      "plane",
+      "boat",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "plastic": {
+    "name": "plastic",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "cabinet",
+      "fork"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "technological": {
+    "name": "technological",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "camera",
+      "lens"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "drinking": {
+    "name": "drinking",
+    "frequency": 2,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "cup"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "hanging": {
+    "name": "hanging",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "wardrobe"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "comfort": {
+    "name": "comfort",
+    "frequency": 12,
+    "avg_relevance": 1.25835,
+    "concepts": [
+      "pillow",
+      "plane",
+      "flannel",
+      "cushion",
+      "mattress",
+      "car",
+      "chair"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "components": {
+    "name": "components",
+    "frequency": 2,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "bed",
+      "lens"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "usually": {
+    "name": "usually",
+    "frequency": 8,
+    "avg_relevance": 0.7999999999999999,
+    "concepts": [
+      "cabinet",
+      "subway",
+      "table",
+      "lamp",
+      "bed",
+      "stool",
+      "cup"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "made": {
+    "name": "made",
+    "frequency": 9,
+    "avg_relevance": 1.0000444444444443,
+    "concepts": [
+      "cabinet",
+      "table",
+      "bowl",
+      "cup",
+      "fork"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "rest": {
+    "name": "rest",
+    "frequency": 9,
+    "avg_relevance": 1.377777777777778,
+    "concepts": [
+      "pillow",
+      "mattress",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "public": {
+    "name": "public",
+    "frequency": 2,
+    "avg_relevance": 0.65005,
+    "concepts": [
+      "chair",
+      "stool"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "four": {
+    "name": "four",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "car",
+      "stool"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "carry": {
+    "name": "carry",
+    "frequency": 4,
+    "avg_relevance": 0.875,
+    "concepts": [
+      "truck",
+      "bus",
+      "spoon",
+      "ship"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "illuminating": {
+    "name": "illuminating",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "lightbulb",
+      "camera"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "images": {
+    "name": "images",
+    "frequency": 4,
+    "avg_relevance": 1.05,
+    "concepts": [
+      "camera",
+      "lens"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "areas": {
+    "name": "areas",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "bike",
+      "car"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "use": {
+    "name": "use",
+    "frequency": 4,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "cabinet",
+      "camera",
+      "stool",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "keeping": {
+    "name": "keeping",
+    "frequency": 2,
+    "avg_relevance": 0.6000000000000001,
+    "concepts": [
+      "cabinet",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "organizing": {
+    "name": "organizing",
+    "frequency": 2,
+    "avg_relevance": 0.65005,
+    "concepts": [
+      "wardrobe",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "platform": {
+    "name": "platform",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "scooter",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "hold": {
+    "name": "hold",
+    "frequency": 4,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "cabinet",
+      "cup",
+      "spoon",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "travels": {
+    "name": "travels",
+    "frequency": 6,
+    "avg_relevance": 0.79,
+    "concepts": [
+      "plane",
+      "train",
+      "bike",
+      "car",
+      "bus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "light": {
+    "name": "light",
+    "frequency": 6,
+    "avg_relevance": 1.13,
+    "concepts": [
+      "bike",
+      "lamp",
+      "camera",
+      "lens"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fixed": {
+    "name": "fixed",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "train",
+      "bus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cities": {
+    "name": "cities",
+    "frequency": 2,
+    "avg_relevance": 0.65005,
+    "concepts": [
+      "helicopter",
+      "subway"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "properly": {
+    "name": "properly",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "lightbulb",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "spend": {
+    "name": "spend",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "bed"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "operation": {
+    "name": "operation",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "train",
+      "helicopter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "dishes": {
+    "name": "dishes",
+    "frequency": 3,
+    "avg_relevance": 1.4666666666666668,
+    "concepts": [
+      "cabinet"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "metal": {
+    "name": "metal",
+    "frequency": 8,
+    "avg_relevance": 0.850025,
+    "concepts": [
+      "cabinet",
+      "train",
+      "table",
+      "boat",
+      "paperclip",
+      "fork"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "special": {
+    "name": "special",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "camera",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "steering": {
+    "name": "steering",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "car",
+      "scooter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "user": {
+    "name": "user",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "chair",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "take": {
+    "name": "take",
+    "frequency": 2,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "plane"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "recreational": {
+    "name": "recreational",
+    "frequency": 2,
+    "avg_relevance": 0.4,
+    "concepts": [
+      "bike",
+      "boat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "soft": {
+    "name": "soft",
+    "frequency": 4,
+    "avg_relevance": 0.9500500000000001,
+    "concepts": [
+      "flannel",
+      "cushion",
+      "spoon"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "folded": {
+    "name": "folded",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "chair",
+      "scooter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "long": {
+    "name": "long",
+    "frequency": 3,
+    "avg_relevance": 0.5666666666666668,
+    "concepts": [
+      "plane",
+      "train",
+      "fork"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "short": {
+    "name": "short",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "bike",
+      "scooter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "practical": {
+    "name": "practical",
+    "frequency": 4,
+    "avg_relevance": 0.575,
+    "concepts": [
+      "bike",
+      "cabinet",
+      "wardrobe",
+      "boat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "functionality": {
+    "name": "functionality",
+    "frequency": 6,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "cabinet",
+      "table",
+      "lamp",
+      "bike",
+      "boat",
+      "lightbulb"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "commutes": {
+    "name": "commutes",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "car"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "relaxation": {
+    "name": "relaxation",
+    "frequency": 3,
+    "avg_relevance": 0.6999999999999998,
+    "concepts": [
+      "pillow",
+      "mattress"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "control": {
+    "name": "control",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "car",
+      "helicopter",
+      "lamp"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "information": {
+    "name": "information",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "lens"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "across": {
+    "name": "across",
+    "frequency": 3,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "plane",
+      "ship"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "horizontal": {
+    "name": "horizontal",
+    "frequency": 3,
+    "avg_relevance": 1.3,
+    "concepts": [
+      "bed"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "rooms": {
+    "name": "rooms",
+    "frequency": 4,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "lamp",
+      "cabinet",
+      "cushion"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "specialized": {
+    "name": "specialized",
+    "frequency": 3,
+    "avg_relevance": 0.5000333333333333,
+    "concepts": [
+      "plane",
+      "bed",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sleep": {
+    "name": "sleep",
+    "frequency": 6,
+    "avg_relevance": 1.2333333333333332,
+    "concepts": [
+      "pillow",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "city": {
+    "name": "city",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "bike",
+      "subway"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shelves": {
+    "name": "shelves",
+    "frequency": 6,
+    "avg_relevance": 1.0666666666666667,
+    "concepts": [
+      "table",
+      "cabinet",
+      "wardrobe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "saucer": {
+    "name": "saucer",
+    "frequency": 2,
+    "avg_relevance": 1.8,
+    "concepts": [
+      "cup"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "together": {
+    "name": "together",
+    "frequency": 2,
+    "avg_relevance": 2.0,
+    "concepts": [
+      "paperclip"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "destinations": {
+    "name": "destinations",
+    "frequency": 2,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "plane"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "simple": {
+    "name": "simple",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "chair",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "container": {
+    "name": "container",
+    "frequency": 3,
+    "avg_relevance": 0.9333333333333335,
+    "concepts": [
+      "bowl",
+      "cup"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "relax": {
+    "name": "relax",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "bed",
+      "bench"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "office": {
+    "name": "office",
+    "frequency": 7,
+    "avg_relevance": 1.22001,
+    "concepts": [
+      "cabinet",
+      "table",
+      "stool",
+      "paperclip",
+      "chair"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "human": {
+    "name": "human",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "bike",
+      "scooter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "easy": {
+    "name": "easy",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "cabinet",
+      "chair",
+      "scooter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "ergonomic": {
+    "name": "ergonomic",
+    "frequency": 3,
+    "avg_relevance": 1.15,
+    "concepts": [
+      "chair",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "including": {
+    "name": "including",
+    "frequency": 3,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "table",
+      "bowl"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "improved": {
+    "name": "improved",
+    "frequency": 4,
+    "avg_relevance": 0.625,
+    "concepts": [
+      "pillow",
+      "bed",
+      "lamp"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "uses": {
+    "name": "uses",
+    "frequency": 3,
+    "avg_relevance": 0.6000333333333333,
+    "concepts": [
+      "lamp",
+      "camera",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "along": {
+    "name": "along",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "train",
+      "bus"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "urban": {
+    "name": "urban",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "bike",
+      "car"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cold": {
+    "name": "cold",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "bowl",
+      "cup"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "trade": {
+    "name": "trade",
+    "frequency": 3,
+    "avg_relevance": 1.0334,
+    "concepts": [
+      "plane",
+      "ship"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "means": {
+    "name": "means",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "car",
+      "plane"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "keep": {
+    "name": "keep",
+    "frequency": 2,
+    "avg_relevance": 0.60005,
+    "concepts": [
+      "wardrobe",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cover": {
+    "name": "cover",
+    "frequency": 2,
+    "avg_relevance": 0.6000000000000001,
+    "concepts": [
+      "lamp",
+      "plane"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "storage": {
+    "name": "storage",
+    "frequency": 5,
+    "avg_relevance": 0.6599999999999999,
+    "concepts": [
+      "cabinet",
+      "chair",
+      "scooter",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "object": {
+    "name": "object",
+    "frequency": 3,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "table",
+      "lens",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "high": {
+    "name": "high",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "plane",
+      "camera"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "bathrooms": {
+    "name": "bathrooms",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "cabinet"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "different": {
+    "name": "different",
+    "frequency": 12,
+    "avg_relevance": 1.191683333333333,
+    "concepts": [
+      "plane",
+      "bed",
+      "bike",
+      "boat",
+      "chair",
+      "cup",
+      "wardrobe",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "trips": {
+    "name": "trips",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "car",
+      "scooter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "through": {
+    "name": "through",
+    "frequency": 3,
+    "avg_relevance": 0.6333333333333334,
+    "concepts": [
+      "lamp",
+      "plane",
+      "boat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tea": {
+    "name": "tea",
+    "frequency": 3,
+    "avg_relevance": 2.5,
+    "concepts": [
+      "cup"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "during": {
+    "name": "during",
+    "frequency": 9,
+    "avg_relevance": 0.922222222222222,
+    "concepts": [
+      "pillow",
+      "flannel",
+      "bed",
+      "mattress",
+      "cup",
+      "fork",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "organization": {
+    "name": "organization",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "cabinet",
+      "desk"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "stand": {
+    "name": "stand",
+    "frequency": 2,
+    "avg_relevance": 0.7000500000000001,
+    "concepts": [
+      "table",
+      "cabinet"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "furniture": {
+    "name": "furniture",
+    "frequency": 11,
+    "avg_relevance": 1.3364545454545456,
+    "concepts": [
+      "cabinet",
+      "desk",
+      "bed",
+      "stool",
+      "wardrobe"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "night": {
+    "name": "night",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "bed"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "headboard": {
+    "name": "headboard",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "bed"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "curved": {
+    "name": "curved",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "bowl",
+      "lens"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "compartments": {
+    "name": "compartments",
+    "frequency": 3,
+    "avg_relevance": 0.6333666666666667,
+    "concepts": [
+      "cabinet",
+      "wardrobe",
+      "desk"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "beverages": {
+    "name": "beverages",
+    "frequency": 2,
+    "avg_relevance": 1.7000000000000002,
+    "concepts": [
+      "cup"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "decorative": {
+    "name": "decorative",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "cushion",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "accommodate": {
+    "name": "accommodate",
+    "frequency": 3,
+    "avg_relevance": 0.8000000000000002,
+    "concepts": [
+      "chair",
+      "wardrobe",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "like": {
+    "name": "like",
+    "frequency": 10,
+    "avg_relevance": 0.9299999999999999,
+    "concepts": [
+      "cabinet",
+      "lightbulb",
+      "bed",
+      "bike",
+      "car",
+      "boat",
+      "chair",
+      "cup",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cargo": {
+    "name": "cargo",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "truck",
+      "ship"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "variations": {
+    "name": "variations",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "bike",
+      "cabinet"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "foam": {
+    "name": "foam",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "cushion",
+      "mattress"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "contents": {
+    "name": "contents",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "cabinet",
+      "bowl"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "parked": {
+    "name": "parked",
+    "frequency": 3,
+    "avg_relevance": 0.6999999999999998,
+    "concepts": [
+      "car",
+      "scooter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "from": {
+    "name": "from",
+    "frequency": 11,
+    "avg_relevance": 0.7272909090909091,
+    "concepts": [
+      "cabinet",
+      "plane",
+      "table",
+      "bed",
+      "car",
+      "boat",
+      "chair",
+      "cup",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "modern": {
+    "name": "modern",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "car",
+      "plane",
+      "camera"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "private": {
+    "name": "private",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "plane",
+      "bed"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "equipped": {
+    "name": "equipped",
+    "frequency": 6,
+    "avg_relevance": 0.8000000000000002,
+    "concepts": [
+      "plane",
+      "desk",
+      "bed",
+      "bike",
+      "car"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "item": {
+    "name": "item",
+    "frequency": 8,
+    "avg_relevance": 1.0625,
+    "concepts": [
+      "cabinet",
+      "bowl",
+      "mattress",
+      "paperclip",
+      "cup",
+      "fork"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "devices": {
+    "name": "devices",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "camera",
+      "lens"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "mode": {
+    "name": "mode",
+    "frequency": 7,
+    "avg_relevance": 1.0714285714285714,
+    "concepts": [
+      "plane",
+      "bike",
+      "bus",
+      "boat",
+      "truck"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  }
+};
+        
+        // Feature color mapping
+        const uniqueColors = ['#e74c3c', '#3498db', '#e67e22', '#1abc9c', '#9b59b6'];
+        const sharedColor = '#2ecc71';
+        
+        // Prepare node and edge data
+        let nodes = [];
+        let links = [];
+
+        function prepareData(minFreq, minRelevance, showUnique, showShared) {
+            nodes = [];
+            links = [];
+            
+            // Add concept nodes
+            conceptsData.forEach(concept => {
+                nodes.push({
+                    id: concept.id,
+                    name: concept.name,
+                    type: 'concept',
+                    color: concept.color,
+                    radius: 40
+                });
+            });
+
+            // Add feature nodes
+            Object.entries(featuresData).forEach(([key, feature]) => {
+                if (feature.frequency < minFreq) return;
+                if (feature.avg_relevance < minRelevance) return;
+                
+                const isShared = feature.is_shared;
+                
+                if (!isShared && !showUnique) return;
+                if (isShared && !showShared) return;
+                
+                let color;
+                if (isShared) {
+                    color = sharedColor;
+                } else {
+                    // Determine color based on first related concept
+                    const conceptIndex = conceptsData.findIndex(c => c.id === feature.concepts[0]);
+                    color = uniqueColors[conceptIndex % uniqueColors.length];
+                }
+                
+                const radius = Math.max(8, Math.min(25, feature.frequency * 1.2));
+                
+                nodes.push({
+                    id: key,
+                    name: feature.name,
+                    type: 'feature',
+                    color: color,
+                    radius: radius,
+                    frequency: feature.frequency,
+                    relevance: feature.avg_relevance,
+                    concepts: feature.concepts,
+                    isShared: isShared,
+                    featureType: feature.feature_type
+                });
+                
+                // Add connections
+                feature.concepts.forEach(concept => {
+                    links.push({
+                        source: key,
+                        target: concept,
+                        relevance: feature.avg_relevance,
+                        strength: Math.min(1, feature.avg_relevance / 2)
+                    });
+                });
+            });
+            
+            // Update statistics
+            const featureNodes = nodes.filter(n => n.type === 'feature');
+            document.getElementById('featureCount').textContent = featureNodes.length;
+            document.getElementById('uniqueCount').textContent = featureNodes.filter(n => !n.isShared).length;
+            document.getElementById('sharedCount').textContent = featureNodes.filter(n => n.isShared).length;
+        }
+
+        // D3 visualization
+        const svg = d3.select('#graph');
+        const width = document.querySelector('.main').clientWidth;
+        const height = document.querySelector('.main').clientHeight;
+        
+        const g = svg.append('g');
+        
+        // Zoom
+        const zoom = d3.zoom()
+            .scaleExtent([0.3, 3])
+            .on('zoom', (event) => {
+                g.attr('transform', event.transform);
+            });
+        
+        svg.call(zoom);
+        
+        // Initial zoom to center
+        svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.8));
+
+        let simulation;
+        
+        function updateGraph() {
+            const minFreq = parseInt(document.getElementById('freqFilter').value);
+            const minRelevance = parseInt(document.getElementById('relevanceFilter').value) / 100;
+            const showUnique = document.getElementById('showUnique').checked;
+            const showShared = document.getElementById('showShared').checked;
+            
+            prepareData(minFreq, minRelevance, showUnique, showShared);
+            
+            // Clear old elements
+            g.selectAll('*').remove();
+            
+            // Force-directed simulation
+            simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
+                    return d.relevance > 1 ? 80 : 120;
+                }).strength(d => d.strength * 0.5))
+                .force('charge', d3.forceManyBody().strength(d => d.type === 'concept' ? -500 : -100))
+                .force('center', d3.forceCenter(0, 0))
+                .force('collision', d3.forceCollide().radius(d => d.radius + 5));
+            
+            // Draw edges
+            const link = g.append('g')
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('stroke', d => {
+                    if (d.relevance > 1) return 'rgba(255,255,255,0.6)';
+                    if (d.relevance > 0.7) return 'rgba(255,255,255,0.35)';
+                    return 'rgba(255,255,255,0.15)';
+                })
+                .attr('stroke-width', d => Math.max(1, d.relevance * 2));
+            
+            // Draw nodes
+            const node = g.append('g')
+                .selectAll('g')
+                .data(nodes)
+                .join('g')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            // Node glow effect
+            const defs = svg.select('defs').empty() ? svg.append('defs') : svg.select('defs');
+            defs.selectAll('*').remove();
+            
+            nodes.forEach((n, i) => {
+                const filter = defs.append('filter')
+                    .attr('id', `glow-${i}`)
+                    .attr('x', '-50%')
+                    .attr('y', '-50%')
+                    .attr('width', '200%')
+                    .attr('height', '200%');
+                
+                filter.append('feGaussianBlur')
+                    .attr('stdDeviation', '3')
+                    .attr('result', 'coloredBlur');
+                
+                const feMerge = filter.append('feMerge');
+                feMerge.append('feMergeNode').attr('in', 'coloredBlur');
+                feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+            });
+            
+            node.append('circle')
+                .attr('r', d => d.radius)
+                .attr('fill', d => d.color)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', d => d.type === 'concept' ? 3 : 1.5)
+                .attr('opacity', d => d.type === 'concept' ? 1 : 0.85)
+                .style('filter', (d, i) => `url(#glow-${i})`)
+                .style('cursor', 'pointer');
+            
+            // Node labels
+            node.append('text')
+                .attr('class', d => d.type === 'concept' ? 'concept-label' : 'node-label')
+                .attr('text-anchor', 'middle')
+                .attr('dy', d => d.type === 'concept' ? 5 : (d.radius + 14))
+                .text(d => d.name.length > 20 ? d.name.substring(0, 18) + '...' : d.name);
+            
+            // Tooltip
+            const tooltip = document.getElementById('tooltip');
+            
+            node.on('mouseover', (event, d) => {
+                if (d.type === 'feature') {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Frequency: </span>${d.frequency}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Relevance: </span>${d.relevance.toFixed(2)}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Type: </span>${d.isShared ? 'Shared' : 'Unique'}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Feature Type: </span>${d.featureType}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Related Concepts: </span>${d.concepts.join(', ')}</div>
+                    `;
+                } else {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row">Core Concept Node</div>
+                    `;
+                }
+                tooltip.style.opacity = 1;
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mousemove', (event) => {
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mouseout', () => {
+                tooltip.style.opacity = 0;
+            });
+            
+            // Update positions
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node.attr('transform', d => `translate(${d.x},${d.y})`);
+            });
+        }
+        
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // Event listeners
+        document.getElementById('freqFilter').addEventListener('input', (e) => {
+            document.getElementById('freqValue').textContent = e.target.value;
+            updateGraph();
+        });
+        
+        document.getElementById('relevanceFilter').addEventListener('input', (e) => {
+            document.getElementById('relevanceValue').textContent = (e.target.value / 100).toFixed(1);
+            updateGraph();
+        });
+        
+        document.getElementById('showUnique').addEventListener('change', updateGraph);
+        document.getElementById('showShared').addEventListener('change', updateGraph);
+        
+        // Initialize
+        updateGraph();
+    </script>
+</body>
+</html>

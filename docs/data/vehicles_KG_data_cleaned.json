@@ -1,0 +1,4602 @@
+{
+  "concepts": {
+    "bike": {
+      "name": "bike",
+      "category": "vehicles",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "mode",
+        "transportation",
+        "often",
+        "used",
+        "for",
+        "both",
+        "leisure",
+        "and",
+        "practical",
+        "purposes",
+        "mode",
+        "transportation",
+        "often",
+        "used",
+        "for",
+        "short",
+        "distances",
+        "and",
+        "can",
+        "easily",
+        "stored",
+        "home",
+        "mode",
+        "transportation",
+        "often",
+        "powered",
+        "human",
+        "effort",
+        "mode",
+        "transportation",
+        "often",
+        "used",
+        "for",
+        "commuting",
+        "and",
+        "can",
+        "fun",
+        "stay",
+        "active",
+        "mode",
+        "transportation",
+        "often",
+        "used",
+        "for",
+        "both",
+        "short",
+        "trips",
+        "and",
+        "longer",
+        "journeys",
+        "offering",
+        "versatility",
+        "and",
+        "convenience",
+        "mode",
+        "transportation",
+        "versatile",
+        "and",
+        "can",
+        "used",
+        "for",
+        "both",
+        "urban",
+        "and",
+        "rural",
+        "settings",
+        "mode",
+        "transportation",
+        "often",
+        "used",
+        "for",
+        "fitness",
+        "and",
+        "can",
+        "great",
+        "explore",
+        "the",
+        "outdoors",
+        "mode",
+        "transportation",
+        "often",
+        "used",
+        "for",
+        "recreational",
+        "activities",
+        "and",
+        "can",
+        "enjoyed",
+        "people",
+        "all",
+        "ages",
+        "mode",
+        "transportation",
+        "often",
+        "seen",
+        "urban",
+        "areas",
+        "and",
+        "can",
+        "convenient"
+      ],
+      "statement_count": 83
+    },
+    "motorcycle": {
+      "name": "motorcycle",
+      "category": "vehicles",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "vehicle",
+        "commonly",
+        "used",
+        "for",
+        "transportation",
+        "mode",
+        "transportation",
+        "often",
+        "seen",
+        "roads",
+        "and",
+        "highways",
+        "mode",
+        "transportation",
+        "often",
+        "associated",
+        "with",
+        "sense",
+        "freedom",
+        "and",
+        "adventure",
+        "mode",
+        "transportation",
+        "often",
+        "requires",
+        "helmet",
+        "for",
+        "safety",
+        "mode",
+        "transportation",
+        "often",
+        "has",
+        "two",
+        "wheels",
+        "and",
+        "known",
+        "for",
+        "its",
+        "agility",
+        "and",
+        "speed",
+        "the",
+        "road",
+        "mode",
+        "transportation",
+        "often",
+        "associated",
+        "with",
+        "sense",
+        "speed",
+        "and",
+        "thrill",
+        "making",
+        "popular",
+        "choice",
+        "for",
+        "enthusiasts",
+        "mode",
+        "transportation",
+        "often",
+        "praised",
+        "for",
+        "its",
+        "ability",
+        "navigate",
+        "through",
+        "traffic",
+        "efficiently",
+        "and",
+        "provides",
+        "thrilling",
+        "ride",
+        "experience",
+        "mode",
+        "transportation",
+        "often",
+        "provides",
+        "thrilling",
+        "and",
+        "adventurous",
+        "experience",
+        "making",
+        "favorite",
+        "among",
+        "enthusiasts",
+        "mode",
+        "transportation",
+        "often",
+        "chosen",
+        "for",
+        "its",
+        "efficiency",
+        "navigating",
+        "through",
+        "city",
+        "traffic",
+        "and",
+        "its",
+        "ability",
+        "provide"
+      ],
+      "statement_count": 88
+    },
+    "car": {
+      "name": "car",
+      "category": "vehicles",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "common",
+        "means",
+        "personal",
+        "transportation",
+        "urban",
+        "areas",
+        "versatile",
+        "vehicle",
+        "often",
+        "seen",
+        "highways",
+        "and",
+        "city",
+        "streets",
+        "convenient",
+        "and",
+        "flexible",
+        "mode",
+        "transport",
+        "for",
+        "both",
+        "short",
+        "and",
+        "long",
+        "trips",
+        "vehicle",
+        "provides",
+        "personal",
+        "mobility",
+        "and",
+        "often",
+        "seen",
+        "parking",
+        "lots",
+        "and",
+        "driveways",
+        "vehicle",
+        "offers",
+        "both",
+        "comfort",
+        "and",
+        "efficiency",
+        "often",
+        "equipped",
+        "with",
+        "advanced",
+        "safety",
+        "features",
+        "vehicle",
+        "often",
+        "customized",
+        "with",
+        "various",
+        "accessories",
+        "and",
+        "features",
+        "enhance",
+        "its",
+        "performance",
+        "and",
+        "appearance",
+        "vehicle",
+        "often",
+        "associated",
+        "with",
+        "personal",
+        "freedom",
+        "and",
+        "independence",
+        "allowing",
+        "individuals",
+        "travel",
+        "their",
+        "convenience",
+        "vehicle",
+        "often",
+        "used",
+        "for",
+        "commuting",
+        "and",
+        "running",
+        "errands",
+        "providing",
+        "convenience",
+        "and",
+        "flexibility",
+        "daily",
+        "life",
+        "vehicle",
+        "common",
+        "sight",
+        "everyday",
+        "life",
+        "and",
+        "used",
+        "for",
+        "personal",
+        "transportation",
+        "vehicle",
+        "commonly"
+      ],
+      "statement_count": 89
+    },
+    "truck": {
+      "name": "truck",
+      "category": "vehicles",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "essential",
+        "part",
+        "modern",
+        "logistics",
+        "and",
+        "daily",
+        "life",
+        "important",
+        "vehicle",
+        "for",
+        "moving",
+        "goods",
+        "over",
+        "long",
+        "distances",
+        "large",
+        "vehicle",
+        "often",
+        "used",
+        "for",
+        "transporting",
+        "goods",
+        "and",
+        "materials",
+        "reliable",
+        "vehicle",
+        "often",
+        "used",
+        "for",
+        "both",
+        "commercial",
+        "and",
+        "personal",
+        "purposes",
+        "vehicle",
+        "plays",
+        "crucial",
+        "role",
+        "both",
+        "commercial",
+        "and",
+        "personal",
+        "activities",
+        "indispensable",
+        "tool",
+        "for",
+        "businesses",
+        "often",
+        "seen",
+        "hauling",
+        "heavy",
+        "loads",
+        "robust",
+        "vehicle",
+        "essential",
+        "for",
+        "delivering",
+        "goods",
+        "and",
+        "supplies",
+        "various",
+        "locations",
+        "vehicle",
+        "essential",
+        "for",
+        "both",
+        "business",
+        "operations",
+        "and",
+        "personal",
+        "use",
+        "often",
+        "seen",
+        "roads",
+        "and",
+        "highways",
+        "versatile",
+        "and",
+        "reliable",
+        "vehicle",
+        "commonly",
+        "seen",
+        "both",
+        "highways",
+        "and",
+        "city",
+        "streets",
+        "used",
+        "for",
+        "variety",
+        "tasks",
+        "from",
+        "personal",
+        "errands",
+        "commercial",
+        "deliveries",
+        "large",
+        "vehicle",
+        "used",
+        "for"
+      ],
+      "statement_count": 90
+    },
+    "train": {
+      "name": "train",
+      "category": "vehicles",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "mode",
+        "transportation",
+        "moves",
+        "tracks",
+        "method",
+        "travel",
+        "connects",
+        "cities",
+        "and",
+        "towns",
+        "reliable",
+        "means",
+        "moving",
+        "large",
+        "numbers",
+        "people",
+        "efficiently",
+        "vehicle",
+        "plays",
+        "crucial",
+        "role",
+        "connecting",
+        "different",
+        "parts",
+        "city",
+        "vehicle",
+        "runs",
+        "fixed",
+        "tracks",
+        "and",
+        "used",
+        "for",
+        "long",
+        "distance",
+        "travel",
+        "vehicle",
+        "used",
+        "for",
+        "both",
+        "short",
+        "and",
+        "long",
+        "distances",
+        "often",
+        "seen",
+        "urban",
+        "and",
+        "rural",
+        "areas",
+        "vehicle",
+        "powered",
+        "electricity",
+        "diesel",
+        "and",
+        "used",
+        "for",
+        "both",
+        "passenger",
+        "and",
+        "freight",
+        "transport",
+        "vehicle",
+        "often",
+        "used",
+        "for",
+        "long",
+        "distance",
+        "travel",
+        "and",
+        "can",
+        "carry",
+        "large",
+        "number",
+        "passengers",
+        "vehicle",
+        "vital",
+        "part",
+        "the",
+        "transportation",
+        "network",
+        "connecting",
+        "various",
+        "locations",
+        "efficiently",
+        "vehicle",
+        "travels",
+        "fixed",
+        "tracks",
+        "vehicle",
+        "operates",
+        "network",
+        "routes",
+        "vehicle",
+        "connects",
+        "cities",
+        "and",
+        "towns",
+        "efficiently",
+        "vehicle",
+        "runs"
+      ],
+      "statement_count": 89
+    },
+    "bus": {
+      "name": "bus",
+      "category": "vehicles",
+      "appearances": 10,
+      "wins": 0,
+      "win_rate": 0.0,
+      "features": [
+        "vehicle",
+        "used",
+        "transport",
+        "groups",
+        "people",
+        "large",
+        "vehicle",
+        "often",
+        "seen",
+        "city",
+        "streets",
+        "common",
+        "sight",
+        "urban",
+        "areas",
+        "often",
+        "used",
+        "for",
+        "daily",
+        "commutes",
+        "vehicle",
+        "essential",
+        "for",
+        "public",
+        "transportation",
+        "cities",
+        "vehicle",
+        "frequently",
+        "used",
+        "for",
+        "group",
+        "transportation",
+        "urban",
+        "settings",
+        "vehicle",
+        "commonly",
+        "used",
+        "for",
+        "daily",
+        "transportation",
+        "urban",
+        "areas",
+        "vehicle",
+        "vital",
+        "part",
+        "the",
+        "public",
+        "transportation",
+        "system",
+        "often",
+        "seen",
+        "both",
+        "urban",
+        "and",
+        "rural",
+        "areas",
+        "vehicle",
+        "often",
+        "painted",
+        "distinctive",
+        "colors",
+        "and",
+        "has",
+        "multiple",
+        "doors",
+        "for",
+        "easy",
+        "boarding",
+        "and",
+        "alighting",
+        "vehicle",
+        "key",
+        "component",
+        "public",
+        "transportation",
+        "systems",
+        "used",
+        "for",
+        "moving",
+        "large",
+        "groups",
+        "people",
+        "efficiently",
+        "large",
+        "vehicle",
+        "can",
+        "carry",
+        "multiple",
+        "passengers",
+        "once",
+        "vehicle",
+        "designed",
+        "transport",
+        "large",
+        "number",
+        "people",
+        "efficiently",
+        "vehicle",
+        "often",
+        "used"
+      ],
+      "statement_count": 88
+    }
+  },
+  "features": {
+    "favorite": {
+      "name": "favorite",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.2666666666666668,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "helmet": {
+      "name": "helmet",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.5333333333333333,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "combines": {
+      "name": "combines",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "new": {
+      "name": "new",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "among": {
+      "name": "among",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.2666666666666668,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "running": {
+      "name": "running",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.72,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "promotes": {
+      "name": "promotes",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "lives": {
+      "name": "lives",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "bus",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "uses": {
+      "name": "uses",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "parking": {
+      "name": "parking",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "operations": {
+      "name": "operations",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.55,
+      "concepts": [
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "places": {
+      "name": "places",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.6166666666666667,
+      "concepts": [
+        "train",
+        "bus",
+        "bike",
+        "truck"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "adaptable": {
+      "name": "adaptable",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "truck",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "purposes": {
+      "name": "purposes",
+      "feature_type": "word",
+      "frequency": 30,
+      "avg_relevance": 0.8933333333333332,
+      "concepts": [
+        "motorcycle",
+        "truck",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "intercity": {
+      "name": "intercity",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 1.1250000000000002,
+      "concepts": [
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "countries": {
+      "name": "countries",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "sizes": {
+      "name": "sizes",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.5999999999999999,
+      "concepts": [
+        "truck",
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "passengers": {
+      "name": "passengers",
+      "feature_type": "word",
+      "frequency": 24,
+      "avg_relevance": 0.8547368421052632,
+      "concepts": [
+        "train",
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "commuters": {
+      "name": "commuters",
+      "feature_type": "word",
+      "frequency": 28,
+      "avg_relevance": 1.1786666666666668,
+      "concepts": [
+        "train",
+        "bus",
+        "car",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "outings": {
+      "name": "outings",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "residential": {
+      "name": "residential",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "speed": {
+      "name": "speed",
+      "feature_type": "word",
+      "frequency": 15,
+      "avg_relevance": 0.7928571428571427,
+      "concepts": [
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "airbags": {
+      "name": "airbags",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "dynamic": {
+      "name": "dynamic",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "painted": {
+      "name": "painted",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.44999999999999996,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "households": {
+      "name": "households",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.875,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "busy": {
+      "name": "busy",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.7500000000000001,
+      "concepts": [
+        "motorcycle",
+        "truck",
+        "bus",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "routes": {
+      "name": "routes",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 0.8166666666666667,
+      "concepts": [
+        "train",
+        "bus",
+        "truck"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "facilitating": {
+      "name": "facilitating",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "train",
+        "truck",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "travel": {
+      "name": "travel",
+      "feature_type": "word",
+      "frequency": 64,
+      "avg_relevance": 1.303225806451613,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "journey": {
+      "name": "journey",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "bus",
+        "car",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "road": {
+      "name": "road",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.6666666666666665,
+      "concepts": [
+        "truck",
+        "bus",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "volumes": {
+      "name": "volumes",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "across": {
+      "name": "across",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "train",
+        "truck"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "errands": {
+      "name": "errands",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.7142857142857143,
+      "concepts": [
+        "truck",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "electricity": {
+      "name": "electricity",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "train",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "distinct": {
+      "name": "distinct",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.6166666666666667,
+      "concepts": [
+        "motorcycle",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "handling": {
+      "name": "handling",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.7000000000000001,
+      "concepts": [
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "move": {
+      "name": "move",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 1.0999999999999999,
+      "concepts": [
+        "train",
+        "bus",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "excitement": {
+      "name": "excitement",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.65,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "seating": {
+      "name": "seating",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "densely": {
+      "name": "densely",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "alighting": {
+      "name": "alighting",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "commercial": {
+      "name": "commercial",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 1.2555555555555553,
+      "concepts": [
+        "truck",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "navigate": {
+      "name": "navigate",
+      "feature_type": "word",
+      "frequency": 15,
+      "avg_relevance": 0.8242424242424243,
+      "concepts": [
+        "motorcycle",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "serving": {
+      "name": "serving",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "fixed": {
+      "name": "fixed",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 0.9272727272727274,
+      "concepts": [
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "strong": {
+      "name": "strong",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "warehouses": {
+      "name": "warehouses",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "alike": {
+      "name": "alike",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "adventurous": {
+      "name": "adventurous",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "choice": {
+      "name": "choice",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 1.0833333333333333,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "rural": {
+      "name": "rural",
+      "feature_type": "word",
+      "frequency": 19,
+      "avg_relevance": 0.6421052631578946,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "trailers": {
+      "name": "trailers",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "locations": {
+      "name": "locations",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "train",
+        "truck",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "demanding": {
+      "name": "demanding",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "truck",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "highly": {
+      "name": "highly",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "truck",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "key": {
+      "name": "key",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "rides": {
+      "name": "rides",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 1.1666666666666665,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "convenience": {
+      "name": "convenience",
+      "feature_type": "word",
+      "frequency": 30,
+      "avg_relevance": 0.8461538461538463,
+      "concepts": [
+        "motorcycle",
+        "bus",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "thrilling": {
+      "name": "thrilling",
+      "feature_type": "word",
+      "frequency": 16,
+      "avg_relevance": 0.8963636363636364,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "enjoyment": {
+      "name": "enjoyment",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "chosen": {
+      "name": "chosen",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "agility": {
+      "name": "agility",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.8666666666666665,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "maneuver": {
+      "name": "maneuver",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "high": {
+      "name": "high",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "train",
+        "bus",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "stops": {
+      "name": "stops",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "materials": {
+      "name": "materials",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 1.2545454545454544,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "different": {
+      "name": "different",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.8222222222222222,
+      "concepts": [
+        "train",
+        "truck",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "friendly": {
+      "name": "friendly",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.8999999999999999,
+      "concepts": [
+        "train",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "robust": {
+      "name": "robust",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.68,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "designated": {
+      "name": "designated",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 1.0666666666666667,
+      "concepts": [
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "healthy": {
+      "name": "healthy",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6499999999999999,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "versatile": {
+      "name": "versatile",
+      "feature_type": "word",
+      "frequency": 36,
+      "avg_relevance": 0.8235294117647058,
+      "concepts": [
+        "motorcycle",
+        "truck",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "machinery": {
+      "name": "machinery",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.1,
+      "concepts": [
+        "truck",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "accessories": {
+      "name": "accessories",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.6285714285714287,
+      "concepts": [
+        "motorcycle",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "adapted": {
+      "name": "adapted",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "truck",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "exhilarating": {
+      "name": "exhilarating",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "large": {
+      "name": "large",
+      "feature_type": "word",
+      "frequency": 40,
+      "avg_relevance": 1.141025641025641,
+      "concepts": [
+        "train",
+        "bus",
+        "truck"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "practical": {
+      "name": "practical",
+      "feature_type": "word",
+      "frequency": 23,
+      "avg_relevance": 0.7509803921568626,
+      "concepts": [
+        "motorcycle",
+        "truck",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "get": {
+      "name": "get",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "motorcycle",
+        "bus",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "centers": {
+      "name": "centers",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "challenging": {
+      "name": "challenging",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "infrastructure": {
+      "name": "infrastructure",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.7500000000000001,
+      "concepts": [
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "maintained": {
+      "name": "maintained",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "environmental": {
+      "name": "environmental",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 0.8708333333333333,
+      "concepts": [
+        "motorcycle",
+        "train",
+        "bike",
+        "truck"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "physical": {
+      "name": "physical",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.3333333333333333,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "deliveries": {
+      "name": "deliveries",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "efficiency": {
+      "name": "efficiency",
+      "feature_type": "word",
+      "frequency": 16,
+      "avg_relevance": 0.85,
+      "concepts": [
+        "train",
+        "motorcycle",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "attached": {
+      "name": "attached",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "connects": {
+      "name": "connects",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.72,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "fast": {
+      "name": "fast",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.95,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "riding": {
+      "name": "riding",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.171428571428571,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "destinations": {
+      "name": "destinations",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "train",
+        "truck",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "unique": {
+      "name": "unique",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.3714285714285712,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "independence": {
+      "name": "independence",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.68,
+      "concepts": [
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "cost": {
+      "name": "cost",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "train",
+        "bus",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "construction": {
+      "name": "construction",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 1.38,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "traffic": {
+      "name": "traffic",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 1.0888888888888892,
+      "concepts": [
+        "train",
+        "bus",
+        "car",
+        "bike",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "multiple": {
+      "name": "multiple",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.7555555555555555,
+      "concepts": [
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "fuel": {
+      "name": "fuel",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "motorcycle",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "terrain": {
+      "name": "terrain",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.775,
+      "concepts": [
+        "truck",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "making": {
+      "name": "making",
+      "feature_type": "word",
+      "frequency": 26,
+      "avg_relevance": 1.3153846153846158,
+      "concepts": [
+        "bus",
+        "car",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "individuals": {
+      "name": "individuals",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.6833333333333333,
+      "concepts": [
+        "truck",
+        "car",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "delivery": {
+      "name": "delivery",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "from": {
+      "name": "from",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 1.3000000000000003,
+      "concepts": [
+        "train",
+        "bus",
+        "car",
+        "bike",
+        "truck"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "boarding": {
+      "name": "boarding",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "control": {
+      "name": "control",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "reduces": {
+      "name": "reduces",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "enthusiasts": {
+      "name": "enthusiasts",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.0666666666666667,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "diesel": {
+      "name": "diesel",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "effort": {
+      "name": "effort",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "associated": {
+      "name": "associated",
+      "feature_type": "word",
+      "frequency": 26,
+      "avg_relevance": 1.3384615384615386,
+      "concepts": [
+        "train",
+        "motorcycle",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "between": {
+      "name": "between",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.65,
+      "concepts": [
+        "train",
+        "bus",
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "comfort": {
+      "name": "comfort",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.6499999999999999,
+      "concepts": [
+        "train",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "flexible": {
+      "name": "flexible",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "bus",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "weekend": {
+      "name": "weekend",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.8199999999999998,
+      "concepts": [
+        "motorcycle",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "has": {
+      "name": "has",
+      "feature_type": "word",
+      "frequency": 13,
+      "avg_relevance": 0.9076923076923078,
+      "concepts": [
+        "bus",
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "great": {
+      "name": "great",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 1.2000000000000002,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "activities": {
+      "name": "activities",
+      "feature_type": "word",
+      "frequency": 19,
+      "avg_relevance": 0.8315789473684211,
+      "concepts": [
+        "train",
+        "car",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "equipment": {
+      "name": "equipment",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "connecting": {
+      "name": "connecting",
+      "feature_type": "word",
+      "frequency": 11,
+      "avg_relevance": 1.0222222222222221,
+      "concepts": [
+        "train",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "reliability": {
+      "name": "reliability",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.9428571428571428,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "feeling": {
+      "name": "feeling",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "numbers": {
+      "name": "numbers",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 0.842857142857143,
+      "concepts": [
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "distances": {
+      "name": "distances",
+      "feature_type": "word",
+      "frequency": 45,
+      "avg_relevance": 1.3339285714285714,
+      "concepts": [
+        "train",
+        "car",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "handle": {
+      "name": "handle",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 1.2500000000000002,
+      "concepts": [
+        "train",
+        "truck"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "style": {
+      "name": "style",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "design": {
+      "name": "design",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "bus",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "professional": {
+      "name": "professional",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6499999999999999,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "combustion": {
+      "name": "combustion",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "heavy": {
+      "name": "heavy",
+      "feature_type": "word",
+      "frequency": 16,
+      "avg_relevance": 1.5250000000000001,
+      "concepts": [
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "vehicle": {
+      "name": "vehicle",
+      "feature_type": "word",
+      "frequency": 354,
+      "avg_relevance": 2.820679886685552,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "engines": {
+      "name": "engines",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.7666666666666667,
+      "concepts": [
+        "train",
+        "truck",
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "getting": {
+      "name": "getting",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "catering": {
+      "name": "catering",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "family": {
+      "name": "family",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "safety": {
+      "name": "safety",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.7142857142857143,
+      "concepts": [
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "highways": {
+      "name": "highways",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 0.8799999999999999,
+      "concepts": [
+        "truck",
+        "bus",
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "businesses": {
+      "name": "businesses",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "around": {
+      "name": "around",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.9400000000000001,
+      "concepts": [
+        "motorcycle",
+        "bus",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "schedule": {
+      "name": "schedule",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.688888888888889,
+      "concepts": [
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "towns": {
+      "name": "towns",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 0.7333333333333333,
+      "concepts": [
+        "train",
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "transport": {
+      "name": "transport",
+      "feature_type": "word",
+      "frequency": 47,
+      "avg_relevance": 1.5647619047619052,
+      "concepts": [
+        "train",
+        "bus",
+        "car",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "enjoy": {
+      "name": "enjoy",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.4,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "models": {
+      "name": "models",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "leisure": {
+      "name": "leisure",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 0.8076923076923077,
+      "concepts": [
+        "motorcycle",
+        "truck",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "found": {
+      "name": "found",
+      "feature_type": "word",
+      "frequency": 16,
+      "avg_relevance": 0.8999999999999997,
+      "concepts": [
+        "train",
+        "bus",
+        "car",
+        "bike",
+        "truck"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "provide": {
+      "name": "provide",
+      "feature_type": "word",
+      "frequency": 27,
+      "avg_relevance": 1.1333333333333335,
+      "concepts": [
+        "bus",
+        "motorcycle",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "network": {
+      "name": "network",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "industrial": {
+      "name": "industrial",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 1.2600000000000002,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "tight": {
+      "name": "tight",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "freight": {
+      "name": "freight",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.2,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "efficiently": {
+      "name": "efficiently",
+      "feature_type": "word",
+      "frequency": 38,
+      "avg_relevance": 0.9052631578947371,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "neighborhoods": {
+      "name": "neighborhoods",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "features": {
+      "name": "features",
+      "feature_type": "word",
+      "frequency": 15,
+      "avg_relevance": 0.8800000000000002,
+      "concepts": [
+        "train",
+        "truck",
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "fun": {
+      "name": "fun",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.65,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "compact": {
+      "name": "compact",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "group": {
+      "name": "group",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "punctuality": {
+      "name": "punctuality",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.7428571428571428,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "both": {
+      "name": "both",
+      "feature_type": "word",
+      "frequency": 88,
+      "avg_relevance": 1.7318181818181815,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "long": {
+      "name": "long",
+      "feature_type": "word",
+      "frequency": 47,
+      "avg_relevance": 2.004255319148935,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "reliable": {
+      "name": "reliable",
+      "feature_type": "word",
+      "frequency": 24,
+      "avg_relevance": 0.9083333333333333,
+      "concepts": [
+        "train",
+        "bus",
+        "car",
+        "bike",
+        "truck"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "internal": {
+      "name": "internal",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "public": {
+      "name": "public",
+      "feature_type": "word",
+      "frequency": 17,
+      "avg_relevance": 1.035294117647059,
+      "concepts": [
+        "train",
+        "bus",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "hauling": {
+      "name": "hauling",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.7200000000000001,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "capable": {
+      "name": "capable",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "suitable": {
+      "name": "suitable",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "motorcycle",
+        "truck",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "method": {
+      "name": "method",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.5999999999999999,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "level": {
+      "name": "level",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "durable": {
+      "name": "durable",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "mobility": {
+      "name": "mobility",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "advanced": {
+      "name": "advanced",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "open": {
+      "name": "open",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.1428571428571428,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "preferences": {
+      "name": "preferences",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "longer": {
+      "name": "longer",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "bus",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "runs": {
+      "name": "runs",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.9600000000000002,
+      "concepts": [
+        "train",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "designed": {
+      "name": "designed",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.6599999999999998,
+      "concepts": [
+        "truck",
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "logistics": {
+      "name": "logistics",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.0000000000000002,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "component": {
+      "name": "component",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.8000000000000002,
+      "concepts": [
+        "truck",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "such": {
+      "name": "such",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.7142857142857142,
+      "concepts": [
+        "truck",
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "providing": {
+      "name": "providing",
+      "feature_type": "word",
+      "frequency": 16,
+      "avg_relevance": 0.8125,
+      "concepts": [
+        "bus",
+        "motorcycle",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "without": {
+      "name": "without",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "train",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "adventure": {
+      "name": "adventure",
+      "feature_type": "word",
+      "frequency": 15,
+      "avg_relevance": 0.9045454545454547,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "areas": {
+      "name": "areas",
+      "feature_type": "word",
+      "frequency": 39,
+      "avg_relevance": 1.1333333333333337,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "most": {
+      "name": "most",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "ages": {
+      "name": "ages",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "blend": {
+      "name": "blend",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "means": {
+      "name": "means",
+      "feature_type": "word",
+      "frequency": 19,
+      "avg_relevance": 0.6210526315789473,
+      "concepts": [
+        "train",
+        "bus",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "urban": {
+      "name": "urban",
+      "feature_type": "word",
+      "frequency": 56,
+      "avg_relevance": 1.278571428571429,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "tracks": {
+      "name": "tracks",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 1.2571428571428573,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "tool": {
+      "name": "tool",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.68,
+      "concepts": [
+        "truck",
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "through": {
+      "name": "through",
+      "feature_type": "word",
+      "frequency": 17,
+      "avg_relevance": 1.5411764705882358,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "offers": {
+      "name": "offers",
+      "feature_type": "word",
+      "frequency": 16,
+      "avg_relevance": 1.2000000000000002,
+      "concepts": [
+        "motorcycle",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "powerful": {
+      "name": "powerful",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "accommodate": {
+      "name": "accommodate",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "once": {
+      "name": "once",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "carry": {
+      "name": "carry",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.6666666666666665,
+      "concepts": [
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "sites": {
+      "name": "sites",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.1714285714285713,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "known": {
+      "name": "known",
+      "feature_type": "word",
+      "frequency": 37,
+      "avg_relevance": 2.2162162162162176,
+      "concepts": [
+        "train",
+        "bus",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "roads": {
+      "name": "roads",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 0.7555555555555555,
+      "concepts": [
+        "bus",
+        "car",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "moves": {
+      "name": "moves",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "wheels": {
+      "name": "wheels",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.725,
+      "concepts": [
+        "motorcycle",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "like": {
+      "name": "like",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.9142857142857143,
+      "concepts": [
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "technologies": {
+      "name": "technologies",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "populated": {
+      "name": "populated",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "popular": {
+      "name": "popular",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 0.9,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "driveways": {
+      "name": "driveways",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.68,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "over": {
+      "name": "over",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 1.116666666666667,
+      "concepts": [
+        "train",
+        "truck"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "certain": {
+      "name": "certain",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "quick": {
+      "name": "quick",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.68,
+      "concepts": [
+        "bus",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "essential": {
+      "name": "essential",
+      "feature_type": "word",
+      "frequency": 30,
+      "avg_relevance": 1.2333333333333338,
+      "concepts": [
+        "train",
+        "truck",
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "services": {
+      "name": "services",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "train",
+        "truck",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "systems": {
+      "name": "systems",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.6555555555555554,
+      "concepts": [
+        "train",
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "commuting": {
+      "name": "commuting",
+      "feature_type": "word",
+      "frequency": 28,
+      "avg_relevance": 0.6928571428571433,
+      "concepts": [
+        "train",
+        "bus",
+        "car",
+        "bike",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "modern": {
+      "name": "modern",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.7599999999999999,
+      "concepts": [
+        "train",
+        "truck",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "ideal": {
+      "name": "ideal",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.7000000000000001,
+      "concepts": [
+        "motorcycle",
+        "bus",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "bright": {
+      "name": "bright",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.4,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "stored": {
+      "name": "stored",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.64,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "school": {
+      "name": "school",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.7999999999999998,
+      "concepts": [
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "footprint": {
+      "name": "footprint",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "accessibility": {
+      "name": "accessibility",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "modifications": {
+      "name": "modifications",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "stay": {
+      "name": "stay",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "congested": {
+      "name": "congested",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "events": {
+      "name": "events",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "society": {
+      "name": "society",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "explore": {
+      "name": "explore",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.7000000000000001,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "streets": {
+      "name": "streets",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 0.6777777777777777,
+      "concepts": [
+        "truck",
+        "bus",
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "effective": {
+      "name": "effective",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6399999999999999,
+      "concepts": [
+        "motorcycle",
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "with": {
+      "name": "with",
+      "feature_type": "word",
+      "frequency": 59,
+      "avg_relevance": 1.3627118644067786,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "requires": {
+      "name": "requires",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.7125,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "short": {
+      "name": "short",
+      "feature_type": "word",
+      "frequency": 21,
+      "avg_relevance": 0.8095238095238095,
+      "concepts": [
+        "train",
+        "bus",
+        "car",
+        "bike",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "frequently": {
+      "name": "frequently",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 0.7142857142857143,
+      "concepts": [
+        "train",
+        "truck",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "carbon": {
+      "name": "carbon",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "four": {
+      "name": "four",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.7000000000000001,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "operates": {
+      "name": "operates",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 0.9800000000000002,
+      "concepts": [
+        "motorcycle",
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "exercise": {
+      "name": "exercise",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "safely": {
+      "name": "safely",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.1500000000000001,
+      "concepts": [
+        "train",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "moving": {
+      "name": "moving",
+      "feature_type": "word",
+      "frequency": 18,
+      "avg_relevance": 1.2222222222222225,
+      "concepts": [
+        "train",
+        "truck",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "groups": {
+      "name": "groups",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.8666666666666666,
+      "concepts": [
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "types": {
+      "name": "types",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "recreational": {
+      "name": "recreational",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 0.7083333333333333,
+      "concepts": [
+        "motorcycle",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "equipped": {
+      "name": "equipped",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 0.6999999999999998,
+      "concepts": [
+        "truck",
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "garages": {
+      "name": "garages",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "used": {
+      "name": "used",
+      "feature_type": "word",
+      "frequency": 176,
+      "avg_relevance": 2.682954545454544,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "towing": {
+      "name": "towing",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.3333333333333333,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "supplies": {
+      "name": "supplies",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "flexibility": {
+      "name": "flexibility",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "enhance": {
+      "name": "enhance",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "offering": {
+      "name": "offering",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.6285714285714287,
+      "concepts": [
+        "motorcycle",
+        "train",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "option": {
+      "name": "option",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.85,
+      "concepts": [
+        "train",
+        "bus",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "work": {
+      "name": "work",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.914285714285714,
+      "concepts": [
+        "truck",
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "skill": {
+      "name": "skill",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.2666666666666668,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "perfect": {
+      "name": "perfect",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "whether": {
+      "name": "whether",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "loads": {
+      "name": "loads",
+      "feature_type": "word",
+      "frequency": 12,
+      "avg_relevance": 1.116666666666667,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "fitness": {
+      "name": "fitness",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.7666666666666666,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "attention": {
+      "name": "attention",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "often": {
+      "name": "often",
+      "feature_type": "word",
+      "frequency": 206,
+      "avg_relevance": 3.315533980582527,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "motor": {
+      "name": "motor",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "wheeled": {
+      "name": "wheeled",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.7428571428571428,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "items": {
+      "name": "items",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "mode": {
+      "name": "mode",
+      "feature_type": "word",
+      "frequency": 62,
+      "avg_relevance": 3.570967741935482,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "low": {
+      "name": "low",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "allows": {
+      "name": "allows",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "bed": {
+      "name": "bed",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "lightweight": {
+      "name": "lightweight",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "wide": {
+      "name": "wide",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8400000000000001,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "quickly": {
+      "name": "quickly",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "train",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "seen": {
+      "name": "seen",
+      "feature_type": "word",
+      "frequency": 72,
+      "avg_relevance": 1.9944444444444431,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "trips": {
+      "name": "trips",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 0.7099999999999999,
+      "concepts": [
+        "train",
+        "bus",
+        "car",
+        "bike",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "parked": {
+      "name": "parked",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.64,
+      "concepts": [
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "minibuses": {
+      "name": "minibuses",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "major": {
+      "name": "major",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "articulated": {
+      "name": "articulated",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "conditioning": {
+      "name": "conditioning",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.665,
+      "concepts": [
+        "truck",
+        "car",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "furniture": {
+      "name": "furniture",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "needs": {
+      "name": "needs",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.9,
+      "concepts": [
+        "truck",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "stations": {
+      "name": "stations",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 1.12,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "transportation": {
+      "name": "transportation",
+      "feature_type": "word",
+      "frequency": 129,
+      "avg_relevance": 3.475968992248061,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "range": {
+      "name": "range",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.8400000000000001,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "allowing": {
+      "name": "allowing",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.7600000000000001,
+      "concepts": [
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "platforms": {
+      "name": "platforms",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 1.6,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "human": {
+      "name": "human",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.75,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "city": {
+      "name": "city",
+      "feature_type": "word",
+      "frequency": 27,
+      "avg_relevance": 0.7111111111111109,
+      "concepts": [
+        "train",
+        "car",
+        "bus",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "park": {
+      "name": "park",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "tours": {
+      "name": "tours",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "commonly": {
+      "name": "commonly",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 0.8099999999999999,
+      "concepts": [
+        "train",
+        "bus",
+        "car",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "performance": {
+      "name": "performance",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "impact": {
+      "name": "impact",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "goods": {
+      "name": "goods",
+      "feature_type": "word",
+      "frequency": 26,
+      "avg_relevance": 1.5461538461538462,
+      "concepts": [
+        "train",
+        "truck"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "during": {
+      "name": "during",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 1.1333333333333333,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "carrying": {
+      "name": "carrying",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.65,
+      "concepts": [
+        "truck"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "cargo": {
+      "name": "cargo",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.76,
+      "concepts": [
+        "train",
+        "truck"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "room": {
+      "name": "room",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "includes": {
+      "name": "includes",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "train",
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "powered": {
+      "name": "powered",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.7599999999999999,
+      "concepts": [
+        "train",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "enjoyed": {
+      "name": "enjoyed",
+      "feature_type": "word",
+      "frequency": 6,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "motorcycle",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "personal": {
+      "name": "personal",
+      "feature_type": "word",
+      "frequency": 44,
+      "avg_relevance": 1.4772727272727275,
+      "concepts": [
+        "train",
+        "car",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "regions": {
+      "name": "regions",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 1.0,
+      "concepts": [
+        "train"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "lots": {
+      "name": "lots",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "use": {
+      "name": "use",
+      "feature_type": "word",
+      "frequency": 14,
+      "avg_relevance": 0.757142857142857,
+      "concepts": [
+        "motorcycle",
+        "truck",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "maneuverability": {
+      "name": "maneuverability",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "motorcycle"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "widely": {
+      "name": "widely",
+      "feature_type": "word",
+      "frequency": 21,
+      "avg_relevance": 0.7333333333333332,
+      "concepts": [
+        "train",
+        "bus",
+        "car",
+        "bike",
+        "truck",
+        "motorcycle"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "tasks": {
+      "name": "tasks",
+      "feature_type": "word",
+      "frequency": 20,
+      "avg_relevance": 1.5500000000000003,
+      "concepts": [
+        "truck",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "active": {
+      "name": "active",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.7333333333333334,
+      "concepts": [
+        "bike"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "buses": {
+      "name": "buses",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.5,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "suburban": {
+      "name": "suburban",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.7,
+      "concepts": [
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "suit": {
+      "name": "suit",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.6,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "staple": {
+      "name": "staple",
+      "feature_type": "word",
+      "frequency": 7,
+      "avg_relevance": 0.6571428571428571,
+      "concepts": [
+        "truck",
+        "bus",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "comes": {
+      "name": "comes",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "easily": {
+      "name": "easily",
+      "feature_type": "word",
+      "frequency": 10,
+      "avg_relevance": 0.7599999999999999,
+      "concepts": [
+        "bus",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "cities": {
+      "name": "cities",
+      "feature_type": "word",
+      "frequency": 22,
+      "avg_relevance": 0.8545454545454547,
+      "concepts": [
+        "train",
+        "bus",
+        "motorcycle",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "everyday": {
+      "name": "everyday",
+      "feature_type": "word",
+      "frequency": 9,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "truck",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "easy": {
+      "name": "easy",
+      "feature_type": "word",
+      "frequency": 3,
+      "avg_relevance": 0.6666666666666666,
+      "concepts": [
+        "bus",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "transit": {
+      "name": "transit",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.9999999999999998,
+      "concepts": [
+        "train",
+        "bus",
+        "bike"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "customized": {
+      "name": "customized",
+      "feature_type": "word",
+      "frequency": 8,
+      "avg_relevance": 0.6499999999999999,
+      "concepts": [
+        "motorcycle",
+        "truck",
+        "bike",
+        "car"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    },
+    "standing": {
+      "name": "standing",
+      "feature_type": "word",
+      "frequency": 2,
+      "avg_relevance": 0.8,
+      "concepts": [
+        "bus"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "entertainment": {
+      "name": "entertainment",
+      "feature_type": "word",
+      "frequency": 4,
+      "avg_relevance": 0.65,
+      "concepts": [
+        "car"
+      ],
+      "is_shared": false,
+      "is_distinguishing": true
+    },
+    "regular": {
+      "name": "regular",
+      "feature_type": "word",
+      "frequency": 5,
+      "avg_relevance": 0.64,
+      "concepts": [
+        "train",
+        "bus"
+      ],
+      "is_shared": true,
+      "is_distinguishing": false
+    }
+  },
+  "statistics": {
+    "total_concepts": 6,
+    "total_features": 321,
+    "total_games": 30
+  }
+}

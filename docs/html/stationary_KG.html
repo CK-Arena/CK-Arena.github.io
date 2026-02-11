@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stationary Knowledge Graph</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .main {
+            flex: 1;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .legend {
+            margin-bottom: 20px;
+        }
+        
+        .legend-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+        
+        .legend-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .legend-line {
+            width: 30px;
+            height: 3px;
+            margin-right: 10px;
+            flex-shrink: 0;
+            border-radius: 2px;
+        }
+        
+        .filters {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #f39c12;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            font-size: 0.85rem;
+            color: #f39c12;
+            min-width: 30px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input {
+            accent-color: #f39c12;
+        }
+        
+        .stats {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin: 5px 0;
+        }
+        
+        .stat-value {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
+        #tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f39c12;
+        }
+        
+        .tooltip-row {
+            margin: 4px 0;
+            color: #ccc;
+        }
+        
+        .tooltip-label {
+            color: #888;
+        }
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .node-label {
+            font-size: 11px;
+            fill: #fff;
+            pointer-events: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .concept-label {
+            font-size: 16px;
+            font-weight: bold;
+            fill: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 0.8rem;
+            max-width: 300px;
+        }
+        
+        .info-panel p {
+            margin: 5px 0;
+            color: #aaa;
+        }
+        
+        .info-panel strong {
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Stationary Knowledge Graph</h1>
+            
+            <div class="legend">
+                <div class="legend-title">Node Types</div>
+                
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Eraser</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Ruler</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Marker</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Highlighter</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Stapler</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Clip</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Notepad</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Notebook</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Crayon</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Paperclip</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e74c3c;"></div>
+                    <span>Concept 1 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Concept 2 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #2ecc71;"></div>
+                    <span>Shared Feature</span>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-title">Edge Strength</div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.8);"></div>
+                    <span>Strong (relevance > 1.0)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.4);"></div>
+                    <span>Medium</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.15);"></div>
+                    <span>Weak (relevance < 0.5)</span>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="filter-label">Min Frequency (filter low-frequency features)</label>
+                    <div class="slider-container">
+                        <input type="range" id="freqFilter" min="1" max="20" value="3">
+                        <span class="slider-value" id="freqValue">3</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Min Relevance</label>
+                    <div class="slider-container">
+                        <input type="range" id="relevanceFilter" min="0" max="100" value="50">
+                        <span class="slider-value" id="relevanceValue">0.5</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Feature Types</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showUnique" checked>
+                            <span>Unique</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showShared" checked>
+                            <span>Shared</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stats-title">Statistics</div>
+                <div class="stat-row">
+                    <span>Features Displayed</span>
+                    <span class="stat-value" id="featureCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Unique Features</span>
+                    <span class="stat-value" id="uniqueCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Shared Features</span>
+                    <span class="stat-value" id="sharedCount">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main">
+            <svg id="graph"></svg>
+            <div id="tooltip"></div>
+            <div class="info-panel">
+                <p><strong>Interactions:</strong></p>
+                <p>* Drag nodes to reposition</p>
+                <p>* Scroll to zoom</p>
+                <p>* Hover for details</p>
+                <p>* Use filters to reduce noise</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Concept data
+        const conceptsData = [
+  {
+    "id": "eraser",
+    "name": "Eraser 🐝",
+    "color": "#f39c12"
+  },
+  {
+    "id": "ruler",
+    "name": "Ruler 🦋",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "marker",
+    "name": "Marker 🌸",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "highlighter",
+    "name": "Highlighter 🌿",
+    "color": "#e67e22"
+  },
+  {
+    "id": "stapler",
+    "name": "Stapler 🌍",
+    "color": "#3498db"
+  },
+  {
+    "id": "clip",
+    "name": "Clip ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "notepad",
+    "name": "Notepad ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "notebook",
+    "name": "Notebook ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "crayon",
+    "name": "Crayon ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "paperclip",
+    "name": "Paperclip ",
+    "color": "#3498db"
+  }
+];
+        
+        // Feature data
+        const featuresData = {
+  "tasks": {
+    "name": "tasks",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "notebook",
+      "ruler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "trace": {
+    "name": "trace",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "marker"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "items": {
+    "name": "items",
+    "frequency": 3,
+    "avg_relevance": 1.8999999999999997,
+    "concepts": [
+      "clip"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "tip": {
+    "name": "tip",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "marker"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "sheets": {
+    "name": "sheets",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "stapler"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "together": {
+    "name": "together",
+    "frequency": 5,
+    "avg_relevance": 1.22,
+    "concepts": [
+      "clip",
+      "stapler",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "often": {
+    "name": "often",
+    "frequency": 28,
+    "avg_relevance": 2.1035928571428566,
+    "concepts": [
+      "crayon",
+      "notebook",
+      "stapler",
+      "marker",
+      "clip",
+      "notepad",
+      "ruler",
+      "highlighter",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "plastic": {
+    "name": "plastic",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "notepad",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "typically": {
+    "name": "typically",
+    "frequency": 6,
+    "avg_relevance": 0.9833333333333333,
+    "concepts": [
+      "marker",
+      "crayon",
+      "eraser",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "documentation": {
+    "name": "documentation",
+    "frequency": 3,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "marker",
+      "notepad"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "offices": {
+    "name": "offices",
+    "frequency": 5,
+    "avg_relevance": 0.575,
+    "concepts": [
+      "marker",
+      "notepad",
+      "clip",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "pieces": {
+    "name": "pieces",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "stapler"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "designed": {
+    "name": "designed",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "notebook",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "comes": {
+    "name": "comes",
+    "frequency": 2,
+    "avg_relevance": 0.60005,
+    "concepts": [
+      "marker"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "made": {
+    "name": "made",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "eraser",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sizes": {
+    "name": "sizes",
+    "frequency": 3,
+    "avg_relevance": 0.6999999999999998,
+    "concepts": [
+      "marker",
+      "notebook",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "creating": {
+    "name": "creating",
+    "frequency": 2,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "marker"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "securely": {
+    "name": "securely",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "clip",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "mechanism": {
+    "name": "mechanism",
+    "frequency": 3,
+    "avg_relevance": 1.4666666666666668,
+    "concepts": [
+      "stapler"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "documents": {
+    "name": "documents",
+    "frequency": 3,
+    "avg_relevance": 0.6000333333333333,
+    "concepts": [
+      "clip",
+      "highlighter",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "pages": {
+    "name": "pages",
+    "frequency": 4,
+    "avg_relevance": 1.5500749999999999,
+    "concepts": [
+      "notepad",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "binding": {
+    "name": "binding",
+    "frequency": 5,
+    "avg_relevance": 1.90004,
+    "concepts": [
+      "notepad",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "unwanted": {
+    "name": "unwanted",
+    "frequency": 2,
+    "avg_relevance": 1.8,
+    "concepts": [
+      "eraser"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "easily": {
+    "name": "easily",
+    "frequency": 4,
+    "avg_relevance": 0.8501,
+    "concepts": [
+      "notepad",
+      "eraser",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "store": {
+    "name": "store",
+    "frequency": 2,
+    "avg_relevance": 0.60005,
+    "concepts": [
+      "notepad",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "with": {
+    "name": "with",
+    "frequency": 7,
+    "avg_relevance": 1.6285714285714283,
+    "concepts": [
+      "notepad",
+      "crayon",
+      "notebook",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "thoughts": {
+    "name": "thoughts",
+    "frequency": 5,
+    "avg_relevance": 1.9400000000000002,
+    "concepts": [
+      "notepad",
+      "notebook"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "use": {
+    "name": "use",
+    "frequency": 2,
+    "avg_relevance": 1.0001,
+    "concepts": [
+      "notepad"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "lines": {
+    "name": "lines",
+    "frequency": 3,
+    "avg_relevance": 0.8333333333333334,
+    "concepts": [
+      "marker",
+      "notebook",
+      "ruler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "desks": {
+    "name": "desks",
+    "frequency": 3,
+    "avg_relevance": 0.4000000000000001,
+    "concepts": [
+      "marker",
+      "notebook",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "organizing": {
+    "name": "organizing",
+    "frequency": 3,
+    "avg_relevance": 0.7667333333333334,
+    "concepts": [
+      "notebook",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "keep": {
+    "name": "keep",
+    "frequency": 6,
+    "avg_relevance": 1.0333333333333332,
+    "concepts": [
+      "notepad",
+      "clip",
+      "notebook",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "paper": {
+    "name": "paper",
+    "frequency": 8,
+    "avg_relevance": 1.0916666666666666,
+    "concepts": [
+      "crayon",
+      "notebook",
+      "stapler",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "hold": {
+    "name": "hold",
+    "frequency": 3,
+    "avg_relevance": 0.7999999999999999,
+    "concepts": [
+      "clip",
+      "stapler",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "object": {
+    "name": "object",
+    "frequency": 6,
+    "avg_relevance": 0.58,
+    "concepts": [
+      "stapler",
+      "marker",
+      "notepad",
+      "clip",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "types": {
+    "name": "types",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "marker"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "remove": {
+    "name": "remove",
+    "frequency": 2,
+    "avg_relevance": 1.8,
+    "concepts": [
+      "eraser"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "written": {
+    "name": "written",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "notepad",
+      "notebook"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "rectangular": {
+    "name": "rectangular",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "notepad",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "permanent": {
+    "name": "permanent",
+    "frequency": 4,
+    "avg_relevance": 1.1750000000000003,
+    "concepts": [
+      "marker",
+      "clip",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "different": {
+    "name": "different",
+    "frequency": 4,
+    "avg_relevance": 1.0999999999999999,
+    "concepts": [
+      "marker",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "down": {
+    "name": "down",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "notepad",
+      "notebook",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "metal": {
+    "name": "metal",
+    "frequency": 8,
+    "avg_relevance": 3.1375,
+    "concepts": [
+      "stapler",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tool": {
+    "name": "tool",
+    "frequency": 10,
+    "avg_relevance": 0.63001,
+    "concepts": [
+      "crayon",
+      "eraser",
+      "stapler",
+      "notepad",
+      "marker",
+      "clip",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "flexible": {
+    "name": "flexible",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "notepad",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "needs": {
+    "name": "needs",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "notebook",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "leaves": {
+    "name": "leaves",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "marker"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "through": {
+    "name": "through",
+    "frequency": 3,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "notepad",
+      "notebook",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "organized": {
+    "name": "organized",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "clip",
+      "notebook"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "found": {
+    "name": "found",
+    "frequency": 4,
+    "avg_relevance": 0.475,
+    "concepts": [
+      "notepad",
+      "marker",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "ideas": {
+    "name": "ideas",
+    "frequency": 2,
+    "avg_relevance": 1.2999999999999998,
+    "concepts": [
+      "notepad"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "available": {
+    "name": "available",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "marker",
+      "notebook"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "loaded": {
+    "name": "loaded",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "stapler"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "commonly": {
+    "name": "commonly",
+    "frequency": 7,
+    "avg_relevance": 0.8428571428571429,
+    "concepts": [
+      "marker",
+      "crayon",
+      "notebook",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "notes": {
+    "name": "notes",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "notepad",
+      "highlighter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fastener": {
+    "name": "fastener",
+    "frequency": 3,
+    "avg_relevance": 1.35,
+    "concepts": [
+      "stapler"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "non": {
+    "name": "non",
+    "frequency": 2,
+    "avg_relevance": 1.8,
+    "concepts": [
+      "marker"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "information": {
+    "name": "information",
+    "frequency": 4,
+    "avg_relevance": 0.9749999999999999,
+    "concepts": [
+      "notepad",
+      "notebook",
+      "highlighter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "from": {
+    "name": "from",
+    "frequency": 2,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "marker",
+      "eraser"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "writing": {
+    "name": "writing",
+    "frequency": 6,
+    "avg_relevance": 1.0666666666666667,
+    "concepts": [
+      "notebook",
+      "notepad",
+      "eraser",
+      "marker"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "without": {
+    "name": "without",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "clip",
+      "eraser"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "communication": {
+    "name": "communication",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "marker"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "marks": {
+    "name": "marks",
+    "frequency": 3,
+    "avg_relevance": 1.3666666666666665,
+    "concepts": [
+      "crayon",
+      "eraser"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "handwriting": {
+    "name": "handwriting",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "notepad",
+      "notebook"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "features": {
+    "name": "features",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "notepad",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "draw": {
+    "name": "draw",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "marker",
+      "ruler",
+      "highlighter"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "versatile": {
+    "name": "versatile",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "clip",
+      "notebook"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "bind": {
+    "name": "bind",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "stapler"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "item": {
+    "name": "item",
+    "frequency": 4,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "marker",
+      "notebook",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "used": {
+    "name": "used",
+    "frequency": 29,
+    "avg_relevance": 2.131055172413794,
+    "concepts": [
+      "crayon",
+      "eraser",
+      "notebook",
+      "stapler",
+      "marker",
+      "clip",
+      "notepad",
+      "ruler",
+      "highlighter",
+      "paperclip"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "creative": {
+    "name": "creative",
+    "frequency": 3,
+    "avg_relevance": 0.4000000000000001,
+    "concepts": [
+      "marker",
+      "crayon",
+      "notepad"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "come": {
+    "name": "come",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "notepad",
+      "stapler"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  }
+};
+        
+        // Feature color mapping
+        const uniqueColors = ['#e74c3c', '#3498db', '#e67e22', '#1abc9c', '#9b59b6'];
+        const sharedColor = '#2ecc71';
+        
+        // Prepare node and edge data
+        let nodes = [];
+        let links = [];
+
+        function prepareData(minFreq, minRelevance, showUnique, showShared) {
+            nodes = [];
+            links = [];
+            
+            // Add concept nodes
+            conceptsData.forEach(concept => {
+                nodes.push({
+                    id: concept.id,
+                    name: concept.name,
+                    type: 'concept',
+                    color: concept.color,
+                    radius: 40
+                });
+            });
+
+            // Add feature nodes
+            Object.entries(featuresData).forEach(([key, feature]) => {
+                if (feature.frequency < minFreq) return;
+                if (feature.avg_relevance < minRelevance) return;
+                
+                const isShared = feature.is_shared;
+                
+                if (!isShared && !showUnique) return;
+                if (isShared && !showShared) return;
+                
+                let color;
+                if (isShared) {
+                    color = sharedColor;
+                } else {
+                    // Determine color based on first related concept
+                    const conceptIndex = conceptsData.findIndex(c => c.id === feature.concepts[0]);
+                    color = uniqueColors[conceptIndex % uniqueColors.length];
+                }
+                
+                const radius = Math.max(8, Math.min(25, feature.frequency * 1.2));
+                
+                nodes.push({
+                    id: key,
+                    name: feature.name,
+                    type: 'feature',
+                    color: color,
+                    radius: radius,
+                    frequency: feature.frequency,
+                    relevance: feature.avg_relevance,
+                    concepts: feature.concepts,
+                    isShared: isShared,
+                    featureType: feature.feature_type
+                });
+                
+                // Add connections
+                feature.concepts.forEach(concept => {
+                    links.push({
+                        source: key,
+                        target: concept,
+                        relevance: feature.avg_relevance,
+                        strength: Math.min(1, feature.avg_relevance / 2)
+                    });
+                });
+            });
+            
+            // Update statistics
+            const featureNodes = nodes.filter(n => n.type === 'feature');
+            document.getElementById('featureCount').textContent = featureNodes.length;
+            document.getElementById('uniqueCount').textContent = featureNodes.filter(n => !n.isShared).length;
+            document.getElementById('sharedCount').textContent = featureNodes.filter(n => n.isShared).length;
+        }
+
+        // D3 visualization
+        const svg = d3.select('#graph');
+        const width = document.querySelector('.main').clientWidth;
+        const height = document.querySelector('.main').clientHeight;
+        
+        const g = svg.append('g');
+        
+        // Zoom
+        const zoom = d3.zoom()
+            .scaleExtent([0.3, 3])
+            .on('zoom', (event) => {
+                g.attr('transform', event.transform);
+            });
+        
+        svg.call(zoom);
+        
+        // Initial zoom to center
+        svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.8));
+
+        let simulation;
+        
+        function updateGraph() {
+            const minFreq = parseInt(document.getElementById('freqFilter').value);
+            const minRelevance = parseInt(document.getElementById('relevanceFilter').value) / 100;
+            const showUnique = document.getElementById('showUnique').checked;
+            const showShared = document.getElementById('showShared').checked;
+            
+            prepareData(minFreq, minRelevance, showUnique, showShared);
+            
+            // Clear old elements
+            g.selectAll('*').remove();
+            
+            // Force-directed simulation
+            simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
+                    return d.relevance > 1 ? 80 : 120;
+                }).strength(d => d.strength * 0.5))
+                .force('charge', d3.forceManyBody().strength(d => d.type === 'concept' ? -500 : -100))
+                .force('center', d3.forceCenter(0, 0))
+                .force('collision', d3.forceCollide().radius(d => d.radius + 5));
+            
+            // Draw edges
+            const link = g.append('g')
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('stroke', d => {
+                    if (d.relevance > 1) return 'rgba(255,255,255,0.6)';
+                    if (d.relevance > 0.7) return 'rgba(255,255,255,0.35)';
+                    return 'rgba(255,255,255,0.15)';
+                })
+                .attr('stroke-width', d => Math.max(1, d.relevance * 2));
+            
+            // Draw nodes
+            const node = g.append('g')
+                .selectAll('g')
+                .data(nodes)
+                .join('g')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            // Node glow effect
+            const defs = svg.select('defs').empty() ? svg.append('defs') : svg.select('defs');
+            defs.selectAll('*').remove();
+            
+            nodes.forEach((n, i) => {
+                const filter = defs.append('filter')
+                    .attr('id', `glow-${i}`)
+                    .attr('x', '-50%')
+                    .attr('y', '-50%')
+                    .attr('width', '200%')
+                    .attr('height', '200%');
+                
+                filter.append('feGaussianBlur')
+                    .attr('stdDeviation', '3')
+                    .attr('result', 'coloredBlur');
+                
+                const feMerge = filter.append('feMerge');
+                feMerge.append('feMergeNode').attr('in', 'coloredBlur');
+                feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+            });
+            
+            node.append('circle')
+                .attr('r', d => d.radius)
+                .attr('fill', d => d.color)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', d => d.type === 'concept' ? 3 : 1.5)
+                .attr('opacity', d => d.type === 'concept' ? 1 : 0.85)
+                .style('filter', (d, i) => `url(#glow-${i})`)
+                .style('cursor', 'pointer');
+            
+            // Node labels
+            node.append('text')
+                .attr('class', d => d.type === 'concept' ? 'concept-label' : 'node-label')
+                .attr('text-anchor', 'middle')
+                .attr('dy', d => d.type === 'concept' ? 5 : (d.radius + 14))
+                .text(d => d.name.length > 20 ? d.name.substring(0, 18) + '...' : d.name);
+            
+            // Tooltip
+            const tooltip = document.getElementById('tooltip');
+            
+            node.on('mouseover', (event, d) => {
+                if (d.type === 'feature') {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Frequency: </span>${d.frequency}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Relevance: </span>${d.relevance.toFixed(2)}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Type: </span>${d.isShared ? 'Shared' : 'Unique'}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Feature Type: </span>${d.featureType}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Related Concepts: </span>${d.concepts.join(', ')}</div>
+                    `;
+                } else {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row">Core Concept Node</div>
+                    `;
+                }
+                tooltip.style.opacity = 1;
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mousemove', (event) => {
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mouseout', () => {
+                tooltip.style.opacity = 0;
+            });
+            
+            // Update positions
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node.attr('transform', d => `translate(${d.x},${d.y})`);
+            });
+        }
+        
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // Event listeners
+        document.getElementById('freqFilter').addEventListener('input', (e) => {
+            document.getElementById('freqValue').textContent = e.target.value;
+            updateGraph();
+        });
+        
+        document.getElementById('relevanceFilter').addEventListener('input', (e) => {
+            document.getElementById('relevanceValue').textContent = (e.target.value / 100).toFixed(1);
+            updateGraph();
+        });
+        
+        document.getElementById('showUnique').addEventListener('change', updateGraph);
+        document.getElementById('showShared').addEventListener('change', updateGraph);
+        
+        // Initialize
+        updateGraph();
+    </script>
+</body>
+</html>

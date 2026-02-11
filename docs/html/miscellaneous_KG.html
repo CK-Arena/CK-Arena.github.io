@@ -1,0 +1,2088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miscellaneous Knowledge Graph</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .main {
+            flex: 1;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .legend {
+            margin-bottom: 20px;
+        }
+        
+        .legend-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+        
+        .legend-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .legend-line {
+            width: 30px;
+            height: 3px;
+            margin-right: 10px;
+            flex-shrink: 0;
+            border-radius: 2px;
+        }
+        
+        .filters {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #f39c12;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            font-size: 0.85rem;
+            color: #f39c12;
+            min-width: 30px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input {
+            accent-color: #f39c12;
+        }
+        
+        .stats {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin: 5px 0;
+        }
+        
+        .stat-value {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
+        #tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f39c12;
+        }
+        
+        .tooltip-row {
+            margin: 4px 0;
+            color: #ccc;
+        }
+        
+        .tooltip-label {
+            color: #888;
+        }
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .node-label {
+            font-size: 11px;
+            fill: #fff;
+            pointer-events: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .concept-label {
+            font-size: 16px;
+            font-weight: bold;
+            fill: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 0.8rem;
+            max-width: 300px;
+        }
+        
+        .info-panel p {
+            margin: 5px 0;
+            color: #aaa;
+        }
+        
+        .info-panel strong {
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Miscellaneous Knowledge Graph</h1>
+            
+            <div class="legend">
+                <div class="legend-title">Node Types</div>
+                
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Prescription</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Medication</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Rain</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Drizzle</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Library</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Bookstore</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Vampire</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Werewolf</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Bicyle</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Motorcycle</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Museum</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Gallery</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e74c3c;"></div>
+                    <span>Concept 1 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Concept 2 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #2ecc71;"></div>
+                    <span>Shared Feature</span>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-title">Edge Strength</div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.8);"></div>
+                    <span>Strong (relevance > 1.0)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.4);"></div>
+                    <span>Medium</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.15);"></div>
+                    <span>Weak (relevance < 0.5)</span>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="filter-label">Min Frequency (filter low-frequency features)</label>
+                    <div class="slider-container">
+                        <input type="range" id="freqFilter" min="1" max="20" value="3">
+                        <span class="slider-value" id="freqValue">3</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Min Relevance</label>
+                    <div class="slider-container">
+                        <input type="range" id="relevanceFilter" min="0" max="100" value="50">
+                        <span class="slider-value" id="relevanceValue">0.5</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Feature Types</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showUnique" checked>
+                            <span>Unique</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showShared" checked>
+                            <span>Shared</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stats-title">Statistics</div>
+                <div class="stat-row">
+                    <span>Features Displayed</span>
+                    <span class="stat-value" id="featureCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Unique Features</span>
+                    <span class="stat-value" id="uniqueCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Shared Features</span>
+                    <span class="stat-value" id="sharedCount">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main">
+            <svg id="graph"></svg>
+            <div id="tooltip"></div>
+            <div class="info-panel">
+                <p><strong>Interactions:</strong></p>
+                <p>* Drag nodes to reposition</p>
+                <p>* Scroll to zoom</p>
+                <p>* Hover for details</p>
+                <p>* Use filters to reduce noise</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Concept data
+        const conceptsData = [
+  {
+    "id": "prescription",
+    "name": "Prescription 🐝",
+    "color": "#f39c12"
+  },
+  {
+    "id": "medication",
+    "name": "Medication 🦋",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "rain",
+    "name": "Rain 🌸",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "drizzle",
+    "name": "Drizzle 🌿",
+    "color": "#e67e22"
+  },
+  {
+    "id": "Library",
+    "name": "Library 🌍",
+    "color": "#3498db"
+  },
+  {
+    "id": "bookstore",
+    "name": "Bookstore ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "vampire",
+    "name": "Vampire ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "werewolf",
+    "name": "Werewolf ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "bicyle",
+    "name": "Bicyle ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "motorcycle",
+    "name": "Motorcycle ",
+    "color": "#3498db"
+  },
+  {
+    "id": "museum",
+    "name": "Museum ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "gallery",
+    "name": "Gallery ",
+    "color": "#9b59b6"
+  }
+];
+        
+        // Feature data
+        const featuresData = {
+  "quiet": {
+    "name": "quiet",
+    "frequency": 2,
+    "avg_relevance": 1.7000000000000002,
+    "concepts": [
+      "Library"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "healthcare": {
+    "name": "healthcare",
+    "frequency": 2,
+    "avg_relevance": 1.2002,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "processed": {
+    "name": "processed",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "legend": {
+    "name": "legend",
+    "frequency": 2,
+    "avg_relevance": 0.5500499999999999,
+    "concepts": [
+      "vampire",
+      "werewolf"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "designed": {
+    "name": "designed",
+    "frequency": 5,
+    "avg_relevance": 0.6799999999999999,
+    "concepts": [
+      "bicyle",
+      "Library",
+      "medication",
+      "museum",
+      "motorcycle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "individual": {
+    "name": "individual",
+    "frequency": 4,
+    "avg_relevance": 1.0333333333333334,
+    "concepts": [
+      "prescription",
+      "motorcycle",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "gentle": {
+    "name": "gentle",
+    "frequency": 3,
+    "avg_relevance": 1.3,
+    "concepts": [
+      "rain",
+      "drizzle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "comes": {
+    "name": "comes",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "medication",
+      "bicyle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "accompanied": {
+    "name": "accompanied",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "rain"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "provides": {
+    "name": "provides",
+    "frequency": 7,
+    "avg_relevance": 0.7733333333333334,
+    "concepts": [
+      "bicyle",
+      "Library",
+      "prescription",
+      "gallery",
+      "motorcycle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "displayed": {
+    "name": "displayed",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "gallery"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "retail": {
+    "name": "retail",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "bookstore",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "with": {
+    "name": "with",
+    "frequency": 18,
+    "avg_relevance": 1.011138888888889,
+    "concepts": [
+      "vampire",
+      "bicyle",
+      "Library",
+      "prescription",
+      "medication",
+      "gallery",
+      "rain",
+      "museum",
+      "motorcycle",
+      "werewolf",
+      "bookstore"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "sometimes": {
+    "name": "sometimes",
+    "frequency": 3,
+    "avg_relevance": 1.1333333333333333,
+    "concepts": [
+      "rain",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "interactive": {
+    "name": "interactive",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "medication",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "access": {
+    "name": "access",
+    "frequency": 6,
+    "avg_relevance": 2.3999999999999995,
+    "concepts": [
+      "prescription",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "medications": {
+    "name": "medications",
+    "frequency": 3,
+    "avg_relevance": 1.3,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "programs": {
+    "name": "programs",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "Library",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "treatment": {
+    "name": "treatment",
+    "frequency": 5,
+    "avg_relevance": 1.300075,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "personal": {
+    "name": "personal",
+    "frequency": 3,
+    "avg_relevance": 1.3000333333333334,
+    "concepts": [
+      "bicyle",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "involves": {
+    "name": "involves",
+    "frequency": 4,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "prescription",
+      "werewolf",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "both": {
+    "name": "both",
+    "frequency": 4,
+    "avg_relevance": 0.8250500000000001,
+    "concepts": [
+      "bicyle",
+      "werewolf",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "collections": {
+    "name": "collections",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "bookstore",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "transportation": {
+    "name": "transportation",
+    "frequency": 4,
+    "avg_relevance": 2.2002,
+    "concepts": [
+      "bicyle"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "preserves": {
+    "name": "preserves",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "Library"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "venue": {
+    "name": "venue",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "gallery",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "study": {
+    "name": "study",
+    "frequency": 2,
+    "avg_relevance": 1.7000000000000002,
+    "concepts": [
+      "Library"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "filled": {
+    "name": "filled",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "bookstore",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "associated": {
+    "name": "associated",
+    "frequency": 6,
+    "avg_relevance": 0.5333833333333334,
+    "concepts": [
+      "vampire",
+      "Library",
+      "prescription",
+      "motorcycle",
+      "werewolf",
+      "rain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "issue": {
+    "name": "issue",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "systems": {
+    "name": "systems",
+    "frequency": 2,
+    "avg_relevance": 0.7000500000000001,
+    "concepts": [
+      "prescription",
+      "medication"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "water": {
+    "name": "water",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "rain",
+      "drizzle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "community": {
+    "name": "community",
+    "frequency": 3,
+    "avg_relevance": 2.3,
+    "concepts": [
+      "Library"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "make": {
+    "name": "make",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "rain",
+      "drizzle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "critical": {
+    "name": "critical",
+    "frequency": 2,
+    "avg_relevance": 1.3,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "includes": {
+    "name": "includes",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "items": {
+    "name": "items",
+    "frequency": 4,
+    "avg_relevance": 0.9249999999999999,
+    "concepts": [
+      "gallery",
+      "bookstore",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "treat": {
+    "name": "treat",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "medication"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "careful": {
+    "name": "careful",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "prescription",
+      "gallery"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "educational": {
+    "name": "educational",
+    "frequency": 4,
+    "avg_relevance": 0.8166666666666668,
+    "concepts": [
+      "Library",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "often": {
+    "name": "often",
+    "frequency": 35,
+    "avg_relevance": 2.2914599999999994,
+    "concepts": [
+      "vampire",
+      "bicyle",
+      "Library",
+      "prescription",
+      "medication",
+      "gallery",
+      "rain",
+      "museum",
+      "motorcycle",
+      "werewolf",
+      "bookstore"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "documentation": {
+    "name": "documentation",
+    "frequency": 4,
+    "avg_relevance": 1.25,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "patients": {
+    "name": "patients",
+    "frequency": 4,
+    "avg_relevance": 1.0001,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "materials": {
+    "name": "materials",
+    "frequency": 7,
+    "avg_relevance": 3.3999999999999995,
+    "concepts": [
+      "bookstore",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "requires": {
+    "name": "requires",
+    "frequency": 10,
+    "avg_relevance": 1.3277777777777777,
+    "concepts": [
+      "prescription",
+      "rain",
+      "bicyle",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "effort": {
+    "name": "effort",
+    "frequency": 2,
+    "avg_relevance": 1.8,
+    "concepts": [
+      "bicyle"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "resources": {
+    "name": "resources",
+    "frequency": 4,
+    "avg_relevance": 1.4500000000000002,
+    "concepts": [
+      "rain",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "world": {
+    "name": "world",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "bookstore",
+      "drizzle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "specific": {
+    "name": "specific",
+    "frequency": 7,
+    "avg_relevance": 1.1916666666666667,
+    "concepts": [
+      "prescription",
+      "medication",
+      "bicyle",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "powered": {
+    "name": "powered",
+    "frequency": 3,
+    "avg_relevance": 1.3,
+    "concepts": [
+      "vampire",
+      "bicyle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "research": {
+    "name": "research",
+    "frequency": 3,
+    "avg_relevance": 1.4666666666666668,
+    "concepts": [
+      "medication",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "surfaces": {
+    "name": "surfaces",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "rain",
+      "drizzle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "folklore": {
+    "name": "folklore",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "vampire",
+      "werewolf"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "ensuring": {
+    "name": "ensuring",
+    "frequency": 4,
+    "avg_relevance": 2.5002,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "depending": {
+    "name": "depending",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "medication",
+      "rain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "exhibits": {
+    "name": "exhibits",
+    "frequency": 3,
+    "avg_relevance": 2.2,
+    "concepts": [
+      "museum"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "supernatural": {
+    "name": "supernatural",
+    "frequency": 2,
+    "avg_relevance": 0.7001999999999999,
+    "concepts": [
+      "vampire"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "written": {
+    "name": "written",
+    "frequency": 5,
+    "avg_relevance": 1.36,
+    "concepts": [
+      "prescription",
+      "bookstore",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "human": {
+    "name": "human",
+    "frequency": 5,
+    "avg_relevance": 1.05005,
+    "concepts": [
+      "werewolf",
+      "bicyle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "liquid": {
+    "name": "liquid",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "medication"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "taken": {
+    "name": "taken",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "prescription",
+      "medication"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cultural": {
+    "name": "cultural",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "Library",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "have": {
+    "name": "have",
+    "frequency": 3,
+    "avg_relevance": 2.5,
+    "concepts": [
+      "vampire"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "before": {
+    "name": "before",
+    "frequency": 4,
+    "avg_relevance": 1.25,
+    "concepts": [
+      "prescription",
+      "medication"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "found": {
+    "name": "found",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "medication",
+      "werewolf"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "peaceful": {
+    "name": "peaceful",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "bookstore",
+      "rain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "said": {
+    "name": "said",
+    "frequency": 2,
+    "avg_relevance": 1.7000000000000002,
+    "concepts": [
+      "vampire"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "enhance": {
+    "name": "enhance",
+    "frequency": 3,
+    "avg_relevance": 0.6333333333333333,
+    "concepts": [
+      "motorcycle",
+      "gallery",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "pharmacies": {
+    "name": "pharmacies",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "prescription",
+      "medication"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "instructions": {
+    "name": "instructions",
+    "frequency": 5,
+    "avg_relevance": 2.1799999999999997,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "topics": {
+    "name": "topics",
+    "frequency": 2,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "bookstore"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "used": {
+    "name": "used",
+    "frequency": 4,
+    "avg_relevance": 1.475075,
+    "concepts": [
+      "bicyle",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "receive": {
+    "name": "receive",
+    "frequency": 2,
+    "avg_relevance": 1.2002,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "dosage": {
+    "name": "dosage",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "structured": {
+    "name": "structured",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "Library",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "professional": {
+    "name": "professional",
+    "frequency": 4,
+    "avg_relevance": 0.7500249999999999,
+    "concepts": [
+      "prescription",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "fear": {
+    "name": "fear",
+    "frequency": 2,
+    "avg_relevance": 0.9001,
+    "concepts": [
+      "vampire"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "typically": {
+    "name": "typically",
+    "frequency": 7,
+    "avg_relevance": 1.2857142857142858,
+    "concepts": [
+      "prescription",
+      "gallery",
+      "bicyle",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "range": {
+    "name": "range",
+    "frequency": 2,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "Library"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "obtain": {
+    "name": "obtain",
+    "frequency": 3,
+    "avg_relevance": 1.35,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "about": {
+    "name": "about",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "museum"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "usually": {
+    "name": "usually",
+    "frequency": 2,
+    "avg_relevance": 0.7000500000000001,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "falls": {
+    "name": "falls",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "rain",
+      "drizzle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "after": {
+    "name": "after",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "prescription",
+      "rain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "public": {
+    "name": "public",
+    "frequency": 3,
+    "avg_relevance": 1.4000000000000001,
+    "concepts": [
+      "gallery",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "use": {
+    "name": "use",
+    "frequency": 5,
+    "avg_relevance": 0.7000200000000001,
+    "concepts": [
+      "Library",
+      "prescription",
+      "medication",
+      "motorcycle",
+      "rain"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "depicted": {
+    "name": "depicted",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "vampire",
+      "werewolf"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "medical": {
+    "name": "medical",
+    "frequency": 5,
+    "avg_relevance": 2.56,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "books": {
+    "name": "books",
+    "frequency": 2,
+    "avg_relevance": 1.7000000000000002,
+    "concepts": [
+      "Library"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "rooted": {
+    "name": "rooted",
+    "frequency": 2,
+    "avg_relevance": 0.9001,
+    "concepts": [
+      "vampire"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "physical": {
+    "name": "physical",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "medication",
+      "bicyle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "main": {
+    "name": "main",
+    "frequency": 3,
+    "avg_relevance": 0.675,
+    "concepts": [
+      "medication",
+      "Library",
+      "drizzle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "managing": {
+    "name": "managing",
+    "frequency": 2,
+    "avg_relevance": 0.5500499999999999,
+    "concepts": [
+      "prescription",
+      "medication"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "control": {
+    "name": "control",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "vampire",
+      "werewolf"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "information": {
+    "name": "information",
+    "frequency": 2,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "Library"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "care": {
+    "name": "care",
+    "frequency": 4,
+    "avg_relevance": 1.6250999999999998,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "proper": {
+    "name": "proper",
+    "frequency": 2,
+    "avg_relevance": 1.3,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "conscience": {
+    "name": "conscience",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "werewolf",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "find": {
+    "name": "find",
+    "frequency": 2,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "bookstore"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "free": {
+    "name": "free",
+    "frequency": 2,
+    "avg_relevance": 1.7000000000000002,
+    "concepts": [
+      "Library"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "between": {
+    "name": "between",
+    "frequency": 5,
+    "avg_relevance": 1.46,
+    "concepts": [
+      "prescription",
+      "vampire",
+      "werewolf"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "features": {
+    "name": "features",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "bicyle",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "official": {
+    "name": "official",
+    "frequency": 2,
+    "avg_relevance": 1.8,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "leisure": {
+    "name": "leisure",
+    "frequency": 2,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "bicyle",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "diverse": {
+    "name": "diverse",
+    "frequency": 2,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "bookstore"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "shelves": {
+    "name": "shelves",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "bookstore",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "historical": {
+    "name": "historical",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "gallery",
+      "Library",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "history": {
+    "name": "history",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "werewolf",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "supporting": {
+    "name": "supporting",
+    "frequency": 2,
+    "avg_relevance": 0.75005,
+    "concepts": [
+      "prescription",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "different": {
+    "name": "different",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "vampire",
+      "bookstore",
+      "Library"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "needs": {
+    "name": "needs",
+    "frequency": 3,
+    "avg_relevance": 1.0000333333333333,
+    "concepts": [
+      "prescription",
+      "bicyle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "dedicated": {
+    "name": "dedicated",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "Library",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "through": {
+    "name": "through",
+    "frequency": 4,
+    "avg_relevance": 0.7749999999999999,
+    "concepts": [
+      "prescription",
+      "vampire",
+      "bookstore",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "guidance": {
+    "name": "guidance",
+    "frequency": 2,
+    "avg_relevance": 1.7000000000000002,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "learning": {
+    "name": "learning",
+    "frequency": 3,
+    "avg_relevance": 2.4,
+    "concepts": [
+      "Library"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "organized": {
+    "name": "organized",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "Library"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "offers": {
+    "name": "offers",
+    "frequency": 4,
+    "avg_relevance": 2.025,
+    "concepts": [
+      "Library",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "struggle": {
+    "name": "struggle",
+    "frequency": 2,
+    "avg_relevance": 1.2000000000000002,
+    "concepts": [
+      "werewolf"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "wide": {
+    "name": "wide",
+    "frequency": 2,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "Library"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "curated": {
+    "name": "curated",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "gallery",
+      "museum"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "from": {
+    "name": "from",
+    "frequency": 4,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "rain",
+      "Library",
+      "drizzle"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "knowledge": {
+    "name": "knowledge",
+    "frequency": 3,
+    "avg_relevance": 2.5,
+    "concepts": [
+      "Library"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "certain": {
+    "name": "certain",
+    "frequency": 2,
+    "avg_relevance": 1.8,
+    "concepts": [
+      "prescription"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "forms": {
+    "name": "forms",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "medication",
+      "werewolf"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  }
+};
+        
+        // Feature color mapping
+        const uniqueColors = ['#e74c3c', '#3498db', '#e67e22', '#1abc9c', '#9b59b6'];
+        const sharedColor = '#2ecc71';
+        
+        // Prepare node and edge data
+        let nodes = [];
+        let links = [];
+
+        function prepareData(minFreq, minRelevance, showUnique, showShared) {
+            nodes = [];
+            links = [];
+            
+            // Add concept nodes
+            conceptsData.forEach(concept => {
+                nodes.push({
+                    id: concept.id,
+                    name: concept.name,
+                    type: 'concept',
+                    color: concept.color,
+                    radius: 40
+                });
+            });
+
+            // Add feature nodes
+            Object.entries(featuresData).forEach(([key, feature]) => {
+                if (feature.frequency < minFreq) return;
+                if (feature.avg_relevance < minRelevance) return;
+                
+                const isShared = feature.is_shared;
+                
+                if (!isShared && !showUnique) return;
+                if (isShared && !showShared) return;
+                
+                let color;
+                if (isShared) {
+                    color = sharedColor;
+                } else {
+                    // Determine color based on first related concept
+                    const conceptIndex = conceptsData.findIndex(c => c.id === feature.concepts[0]);
+                    color = uniqueColors[conceptIndex % uniqueColors.length];
+                }
+                
+                const radius = Math.max(8, Math.min(25, feature.frequency * 1.2));
+                
+                nodes.push({
+                    id: key,
+                    name: feature.name,
+                    type: 'feature',
+                    color: color,
+                    radius: radius,
+                    frequency: feature.frequency,
+                    relevance: feature.avg_relevance,
+                    concepts: feature.concepts,
+                    isShared: isShared,
+                    featureType: feature.feature_type
+                });
+                
+                // Add connections
+                feature.concepts.forEach(concept => {
+                    links.push({
+                        source: key,
+                        target: concept,
+                        relevance: feature.avg_relevance,
+                        strength: Math.min(1, feature.avg_relevance / 2)
+                    });
+                });
+            });
+            
+            // Update statistics
+            const featureNodes = nodes.filter(n => n.type === 'feature');
+            document.getElementById('featureCount').textContent = featureNodes.length;
+            document.getElementById('uniqueCount').textContent = featureNodes.filter(n => !n.isShared).length;
+            document.getElementById('sharedCount').textContent = featureNodes.filter(n => n.isShared).length;
+        }
+
+        // D3 visualization
+        const svg = d3.select('#graph');
+        const width = document.querySelector('.main').clientWidth;
+        const height = document.querySelector('.main').clientHeight;
+        
+        const g = svg.append('g');
+        
+        // Zoom
+        const zoom = d3.zoom()
+            .scaleExtent([0.3, 3])
+            .on('zoom', (event) => {
+                g.attr('transform', event.transform);
+            });
+        
+        svg.call(zoom);
+        
+        // Initial zoom to center
+        svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.8));
+
+        let simulation;
+        
+        function updateGraph() {
+            const minFreq = parseInt(document.getElementById('freqFilter').value);
+            const minRelevance = parseInt(document.getElementById('relevanceFilter').value) / 100;
+            const showUnique = document.getElementById('showUnique').checked;
+            const showShared = document.getElementById('showShared').checked;
+            
+            prepareData(minFreq, minRelevance, showUnique, showShared);
+            
+            // Clear old elements
+            g.selectAll('*').remove();
+            
+            // Force-directed simulation
+            simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
+                    return d.relevance > 1 ? 80 : 120;
+                }).strength(d => d.strength * 0.5))
+                .force('charge', d3.forceManyBody().strength(d => d.type === 'concept' ? -500 : -100))
+                .force('center', d3.forceCenter(0, 0))
+                .force('collision', d3.forceCollide().radius(d => d.radius + 5));
+            
+            // Draw edges
+            const link = g.append('g')
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('stroke', d => {
+                    if (d.relevance > 1) return 'rgba(255,255,255,0.6)';
+                    if (d.relevance > 0.7) return 'rgba(255,255,255,0.35)';
+                    return 'rgba(255,255,255,0.15)';
+                })
+                .attr('stroke-width', d => Math.max(1, d.relevance * 2));
+            
+            // Draw nodes
+            const node = g.append('g')
+                .selectAll('g')
+                .data(nodes)
+                .join('g')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            // Node glow effect
+            const defs = svg.select('defs').empty() ? svg.append('defs') : svg.select('defs');
+            defs.selectAll('*').remove();
+            
+            nodes.forEach((n, i) => {
+                const filter = defs.append('filter')
+                    .attr('id', `glow-${i}`)
+                    .attr('x', '-50%')
+                    .attr('y', '-50%')
+                    .attr('width', '200%')
+                    .attr('height', '200%');
+                
+                filter.append('feGaussianBlur')
+                    .attr('stdDeviation', '3')
+                    .attr('result', 'coloredBlur');
+                
+                const feMerge = filter.append('feMerge');
+                feMerge.append('feMergeNode').attr('in', 'coloredBlur');
+                feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+            });
+            
+            node.append('circle')
+                .attr('r', d => d.radius)
+                .attr('fill', d => d.color)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', d => d.type === 'concept' ? 3 : 1.5)
+                .attr('opacity', d => d.type === 'concept' ? 1 : 0.85)
+                .style('filter', (d, i) => `url(#glow-${i})`)
+                .style('cursor', 'pointer');
+            
+            // Node labels
+            node.append('text')
+                .attr('class', d => d.type === 'concept' ? 'concept-label' : 'node-label')
+                .attr('text-anchor', 'middle')
+                .attr('dy', d => d.type === 'concept' ? 5 : (d.radius + 14))
+                .text(d => d.name.length > 20 ? d.name.substring(0, 18) + '...' : d.name);
+            
+            // Tooltip
+            const tooltip = document.getElementById('tooltip');
+            
+            node.on('mouseover', (event, d) => {
+                if (d.type === 'feature') {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Frequency: </span>${d.frequency}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Relevance: </span>${d.relevance.toFixed(2)}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Type: </span>${d.isShared ? 'Shared' : 'Unique'}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Feature Type: </span>${d.featureType}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Related Concepts: </span>${d.concepts.join(', ')}</div>
+                    `;
+                } else {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row">Core Concept Node</div>
+                    `;
+                }
+                tooltip.style.opacity = 1;
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mousemove', (event) => {
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mouseout', () => {
+                tooltip.style.opacity = 0;
+            });
+            
+            // Update positions
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node.attr('transform', d => `translate(${d.x},${d.y})`);
+            });
+        }
+        
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // Event listeners
+        document.getElementById('freqFilter').addEventListener('input', (e) => {
+            document.getElementById('freqValue').textContent = e.target.value;
+            updateGraph();
+        });
+        
+        document.getElementById('relevanceFilter').addEventListener('input', (e) => {
+            document.getElementById('relevanceValue').textContent = (e.target.value / 100).toFixed(1);
+            updateGraph();
+        });
+        
+        document.getElementById('showUnique').addEventListener('change', updateGraph);
+        document.getElementById('showShared').addEventListener('change', updateGraph);
+        
+        // Initialize
+        updateGraph();
+    </script>
+</body>
+</html>

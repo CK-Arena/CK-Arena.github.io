@@ -1,0 +1,3134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peoplesocial Knowledge Graph</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e8e8e8;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .sidebar {
+            width: 320px;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .main {
+            flex: 1;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .legend {
+            margin-bottom: 20px;
+        }
+        
+        .legend-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+            font-size: 0.85rem;
+        }
+        
+        .legend-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        .legend-line {
+            width: 30px;
+            height: 3px;
+            margin-right: 10px;
+            flex-shrink: 0;
+            border-radius: 2px;
+        }
+        
+        .filters {
+            margin-bottom: 20px;
+        }
+        
+        .filter-group {
+            margin-bottom: 15px;
+        }
+        
+        .filter-label {
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #f39c12;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .slider-value {
+            font-size: 0.85rem;
+            color: #f39c12;
+            min-width: 30px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        
+        .checkbox-item input {
+            accent-color: #f39c12;
+        }
+        
+        .stats {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stats-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #aaa;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin: 5px 0;
+        }
+        
+        .stat-value {
+            color: #f39c12;
+            font-weight: 600;
+        }
+        
+        #tooltip {
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.85rem;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.2s;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .tooltip-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f39c12;
+        }
+        
+        .tooltip-row {
+            margin: 4px 0;
+            color: #ccc;
+        }
+        
+        .tooltip-label {
+            color: #888;
+        }
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .node-label {
+            font-size: 11px;
+            fill: #fff;
+            pointer-events: none;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+        
+        .concept-label {
+            font-size: 16px;
+            font-weight: bold;
+            fill: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 0.8rem;
+            max-width: 300px;
+        }
+        
+        .info-panel p {
+            margin: 5px 0;
+            color: #aaa;
+        }
+        
+        .info-panel strong {
+            color: #f39c12;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>Peoplesocial Knowledge Graph</h1>
+            
+            <div class="legend">
+                <div class="legend-title">Node Types</div>
+                
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Upper</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Elite</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Aristocrat</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Noble</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Peasant</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Farmer</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Proletariat</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Worker</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Gentry</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Landowner</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Middle-Class</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Upper-Middle-Class</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Bourgeoisie</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Middleclass</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Workingclass</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Upperclass</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #9b59b6;"></div>
+                    <span>Serf</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #1abc9c;"></div>
+                    <span>Working</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e67e22;"></div>
+                    <span>Merchant</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Chef</span>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #f39c12;"></div>
+                    <span>Cook</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #e74c3c;"></div>
+                    <span>Concept 1 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #3498db;"></div>
+                    <span>Concept 2 Unique</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-circle" style="background: #2ecc71;"></div>
+                    <span>Shared Feature</span>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-title">Edge Strength</div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.8);"></div>
+                    <span>Strong (relevance > 1.0)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.4);"></div>
+                    <span>Medium</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-line" style="background: rgba(255,255,255,0.15);"></div>
+                    <span>Weak (relevance < 0.5)</span>
+                </div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="filter-label">Min Frequency (filter low-frequency features)</label>
+                    <div class="slider-container">
+                        <input type="range" id="freqFilter" min="1" max="20" value="3">
+                        <span class="slider-value" id="freqValue">3</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Min Relevance</label>
+                    <div class="slider-container">
+                        <input type="range" id="relevanceFilter" min="0" max="100" value="50">
+                        <span class="slider-value" id="relevanceValue">0.5</span>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Feature Types</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showUnique" checked>
+                            <span>Unique</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showShared" checked>
+                            <span>Shared</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div class="stats-title">Statistics</div>
+                <div class="stat-row">
+                    <span>Features Displayed</span>
+                    <span class="stat-value" id="featureCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Unique Features</span>
+                    <span class="stat-value" id="uniqueCount">0</span>
+                </div>
+                <div class="stat-row">
+                    <span>Shared Features</span>
+                    <span class="stat-value" id="sharedCount">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main">
+            <svg id="graph"></svg>
+            <div id="tooltip"></div>
+            <div class="info-panel">
+                <p><strong>Interactions:</strong></p>
+                <p>* Drag nodes to reposition</p>
+                <p>* Scroll to zoom</p>
+                <p>* Hover for details</p>
+                <p>* Use filters to reduce noise</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Concept data
+        const conceptsData = [
+  {
+    "id": "upper",
+    "name": "Upper 🐝",
+    "color": "#f39c12"
+  },
+  {
+    "id": "elite",
+    "name": "Elite 🦋",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "aristocrat",
+    "name": "Aristocrat 🌸",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "noble",
+    "name": "Noble 🌿",
+    "color": "#e67e22"
+  },
+  {
+    "id": "peasant",
+    "name": "Peasant 🌍",
+    "color": "#3498db"
+  },
+  {
+    "id": "farmer",
+    "name": "Farmer ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "proletariat",
+    "name": "Proletariat ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "worker",
+    "name": "Worker ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "gentry",
+    "name": "Gentry ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "landowner",
+    "name": "Landowner ",
+    "color": "#3498db"
+  },
+  {
+    "id": "middle-class",
+    "name": "Middle-Class ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "upper-middle-class",
+    "name": "Upper-Middle-Class ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "bourgeoisie",
+    "name": "Bourgeoisie ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "middleclass",
+    "name": "Middleclass ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "workingclass",
+    "name": "Workingclass ",
+    "color": "#3498db"
+  },
+  {
+    "id": "upperclass",
+    "name": "Upperclass ",
+    "color": "#f39c12"
+  },
+  {
+    "id": "serf",
+    "name": "Serf ",
+    "color": "#9b59b6"
+  },
+  {
+    "id": "working",
+    "name": "Working ",
+    "color": "#1abc9c"
+  },
+  {
+    "id": "merchant",
+    "name": "Merchant ",
+    "color": "#e67e22"
+  },
+  {
+    "id": "chef",
+    "name": "Chef ",
+    "color": "#3498db"
+  },
+  {
+    "id": "cook",
+    "name": "Cook ",
+    "color": "#f39c12"
+  }
+];
+        
+        // Feature data
+        const featuresData = {
+  "achieve": {
+    "name": "achieve",
+    "frequency": 4,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "elite"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "crop": {
+    "name": "crop",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "farmer"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "hierarchy": {
+    "name": "hierarchy",
+    "frequency": 3,
+    "avg_relevance": 0.6333333333333333,
+    "concepts": [
+      "proletariat",
+      "peasant",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "environmental": {
+    "name": "environmental",
+    "frequency": 3,
+    "avg_relevance": 0.6333333333333333,
+    "concepts": [
+      "upper-middle-class",
+      "peasant",
+      "chef"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "generates": {
+    "name": "generates",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "working",
+      "farmer",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "industrial": {
+    "name": "industrial",
+    "frequency": 4,
+    "avg_relevance": 1.0333333333333334,
+    "concepts": [
+      "worker",
+      "proletariat",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "techniques": {
+    "name": "techniques",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "cook",
+      "farmer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "individuals": {
+    "name": "individuals",
+    "frequency": 4,
+    "avg_relevance": 0.8999999999999999,
+    "concepts": [
+      "elite",
+      "worker",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "controls": {
+    "name": "controls",
+    "frequency": 3,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "upper",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "distinctive": {
+    "name": "distinctive",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "elite",
+      "aristocrat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "functioning": {
+    "name": "functioning",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "worker",
+      "proletariat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "society": {
+    "name": "society",
+    "frequency": 10,
+    "avg_relevance": 0.7600100000000001,
+    "concepts": [
+      "workingclass",
+      "bourgeoisie",
+      "middleclass",
+      "worker",
+      "proletariat",
+      "elite",
+      "working"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "talent": {
+    "name": "talent",
+    "frequency": 2,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "elite"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "frequently": {
+    "name": "frequently",
+    "frequency": 7,
+    "avg_relevance": 1.2714285714285716,
+    "concepts": [
+      "peasant",
+      "bourgeoisie",
+      "merchant",
+      "aristocrat",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tend": {
+    "name": "tend",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "middle-class",
+      "farmer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "lives": {
+    "name": "lives",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "peasant",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "drives": {
+    "name": "drives",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "worker",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "had": {
+    "name": "had",
+    "frequency": 4,
+    "avg_relevance": 1.125,
+    "concepts": [
+      "peasant",
+      "serf",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "heavily": {
+    "name": "heavily",
+    "frequency": 3,
+    "avg_relevance": 1.1666666666666667,
+    "concepts": [
+      "peasant"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "standard": {
+    "name": "standard",
+    "frequency": 3,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "elite",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "goods": {
+    "name": "goods",
+    "frequency": 3,
+    "avg_relevance": 1.3333333333333333,
+    "concepts": [
+      "merchant",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "describe": {
+    "name": "describe",
+    "frequency": 3,
+    "avg_relevance": 1.15,
+    "concepts": [
+      "upper",
+      "elite"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "involves": {
+    "name": "involves",
+    "frequency": 7,
+    "avg_relevance": 1.215,
+    "concepts": [
+      "elite",
+      "proletariat",
+      "working",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "services": {
+    "name": "services",
+    "frequency": 5,
+    "avg_relevance": 0.8583333333333334,
+    "concepts": [
+      "merchant",
+      "proletariat",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "working": {
+    "name": "working",
+    "frequency": 4,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "proletariat",
+      "bourgeoisie",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "arts": {
+    "name": "arts",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "noble",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "with": {
+    "name": "with",
+    "frequency": 22,
+    "avg_relevance": 0.9227318181818184,
+    "concepts": [
+      "middle-class",
+      "peasant",
+      "chef",
+      "upper-middle-class",
+      "bourgeoisie",
+      "upperclass",
+      "merchant",
+      "farmer",
+      "aristocrat",
+      "proletariat",
+      "elite",
+      "noble",
+      "cook"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "dominant": {
+    "name": "dominant",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "bourgeoisie"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "represent": {
+    "name": "represent",
+    "frequency": 3,
+    "avg_relevance": 0.825,
+    "concepts": [
+      "upper",
+      "proletariat",
+      "upperclass"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "superior": {
+    "name": "superior",
+    "frequency": 3,
+    "avg_relevance": 0.775,
+    "concepts": [
+      "elite"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "reflecting": {
+    "name": "reflecting",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "elite",
+      "noble",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "works": {
+    "name": "works",
+    "frequency": 2,
+    "avg_relevance": 0.45,
+    "concepts": [
+      "farmer",
+      "chef"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "respected": {
+    "name": "respected",
+    "frequency": 4,
+    "avg_relevance": 0.7500333333333332,
+    "concepts": [
+      "elite",
+      "aristocrat",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "community": {
+    "name": "community",
+    "frequency": 7,
+    "avg_relevance": 0.7458333333333333,
+    "concepts": [
+      "peasant",
+      "noble",
+      "gentry",
+      "middle-class",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "crops": {
+    "name": "crops",
+    "frequency": 3,
+    "avg_relevance": 0.6999999999999998,
+    "concepts": [
+      "farmer",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "collective": {
+    "name": "collective",
+    "frequency": 4,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "workingclass",
+      "proletariat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "access": {
+    "name": "access",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "elite",
+      "aristocrat",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "contributed": {
+    "name": "contributed",
+    "frequency": 7,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "merchant",
+      "worker",
+      "proletariat",
+      "elite",
+      "working",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "feudal": {
+    "name": "feudal",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "peasant"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "events": {
+    "name": "events",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "elite",
+      "aristocrat",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "harvest": {
+    "name": "harvest",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "serf",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "impact": {
+    "name": "impact",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "bourgeoisie",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "mobility": {
+    "name": "mobility",
+    "frequency": 3,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "workingclass",
+      "middleclass",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "standing": {
+    "name": "standing",
+    "frequency": 3,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "aristocrat",
+      "bourgeoisie",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "driving": {
+    "name": "driving",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "proletariat",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "person": {
+    "name": "person",
+    "frequency": 21,
+    "avg_relevance": 3.284210526315791,
+    "concepts": [
+      "serf",
+      "peasant",
+      "chef",
+      "upper-middle-class",
+      "farmer",
+      "noble"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "economic": {
+    "name": "economic",
+    "frequency": 22,
+    "avg_relevance": 1.1142904761904762,
+    "concepts": [
+      "peasant",
+      "workingclass",
+      "bourgeoisie",
+      "upperclass",
+      "merchant",
+      "middleclass",
+      "proletariat",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "status": {
+    "name": "status",
+    "frequency": 10,
+    "avg_relevance": 0.9100300000000001,
+    "concepts": [
+      "peasant",
+      "bourgeoisie",
+      "upperclass",
+      "middleclass",
+      "aristocrat",
+      "gentry",
+      "upper",
+      "elite"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "privileges": {
+    "name": "privileges",
+    "frequency": 5,
+    "avg_relevance": 0.7166666666666668,
+    "concepts": [
+      "elite",
+      "aristocrat",
+      "bourgeoisie",
+      "upperclass"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "position": {
+    "name": "position",
+    "frequency": 8,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "upper",
+      "bourgeoisie",
+      "workingclass",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cultivation": {
+    "name": "cultivation",
+    "frequency": 3,
+    "avg_relevance": 0.6999999999999998,
+    "concepts": [
+      "upper-middle-class",
+      "farmer",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "recognition": {
+    "name": "recognition",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "elite",
+      "upperclass"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "expected": {
+    "name": "expected",
+    "frequency": 4,
+    "avg_relevance": 1.3,
+    "concepts": [
+      "noble",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "engage": {
+    "name": "engage",
+    "frequency": 5,
+    "avg_relevance": 0.9799999999999999,
+    "concepts": [
+      "merchant",
+      "upper-middle-class",
+      "middle-class",
+      "proletariat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "quality": {
+    "name": "quality",
+    "frequency": 5,
+    "avg_relevance": 1.2125,
+    "concepts": [
+      "elite",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "indicate": {
+    "name": "indicate",
+    "frequency": 2,
+    "avg_relevance": 1.2999999999999998,
+    "concepts": [
+      "upper"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "balances": {
+    "name": "balances",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "middle-class",
+      "middleclass"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "selection": {
+    "name": "selection",
+    "frequency": 3,
+    "avg_relevance": 0.775,
+    "concepts": [
+      "elite"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "elevated": {
+    "name": "elevated",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "upperclass"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "villages": {
+    "name": "villages",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "peasant"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "associated": {
+    "name": "associated",
+    "frequency": 14,
+    "avg_relevance": 0.85715,
+    "concepts": [
+      "peasant",
+      "upper-middle-class",
+      "bourgeoisie",
+      "upperclass",
+      "aristocrat",
+      "proletariat",
+      "elite",
+      "noble"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "family": {
+    "name": "family",
+    "frequency": 2,
+    "avg_relevance": 0.75005,
+    "concepts": [
+      "aristocrat",
+      "farmer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "consumer": {
+    "name": "consumer",
+    "frequency": 3,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "merchant",
+      "bourgeoisie",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "systems": {
+    "name": "systems",
+    "frequency": 7,
+    "avg_relevance": 0.7541666666666667,
+    "concepts": [
+      "peasant",
+      "bourgeoisie",
+      "proletariat",
+      "upper",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "portion": {
+    "name": "portion",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "serf",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "someone": {
+    "name": "someone",
+    "frequency": 4,
+    "avg_relevance": 1.05,
+    "concepts": [
+      "aristocrat",
+      "cook",
+      "chef"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "seen": {
+    "name": "seen",
+    "frequency": 3,
+    "avg_relevance": 0.6666666666666666,
+    "concepts": [
+      "elite",
+      "aristocrat",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tasks": {
+    "name": "tasks",
+    "frequency": 4,
+    "avg_relevance": 1.3499999999999999,
+    "concepts": [
+      "working",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "refined": {
+    "name": "refined",
+    "frequency": 3,
+    "avg_relevance": 1.0,
+    "concepts": [
+      "bourgeoisie",
+      "noble"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "work": {
+    "name": "work",
+    "frequency": 9,
+    "avg_relevance": 0.8444555555555557,
+    "concepts": [
+      "peasant",
+      "proletariat",
+      "elite",
+      "middle-class",
+      "cook"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "advocate": {
+    "name": "advocate",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "proletariat"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "often": {
+    "name": "often",
+    "frequency": 101,
+    "avg_relevance": 3.9604138613861397,
+    "concepts": [
+      "upper-middle-class",
+      "upperclass",
+      "proletariat",
+      "gentry",
+      "working",
+      "chef",
+      "farmer",
+      "middleclass",
+      "noble",
+      "landowner",
+      "serf",
+      "workingclass",
+      "aristocrat",
+      "elite",
+      "cook",
+      "peasant",
+      "bourgeoisie",
+      "worker",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "limited": {
+    "name": "limited",
+    "frequency": 2,
+    "avg_relevance": 0.8500000000000001,
+    "concepts": [
+      "workingclass",
+      "serf"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "rely": {
+    "name": "rely",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "workingclass",
+      "worker"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shaping": {
+    "name": "shaping",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "elite",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "known": {
+    "name": "known",
+    "frequency": 2,
+    "avg_relevance": 0.7000500000000001,
+    "concepts": [
+      "bourgeoisie",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "effort": {
+    "name": "effort",
+    "frequency": 3,
+    "avg_relevance": 0.95,
+    "concepts": [
+      "worker",
+      "working"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "livelihood": {
+    "name": "livelihood",
+    "frequency": 3,
+    "avg_relevance": 0.725,
+    "concepts": [
+      "working",
+      "farmer",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "discussions": {
+    "name": "discussions",
+    "frequency": 2,
+    "avg_relevance": 0.7000500000000001,
+    "concepts": [
+      "proletariat",
+      "middleclass"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "possesses": {
+    "name": "possesses",
+    "frequency": 5,
+    "avg_relevance": 0.888888888888889,
+    "concepts": [
+      "elite",
+      "proletariat",
+      "farmer",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "specific": {
+    "name": "specific",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "elite",
+      "cook"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "generations": {
+    "name": "generations",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "aristocrat",
+      "farmer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "lived": {
+    "name": "lived",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "peasant"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "traditionally": {
+    "name": "traditionally",
+    "frequency": 6,
+    "avg_relevance": 0.7333333333333334,
+    "concepts": [
+      "aristocrat",
+      "bourgeoisie",
+      "farmer",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "produced": {
+    "name": "produced",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "merchant",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "creates": {
+    "name": "creates",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "proletariat",
+      "chef"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "skill": {
+    "name": "skill",
+    "frequency": 6,
+    "avg_relevance": 0.8124999999999999,
+    "concepts": [
+      "elite",
+      "worker",
+      "upper-middle-class",
+      "chef"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "level": {
+    "name": "level",
+    "frequency": 7,
+    "avg_relevance": 0.8571571428571428,
+    "concepts": [
+      "bourgeoisie",
+      "upper-middle-class",
+      "gentry",
+      "upper",
+      "elite"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "direction": {
+    "name": "direction",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "upper",
+      "elite"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "education": {
+    "name": "education",
+    "frequency": 3,
+    "avg_relevance": 1.0999999999999999,
+    "concepts": [
+      "aristocrat",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "exchange": {
+    "name": "exchange",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "worker",
+      "merchant",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "characterized": {
+    "name": "characterized",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "bourgeoisie",
+      "proletariat",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "norms": {
+    "name": "norms",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "proletariat",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "activities": {
+    "name": "activities",
+    "frequency": 5,
+    "avg_relevance": 0.9199999999999999,
+    "concepts": [
+      "merchant",
+      "middle-class",
+      "working",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "wealth": {
+    "name": "wealth",
+    "frequency": 5,
+    "avg_relevance": 0.7000200000000001,
+    "concepts": [
+      "aristocrat",
+      "bourgeoisie",
+      "landowner",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tied": {
+    "name": "tied",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "serf",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "cultural": {
+    "name": "cultural",
+    "frequency": 4,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "middle-class",
+      "aristocrat",
+      "bourgeoisie",
+      "noble"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "have": {
+    "name": "have",
+    "frequency": 9,
+    "avg_relevance": 0.8555555555555556,
+    "concepts": [
+      "workingclass",
+      "bourgeoisie",
+      "aristocrat",
+      "proletariat",
+      "elite",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "business": {
+    "name": "business",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "bourgeoisie",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "challenges": {
+    "name": "challenges",
+    "frequency": 4,
+    "avg_relevance": 1.45,
+    "concepts": [
+      "workingclass",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "passed": {
+    "name": "passed",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "aristocrat",
+      "farmer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "agricultural": {
+    "name": "agricultural",
+    "frequency": 7,
+    "avg_relevance": 1.6000142857142856,
+    "concepts": [
+      "landowner",
+      "farmer",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "management": {
+    "name": "management",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "farmer",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tastes": {
+    "name": "tastes",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "bourgeoisie",
+      "noble"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "hierarchical": {
+    "name": "hierarchical",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "upper",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "success": {
+    "name": "success",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "upperclass",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "political": {
+    "name": "political",
+    "frequency": 6,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "bourgeoisie",
+      "proletariat",
+      "noble"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "local": {
+    "name": "local",
+    "frequency": 6,
+    "avg_relevance": 2.1500000000000004,
+    "concepts": [
+      "middle-class",
+      "peasant",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "denotes": {
+    "name": "denotes",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "elite"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "provide": {
+    "name": "provide",
+    "frequency": 3,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "worker",
+      "serf",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "group": {
+    "name": "group",
+    "frequency": 20,
+    "avg_relevance": 1.8300249999999998,
+    "concepts": [
+      "bourgeoisie",
+      "upper-middle-class",
+      "middleclass",
+      "proletariat",
+      "elite"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "responsibility": {
+    "name": "responsibility",
+    "frequency": 3,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "middle-class",
+      "noble",
+      "elite"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "income": {
+    "name": "income",
+    "frequency": 4,
+    "avg_relevance": 0.7166666666666667,
+    "concepts": [
+      "worker",
+      "middle-class",
+      "working",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "hard": {
+    "name": "hard",
+    "frequency": 3,
+    "avg_relevance": 0.6667,
+    "concepts": [
+      "elite",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "capitalist": {
+    "name": "capitalist",
+    "frequency": 6,
+    "avg_relevance": 0.8999999999999999,
+    "concepts": [
+      "bourgeoisie",
+      "proletariat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "structures": {
+    "name": "structures",
+    "frequency": 4,
+    "avg_relevance": 1.1,
+    "concepts": [
+      "bourgeoisie",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "deeply": {
+    "name": "deeply",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "peasant"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "used": {
+    "name": "used",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "upper",
+      "elite"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "exclusivity": {
+    "name": "exclusivity",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "elite"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "influence": {
+    "name": "influence",
+    "frequency": 10,
+    "avg_relevance": 0.85,
+    "concepts": [
+      "peasant",
+      "bourgeoisie",
+      "upperclass",
+      "gentry",
+      "elite"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "such": {
+    "name": "such",
+    "frequency": 4,
+    "avg_relevance": 0.9750000000000001,
+    "concepts": [
+      "gentry",
+      "aristocrat",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "demonstrating": {
+    "name": "demonstrating",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "elite",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "typically": {
+    "name": "typically",
+    "frequency": 10,
+    "avg_relevance": 1.0800100000000001,
+    "concepts": [
+      "peasant",
+      "bourgeoisie",
+      "proletariat",
+      "gentry",
+      "elite",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "financially": {
+    "name": "financially",
+    "frequency": 5,
+    "avg_relevance": 0.65,
+    "concepts": [
+      "workingclass",
+      "bourgeoisie",
+      "middle-class",
+      "middleclass"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "comfort": {
+    "name": "comfort",
+    "frequency": 2,
+    "avg_relevance": 0.40005,
+    "concepts": [
+      "upper-middle-class",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "etiquette": {
+    "name": "etiquette",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "noble",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "historically": {
+    "name": "historically",
+    "frequency": 11,
+    "avg_relevance": 1.1361361111111112,
+    "concepts": [
+      "peasant",
+      "bourgeoisie",
+      "aristocrat",
+      "proletariat",
+      "noble",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "authority": {
+    "name": "authority",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "upper",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "wages": {
+    "name": "wages",
+    "frequency": 4,
+    "avg_relevance": 0.7666666666666666,
+    "concepts": [
+      "workingclass",
+      "worker",
+      "proletariat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "production": {
+    "name": "production",
+    "frequency": 11,
+    "avg_relevance": 1.1888888888888887,
+    "concepts": [
+      "proletariat",
+      "bourgeoisie",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "public": {
+    "name": "public",
+    "frequency": 3,
+    "avg_relevance": 0.6333333333333334,
+    "concepts": [
+      "middle-class",
+      "noble",
+      "elite"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "benchmark": {
+    "name": "benchmark",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "elite"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "relationship": {
+    "name": "relationship",
+    "frequency": 2,
+    "avg_relevance": 1.9,
+    "concepts": [
+      "proletariat"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "occupation": {
+    "name": "occupation",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "workingclass",
+      "worker"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "hold": {
+    "name": "hold",
+    "frequency": 3,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "aristocrat",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "property": {
+    "name": "property",
+    "frequency": 3,
+    "avg_relevance": 1.3333333333333333,
+    "concepts": [
+      "bourgeoisie",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "practices": {
+    "name": "practices",
+    "frequency": 5,
+    "avg_relevance": 1.6799999999999997,
+    "concepts": [
+      "bourgeoisie",
+      "farmer",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "prioritize": {
+    "name": "prioritize",
+    "frequency": 3,
+    "avg_relevance": 1.0999999999999999,
+    "concepts": [
+      "bourgeoisie",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "societal": {
+    "name": "societal",
+    "frequency": 7,
+    "avg_relevance": 1.4285714285714286,
+    "concepts": [
+      "upperclass",
+      "proletariat",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "down": {
+    "name": "down",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "aristocrat",
+      "farmer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "played": {
+    "name": "played",
+    "frequency": 5,
+    "avg_relevance": 0.98002,
+    "concepts": [
+      "bourgeoisie",
+      "proletariat",
+      "peasant",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "manual": {
+    "name": "manual",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "proletariat",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "within": {
+    "name": "within",
+    "frequency": 8,
+    "avg_relevance": 1.4625000000000001,
+    "concepts": [
+      "bourgeoisie",
+      "merchant",
+      "proletariat",
+      "gentry",
+      "elite"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "better": {
+    "name": "better",
+    "frequency": 4,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "proletariat",
+      "middle-class",
+      "middleclass"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "ownership": {
+    "name": "ownership",
+    "frequency": 3,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "bourgeoisie",
+      "proletariat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "concept": {
+    "name": "concept",
+    "frequency": 3,
+    "avg_relevance": 0.7999999999999999,
+    "concepts": [
+      "upper",
+      "proletariat",
+      "elite"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "defined": {
+    "name": "defined",
+    "frequency": 4,
+    "avg_relevance": 1.35,
+    "concepts": [
+      "workingclass",
+      "bourgeoisie",
+      "proletariat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "were": {
+    "name": "were",
+    "frequency": 11,
+    "avg_relevance": 2.4000727272727276,
+    "concepts": [
+      "peasant",
+      "serf",
+      "landowner",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "rural": {
+    "name": "rural",
+    "frequency": 4,
+    "avg_relevance": 0.95005,
+    "concepts": [
+      "landowner",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "class": {
+    "name": "class",
+    "frequency": 10,
+    "avg_relevance": 1.1800000000000002,
+    "concepts": [
+      "elite",
+      "proletariat",
+      "bourgeoisie",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "strong": {
+    "name": "strong",
+    "frequency": 2,
+    "avg_relevance": 0.55,
+    "concepts": [
+      "middle-class",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "particular": {
+    "name": "particular",
+    "frequency": 2,
+    "avg_relevance": 0.5,
+    "concepts": [
+      "bourgeoisie",
+      "working"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "stability": {
+    "name": "stability",
+    "frequency": 3,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "middle-class",
+      "middleclass",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "experiences": {
+    "name": "experiences",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "aristocrat",
+      "proletariat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "between": {
+    "name": "between",
+    "frequency": 3,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "bourgeoisie",
+      "middleclass"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "tools": {
+    "name": "tools",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "cook",
+      "farmer"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "aspire": {
+    "name": "aspire",
+    "frequency": 3,
+    "avg_relevance": 0.7000000000000001,
+    "concepts": [
+      "elite",
+      "bourgeoisie",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "farming": {
+    "name": "farming",
+    "frequency": 2,
+    "avg_relevance": 1.2999999999999998,
+    "concepts": [
+      "peasant"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "resources": {
+    "name": "resources",
+    "frequency": 5,
+    "avg_relevance": 1.06,
+    "concepts": [
+      "workingclass",
+      "bourgeoisie",
+      "farmer",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "social": {
+    "name": "social",
+    "frequency": 26,
+    "avg_relevance": 1.3923153846153846,
+    "concepts": [
+      "middle-class",
+      "peasant",
+      "workingclass",
+      "bourgeoisie",
+      "upperclass",
+      "middleclass",
+      "aristocrat",
+      "proletariat",
+      "gentry",
+      "noble"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "professional": {
+    "name": "professional",
+    "frequency": 4,
+    "avg_relevance": 1.625,
+    "concepts": [
+      "upper-middle-class",
+      "chef"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "term": {
+    "name": "term",
+    "frequency": 7,
+    "avg_relevance": 2.257142857142857,
+    "concepts": [
+      "upper",
+      "elite",
+      "upperclass"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "including": {
+    "name": "including",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "merchant",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "field": {
+    "name": "field",
+    "frequency": 2,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "elite"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "participants": {
+    "name": "participants",
+    "frequency": 3,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "worker",
+      "middle-class",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "labor": {
+    "name": "labor",
+    "frequency": 14,
+    "avg_relevance": 1.8857142857142855,
+    "concepts": [
+      "serf",
+      "peasant",
+      "bourgeoisie",
+      "worker",
+      "proletariat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "value": {
+    "name": "value",
+    "frequency": 6,
+    "avg_relevance": 1.0625,
+    "concepts": [
+      "middle-class",
+      "proletariat",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "excellence": {
+    "name": "excellence",
+    "frequency": 3,
+    "avg_relevance": 0.8000000000000002,
+    "concepts": [
+      "elite",
+      "upperclass"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "supporting": {
+    "name": "supporting",
+    "frequency": 4,
+    "avg_relevance": 0.7166666666666667,
+    "concepts": [
+      "middle-class",
+      "noble",
+      "working",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "workers": {
+    "name": "workers",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "proletariat",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "worked": {
+    "name": "worked",
+    "frequency": 2,
+    "avg_relevance": 1.4,
+    "concepts": [
+      "peasant"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "means": {
+    "name": "means",
+    "frequency": 6,
+    "avg_relevance": 1.25,
+    "concepts": [
+      "proletariat",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "high": {
+    "name": "high",
+    "frequency": 3,
+    "avg_relevance": 1.3333333333333333,
+    "concepts": [
+      "elite"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "economy": {
+    "name": "economy",
+    "frequency": 8,
+    "avg_relevance": 1.3500125,
+    "concepts": [
+      "peasant",
+      "merchant",
+      "worker",
+      "middle-class",
+      "working"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "own": {
+    "name": "own",
+    "frequency": 4,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "bourgeoisie",
+      "proletariat",
+      "middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "leadership": {
+    "name": "leadership",
+    "frequency": 2,
+    "avg_relevance": 0.6,
+    "concepts": [
+      "bourgeoisie",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "power": {
+    "name": "power",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "proletariat",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "maintain": {
+    "name": "maintain",
+    "frequency": 7,
+    "avg_relevance": 0.8749999999999998,
+    "concepts": [
+      "peasant",
+      "bourgeoisie",
+      "middleclass",
+      "gentry",
+      "elite",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "requiring": {
+    "name": "requiring",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "elite",
+      "upper-middle-class"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "through": {
+    "name": "through",
+    "frequency": 12,
+    "avg_relevance": 1.3249999999999997,
+    "concepts": [
+      "upper-middle-class",
+      "bourgeoisie",
+      "farmer",
+      "aristocrat",
+      "proletariat",
+      "gentry",
+      "middle-class",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "exceptional": {
+    "name": "exceptional",
+    "frequency": 2,
+    "avg_relevance": 1.6,
+    "concepts": [
+      "elite"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "higher": {
+    "name": "higher",
+    "frequency": 6,
+    "avg_relevance": 0.9833333333333334,
+    "concepts": [
+      "upper",
+      "elite",
+      "middle-class",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "shape": {
+    "name": "shape",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "proletariat",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "opportunities": {
+    "name": "opportunities",
+    "frequency": 2,
+    "avg_relevance": 0.7,
+    "concepts": [
+      "middle-class",
+      "middleclass"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "facing": {
+    "name": "facing",
+    "frequency": 2,
+    "avg_relevance": 1.2,
+    "concepts": [
+      "peasant"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "segment": {
+    "name": "segment",
+    "frequency": 2,
+    "avg_relevance": 0.8,
+    "concepts": [
+      "workingclass",
+      "bourgeoisie"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "from": {
+    "name": "from",
+    "frequency": 4,
+    "avg_relevance": 0.7500500000000001,
+    "concepts": [
+      "elite",
+      "aristocrat",
+      "peasant",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "knowledge": {
+    "name": "knowledge",
+    "frequency": 2,
+    "avg_relevance": 1.5,
+    "concepts": [
+      "farmer"
+    ],
+    "is_shared": false,
+    "feature_type": "word"
+  },
+  "implies": {
+    "name": "implies",
+    "frequency": 2,
+    "avg_relevance": 0.70005,
+    "concepts": [
+      "upper",
+      "upperclass"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "certain": {
+    "name": "certain",
+    "frequency": 4,
+    "avg_relevance": 0.9500749999999999,
+    "concepts": [
+      "upper-middle-class",
+      "bourgeoisie",
+      "gentry"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "titles": {
+    "name": "titles",
+    "frequency": 2,
+    "avg_relevance": 0.75,
+    "concepts": [
+      "aristocrat",
+      "noble"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "rank": {
+    "name": "rank",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "upper",
+      "elite"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "societies": {
+    "name": "societies",
+    "frequency": 4,
+    "avg_relevance": 1.3,
+    "concepts": [
+      "bourgeoisie",
+      "peasant"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "assets": {
+    "name": "assets",
+    "frequency": 2,
+    "avg_relevance": 0.6499999999999999,
+    "concepts": [
+      "bourgeoisie",
+      "landowner"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  },
+  "action": {
+    "name": "action",
+    "frequency": 2,
+    "avg_relevance": 0.9,
+    "concepts": [
+      "workingclass",
+      "proletariat"
+    ],
+    "is_shared": true,
+    "feature_type": "word"
+  }
+};
+        
+        // Feature color mapping
+        const uniqueColors = ['#e74c3c', '#3498db', '#e67e22', '#1abc9c', '#9b59b6'];
+        const sharedColor = '#2ecc71';
+        
+        // Prepare node and edge data
+        let nodes = [];
+        let links = [];
+
+        function prepareData(minFreq, minRelevance, showUnique, showShared) {
+            nodes = [];
+            links = [];
+            
+            // Add concept nodes
+            conceptsData.forEach(concept => {
+                nodes.push({
+                    id: concept.id,
+                    name: concept.name,
+                    type: 'concept',
+                    color: concept.color,
+                    radius: 40
+                });
+            });
+
+            // Add feature nodes
+            Object.entries(featuresData).forEach(([key, feature]) => {
+                if (feature.frequency < minFreq) return;
+                if (feature.avg_relevance < minRelevance) return;
+                
+                const isShared = feature.is_shared;
+                
+                if (!isShared && !showUnique) return;
+                if (isShared && !showShared) return;
+                
+                let color;
+                if (isShared) {
+                    color = sharedColor;
+                } else {
+                    // Determine color based on first related concept
+                    const conceptIndex = conceptsData.findIndex(c => c.id === feature.concepts[0]);
+                    color = uniqueColors[conceptIndex % uniqueColors.length];
+                }
+                
+                const radius = Math.max(8, Math.min(25, feature.frequency * 1.2));
+                
+                nodes.push({
+                    id: key,
+                    name: feature.name,
+                    type: 'feature',
+                    color: color,
+                    radius: radius,
+                    frequency: feature.frequency,
+                    relevance: feature.avg_relevance,
+                    concepts: feature.concepts,
+                    isShared: isShared,
+                    featureType: feature.feature_type
+                });
+                
+                // Add connections
+                feature.concepts.forEach(concept => {
+                    links.push({
+                        source: key,
+                        target: concept,
+                        relevance: feature.avg_relevance,
+                        strength: Math.min(1, feature.avg_relevance / 2)
+                    });
+                });
+            });
+            
+            // Update statistics
+            const featureNodes = nodes.filter(n => n.type === 'feature');
+            document.getElementById('featureCount').textContent = featureNodes.length;
+            document.getElementById('uniqueCount').textContent = featureNodes.filter(n => !n.isShared).length;
+            document.getElementById('sharedCount').textContent = featureNodes.filter(n => n.isShared).length;
+        }
+
+        // D3 visualization
+        const svg = d3.select('#graph');
+        const width = document.querySelector('.main').clientWidth;
+        const height = document.querySelector('.main').clientHeight;
+        
+        const g = svg.append('g');
+        
+        // Zoom
+        const zoom = d3.zoom()
+            .scaleExtent([0.3, 3])
+            .on('zoom', (event) => {
+                g.attr('transform', event.transform);
+            });
+        
+        svg.call(zoom);
+        
+        // Initial zoom to center
+        svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.8));
+
+        let simulation;
+        
+        function updateGraph() {
+            const minFreq = parseInt(document.getElementById('freqFilter').value);
+            const minRelevance = parseInt(document.getElementById('relevanceFilter').value) / 100;
+            const showUnique = document.getElementById('showUnique').checked;
+            const showShared = document.getElementById('showShared').checked;
+            
+            prepareData(minFreq, minRelevance, showUnique, showShared);
+            
+            // Clear old elements
+            g.selectAll('*').remove();
+            
+            // Force-directed simulation
+            simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
+                    return d.relevance > 1 ? 80 : 120;
+                }).strength(d => d.strength * 0.5))
+                .force('charge', d3.forceManyBody().strength(d => d.type === 'concept' ? -500 : -100))
+                .force('center', d3.forceCenter(0, 0))
+                .force('collision', d3.forceCollide().radius(d => d.radius + 5));
+            
+            // Draw edges
+            const link = g.append('g')
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('stroke', d => {
+                    if (d.relevance > 1) return 'rgba(255,255,255,0.6)';
+                    if (d.relevance > 0.7) return 'rgba(255,255,255,0.35)';
+                    return 'rgba(255,255,255,0.15)';
+                })
+                .attr('stroke-width', d => Math.max(1, d.relevance * 2));
+            
+            // Draw nodes
+            const node = g.append('g')
+                .selectAll('g')
+                .data(nodes)
+                .join('g')
+                .call(d3.drag()
+                    .on('start', dragstarted)
+                    .on('drag', dragged)
+                    .on('end', dragended));
+            
+            // Node glow effect
+            const defs = svg.select('defs').empty() ? svg.append('defs') : svg.select('defs');
+            defs.selectAll('*').remove();
+            
+            nodes.forEach((n, i) => {
+                const filter = defs.append('filter')
+                    .attr('id', `glow-${i}`)
+                    .attr('x', '-50%')
+                    .attr('y', '-50%')
+                    .attr('width', '200%')
+                    .attr('height', '200%');
+                
+                filter.append('feGaussianBlur')
+                    .attr('stdDeviation', '3')
+                    .attr('result', 'coloredBlur');
+                
+                const feMerge = filter.append('feMerge');
+                feMerge.append('feMergeNode').attr('in', 'coloredBlur');
+                feMerge.append('feMergeNode').attr('in', 'SourceGraphic');
+            });
+            
+            node.append('circle')
+                .attr('r', d => d.radius)
+                .attr('fill', d => d.color)
+                .attr('stroke', '#fff')
+                .attr('stroke-width', d => d.type === 'concept' ? 3 : 1.5)
+                .attr('opacity', d => d.type === 'concept' ? 1 : 0.85)
+                .style('filter', (d, i) => `url(#glow-${i})`)
+                .style('cursor', 'pointer');
+            
+            // Node labels
+            node.append('text')
+                .attr('class', d => d.type === 'concept' ? 'concept-label' : 'node-label')
+                .attr('text-anchor', 'middle')
+                .attr('dy', d => d.type === 'concept' ? 5 : (d.radius + 14))
+                .text(d => d.name.length > 20 ? d.name.substring(0, 18) + '...' : d.name);
+            
+            // Tooltip
+            const tooltip = document.getElementById('tooltip');
+            
+            node.on('mouseover', (event, d) => {
+                if (d.type === 'feature') {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Frequency: </span>${d.frequency}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Relevance: </span>${d.relevance.toFixed(2)}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Type: </span>${d.isShared ? 'Shared' : 'Unique'}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Feature Type: </span>${d.featureType}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Related Concepts: </span>${d.concepts.join(', ')}</div>
+                    `;
+                } else {
+                    tooltip.innerHTML = `
+                        <div class="tooltip-title">${d.name}</div>
+                        <div class="tooltip-row">Core Concept Node</div>
+                    `;
+                }
+                tooltip.style.opacity = 1;
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mousemove', (event) => {
+                tooltip.style.left = (event.pageX + 15) + 'px';
+                tooltip.style.top = (event.pageY - 10) + 'px';
+            })
+            .on('mouseout', () => {
+                tooltip.style.opacity = 0;
+            });
+            
+            // Update positions
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                node.attr('transform', d => `translate(${d.x},${d.y})`);
+            });
+        }
+        
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // Event listeners
+        document.getElementById('freqFilter').addEventListener('input', (e) => {
+            document.getElementById('freqValue').textContent = e.target.value;
+            updateGraph();
+        });
+        
+        document.getElementById('relevanceFilter').addEventListener('input', (e) => {
+            document.getElementById('relevanceValue').textContent = (e.target.value / 100).toFixed(1);
+            updateGraph();
+        });
+        
+        document.getElementById('showUnique').addEventListener('change', updateGraph);
+        document.getElementById('showShared').addEventListener('change', updateGraph);
+        
+        // Initialize
+        updateGraph();
+    </script>
+</body>
+</html>
