@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="CK-Arena: A Game-based Benchmark for Assessing Conceptual Knowledge in LLMs">
   <meta name="keywords" content="LLM, Game-based benchmark, Conceptual Knowledge">
-  <title>Probe by Gaming: A Game-based Benchmark for Assessing Conceptual Knowledge in LLMs</title>
+  <title>Is Your LLM Really Mastering the Concept? A Multi-Agent Benchmark</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="./static/css/bulma.min.css">
@@ -156,7 +156,7 @@
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
 
-        <img src="docs/figures/abs.png" alt="Heat Image" class="image my-5 is-flex mx-auto" style="max-width: 100%;" />
+        <img src="docs/figures/overview.png" alt="Heat Image" class="image my-5 is-flex mx-auto" style="max-width: 100%;" />
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
@@ -216,59 +216,71 @@ The game ends when:<br>
     <h2 class="title is-3 has-text-centered">Experimental Results</h2>
 
     <!-- 插入说明文字 -->
-    <p class="has-text-justified mt-5" style="max-width: 80%; margin: 0 auto;">
-  We have presented some experimental results here. For more comprehensive and specific information about the experiments, please refer to the article. <br><br><br><br>
-</p>
+    <p class="has-text-justified mt-5" style="max-width: 85%; margin: 0 auto; margin-bottom: 3rem;">
+      We have presented some experimental results here. For more comprehensive and specific information about the experiments, please refer to the article.
+    </p>
+
     <!-- 图片展示区 -->
-    <div class="columns is-multiline is-variable-8">
-      <!-- Model Leaderboard and Static Leaderboard - Two column layout -->
-      <div class="column is-half">
+    <div class="columns is-multiline" style="max-width: 90%; margin: 0 auto;">
+      <!-- Model Leaderboard - Single row -->
+      <div class="column is-full" style="margin-bottom: 3rem;">
         <div class="has-text-centered">
-          <figure class="image" style="max-width: 100%; margin: 0 auto; height: auto;">
-            <img src="docs/figures/model_leaderboard.png" alt="Model Leaderboard" />
+          <figure class="image" style="max-width: 85%; margin: 0 auto;">
+            <img src="docs/figures/model_leaderboard.png" alt="Model Leaderboard" style="width: 100%; height: auto;" />
           </figure>
         </div>
-      </div>
-      <div class="column is-half">
-        <div class="has-text-centered">
-          <figure class="image" style="max-width: 100%; margin: 0 auto; height: auto;">
-            <img src="docs/figures/static_leaderboard.png" alt="Static Leaderboard" />
-          </figure>
+        <div class="content has-text-left" style="max-width: 85%; margin: 2rem auto 0;">
+          <p><em>Leaderboard of LLMs in CK-Arena. Each player starts with an initial rating of 0. After stabilization, a player consistently defeating 0-rated opponents converges around 420, which serves as a reference for strong performance. The leaderboard highlights relative differences across 18 evaluated LLMs.</em></p>
         </div>
       </div>
 
-      <!-- 图片 1 -->
-      <div class="column is-full">
-        <div class="has-text-centered">
-          <figure class="image" style="max-width: 80%; margin: 0 auto; height: auto;">
-            <img src="docs/figures/z.png" alt="Result Chart 1" />
-          </figure>
-        </div>
-        <div class="content mt-4 has-text-left" style="max-width: 80%; margin: 0 auto;">
-          <p class="mt-2"><em>The win rate performance of six LLMs across 11 categories. A comparative analysis reveals that each model exhibits distinct strengths and weaknesses across different concept categories. These variations are likely influenced by differences in training data, architectural design, and optimization strategies specific to each model. The analysis reveals models’ focus areas, knowledge gaps, and insights for improving conceptual reasoning. <br><br><br> </em></p>
+      <!-- Heatmap and Static Leaderboard - Two column layout -->
+      <div class="column is-full" style="margin-bottom: 3rem;">
+        <div class="columns is-variable is-4">
+          <div class="column is-half">
+            <div class="has-text-centered">
+              <figure class="image">
+                <img src="docs/figures/heat.png" alt="Relevance Heatmap" style="width: 100%; height: auto;" />
+              </figure>
+            </div>
+            <div class="content has-text-left" style="margin: 2rem auto 0;">
+              <p><em>Relevance scores of different LLMs across various categories. In this heatmap, the darker the color, the higher the score, intuitively reflecting the association between the descriptions and concepts of each LLM in different categories.</em></p>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div class="has-text-centered">
+              <figure class="image">
+                <img src="docs/figures/static_leaderboard.png" alt="Static Leaderboard" style="width: 100%; height: auto;" />
+              </figure>
+            </div>
+            <div class="content has-text-left" style="margin: 2rem auto 0;">
+              <p><em>QA benchmark results. Three open-source models were selected for this evaluation, and the results reflected the specific performance of different models on a single task. The consistency between QA benchmark ranking and dynamic game ranking can also indirectly demonstrate the reliability of dynamic evaluation.</em></p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- 图片 2 -->
-      <div class="column is-full">
+      <!-- Win rate performance -->
+      <div class="column is-full" style="margin-bottom: 3rem;">
         <div class="has-text-centered">
-          <figure class="image" style="max-width: 60%; margin: 0 auto; height: auto;">
-            <img src="docs/figures/heat.png" alt="Result Chart 2" />
+          <figure class="image" style="max-width: 95%; margin: 0 auto;">
+            <img src="docs/figures/z.png" alt="Win Rate Performance" style="width: 100%; height: auto;" />
           </figure>
         </div>
-        <div class="content mt-4 has-text-left" style="max-width: 60%; margin: 0 auto;"> 
-          <p class="mt-2"><em>Relevance scores of different LLMs across various categories. In this heatmap, the darker the color, the higher the score, intuitively reflecting the association between the descriptions and concepts of each LLM in different categories. <br><br><br> </em></p>
+        <div class="content has-text-left" style="max-width: 95%; margin: 2rem auto 0;">
+          <p><em>The win rate performance of six LLMs across 11 categories. A comparative analysis reveals that each model exhibits distinct strengths and weaknesses across different concept categories. These variations are likely influenced by differences in training data, architectural design, and optimization strategies specific to each model. The analysis reveals models' focus areas, knowledge gaps, and insights for improving conceptual reasoning.</em></p>
         </div>
       </div>
 
-      <div class="column is-full">
+      <!-- t-SNE visualization -->
+      <div class="column is-full" style="margin-bottom: 3rem;">
         <div class="has-text-centered">
-          <figure class="image" style="max-width: 60%; margin: 0 auto; height: auto;">
-            <img src="docs/figures/t-sne.png" alt="Result Chart 2" />
+          <figure class="image" style="max-width: 85%; margin: 0 auto;">
+            <img src="docs/figures/t-sne.png" alt="t-SNE Visualization" style="width: 100%; height: auto;" />
           </figure>
         </div>
-        <div class="content mt-4 has-text-left" style="max-width: 60%; margin: 0 auto;">
-          <p class="mt-2"><em></em></p>
+        <div class="content has-text-left" style="max-width: 85%; margin: 2rem auto 0;">
+          <p><em>t-SNE visualizations of LLM statements across concept categories. Each plot shows model outputs for (a) Animals, (b) Food, and (c) Electronics. Repetitive descriptions, reflecting shallow understanding, appear as tightly clustered points, whereas richer knowledge produces more dispersed distributions. The visualizations also indicate that different LLMs center their descriptions on different focal aspects of a concept, suggesting variation in how conceptual knowledge is represented.</em></p>
         </div>
       </div>
 
