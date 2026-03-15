@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>知识图谱可视化</title>
+    <title>Knowledge Graph Visualization</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
     <style>
         * {
@@ -243,10 +243,10 @@
 <body>
     <div class="container">
         <div class="sidebar">
-            <h1>知识图谱可视化</h1>
+            <h1>Knowledge Graph Visualization</h1>
             
             <div class="legend">
-                <div class="legend-title">节点类型</div>
+                <div class="legend-title">Node Types</div>
                 
                 <div class="legend-item">
                     <div class="legend-circle" style="background: #f39c12;"></div>
@@ -294,37 +294,37 @@
                 </div>
                 <div class="legend-item">
                     <div class="legend-circle" style="background: #e74c3c;"></div>
-                    <span>第一概念独有特征</span>
+                    <span>Unique Features of Concept 1</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-circle" style="background: #3498db;"></div>
-                    <span>第二概念独有特征</span>
+                    <span>Unique Features of Concept 2</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-circle" style="background: #2ecc71;"></div>
-                    <span>共有特征</span>
+                    <span>Shared Features</span>
                 </div>
             </div>
             
             <div class="legend">
-                <div class="legend-title">连线强度</div>
+                <div class="legend-title">Connection Strength</div>
                 <div class="legend-item">
                     <div class="legend-line" style="background: rgba(255,255,255,0.8);"></div>
-                    <span>强关联 (relevance > 1.0)</span>
+                    <span>Strong (relevance > 1.0)</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-line" style="background: rgba(255,255,255,0.4);"></div>
-                    <span>中等关联</span>
+                    <span>Medium</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-line" style="background: rgba(255,255,255,0.15);"></div>
-                    <span>弱关联 (relevance < 0.5)</span>
+                    <span>Weak (relevance < 0.5)</span>
                 </div>
             </div>
             
             <div class="filters">
                 <div class="filter-group">
-                    <label class="filter-label">最小频率 (过滤低频特征)</label>
+                    <label class="filter-label">Min Frequency (Filter Low-Freq Features)</label>
                     <div class="slider-container">
                         <input type="range" id="freqFilter" min="1" max="20" value="3">
                         <span class="slider-value" id="freqValue">3</span>
@@ -332,7 +332,7 @@
                 </div>
                 
                 <div class="filter-group">
-                    <label class="filter-label">最小关联度</label>
+                    <label class="filter-label">Min Relevance</label>
                     <div class="slider-container">
                         <input type="range" id="relevanceFilter" min="0" max="100" value="50">
                         <span class="slider-value" id="relevanceValue">0.5</span>
@@ -340,32 +340,32 @@
                 </div>
                 
                 <div class="filter-group">
-                    <label class="filter-label">显示特征类型</label>
+                    <label class="filter-label">Show Feature Types</label>
                     <div class="checkbox-group">
                         <label class="checkbox-item">
                             <input type="checkbox" id="showUnique" checked>
-                            <span>独有特征</span>
+                            <span>Unique Features</span>
                         </label>
                         <label class="checkbox-item">
                             <input type="checkbox" id="showShared" checked>
-                            <span>共有特征</span>
+                            <span>Shared Features</span>
                         </label>
                     </div>
                 </div>
             </div>
             
             <div class="stats">
-                <div class="stats-title">当前统计</div>
+                <div class="stats-title">Current Stats</div>
                 <div class="stat-row">
-                    <span>显示特征数</span>
+                    <span>Displayed Features</span>
                     <span class="stat-value" id="featureCount">0</span>
                 </div>
                 <div class="stat-row">
-                    <span>独有特征</span>
+                    <span>Unique Features</span>
                     <span class="stat-value" id="uniqueCount">0</span>
                 </div>
                 <div class="stat-row">
-                    <span>共有特征</span>
+                    <span>Shared Features</span>
                     <span class="stat-value" id="sharedCount">0</span>
                 </div>
             </div>
@@ -375,17 +375,17 @@
             <svg id="graph"></svg>
             <div id="tooltip"></div>
             <div class="info-panel">
-                <p><strong>交互说明：</strong></p>
-                <p>• 拖拽节点可调整位置</p>
-                <p>• 滚轮缩放画布</p>
-                <p>• 悬停查看详细信息</p>
-                <p>• 调整左侧滤镜过滤噪声</p>
+                <p><strong>Interaction Guide:</strong></p>
+                <p>• Drag nodes to adjust position</p>
+                <p>• Scroll to zoom</p>
+                <p>• Hover to view details</p>
+                <p>• Adjust left filters to reduce noise</p>
             </div>
         </div>
     </div>
 
     <script>
-        // 概念数据
+        // Concept data
         const conceptsData = [
   {
     "id": "bee",
@@ -434,7 +434,7 @@
   }
 ];
         
-        // 特征数据
+        // Feature data
         const featuresData = {
   "distinctive reddish": {
     "name": "distinctive reddish",
@@ -9790,11 +9790,11 @@
   }
 };
         
-        // 特征颜色映射
+        // Feature color mapping
         const uniqueColors = ['#e74c3c', '#3498db', '#e67e22', '#1abc9c', '#9b59b6'];
         const sharedColor = '#2ecc71';
         
-        // 准备节点和边数据
+        // Prepare node and edge data
         let nodes = [];
         let links = [];
 
@@ -9802,7 +9802,7 @@
             nodes = [];
             links = [];
             
-            // 添加概念节点
+            // Add concept nodes
             conceptsData.forEach(concept => {
                 nodes.push({
                     id: concept.id,
@@ -9813,7 +9813,7 @@
                 });
             });
 
-            // 添加特征节点
+            // Add feature nodes
             Object.entries(featuresData).forEach(([key, feature]) => {
                 if (feature.frequency < minFreq) return;
                 if (feature.avg_relevance < minRelevance) return;
@@ -9827,7 +9827,7 @@
                 if (isShared) {
                     color = sharedColor;
                 } else {
-                    // 根据第一个关联的概念确定颜色
+                    // Determine color based on the first associated concept
                     const conceptIndex = conceptsData.findIndex(c => c.id === feature.concepts[0]);
                     color = uniqueColors[conceptIndex % uniqueColors.length];
                 }
@@ -9847,7 +9847,7 @@
                     featureType: feature.feature_type
                 });
                 
-                // 添加连接
+                // Add connections
                 feature.concepts.forEach(concept => {
                     links.push({
                         source: key,
@@ -9858,21 +9858,21 @@
                 });
             });
             
-            // 更新统计
+            // Update statistics
             const featureNodes = nodes.filter(n => n.type === 'feature');
             document.getElementById('featureCount').textContent = featureNodes.length;
             document.getElementById('uniqueCount').textContent = featureNodes.filter(n => !n.isShared).length;
             document.getElementById('sharedCount').textContent = featureNodes.filter(n => n.isShared).length;
         }
 
-        // D3 可视化
+        // D3 visualization
         const svg = d3.select('#graph');
         const width = document.querySelector('.main').clientWidth;
         const height = document.querySelector('.main').clientHeight;
         
         const g = svg.append('g');
         
-        // 缩放
+        // Zoom
         const zoom = d3.zoom()
             .scaleExtent([0.3, 3])
             .on('zoom', (event) => {
@@ -9881,7 +9881,7 @@
         
         svg.call(zoom);
         
-        // 初始缩放到中心
+        // Initial zoom to center
         svg.call(zoom.transform, d3.zoomIdentity.translate(width/2, height/2).scale(0.8));
 
         let simulation;
@@ -9894,10 +9894,10 @@
             
             prepareData(minFreq, minRelevance, showUnique, showShared);
             
-            // 清除旧元素
+            // Clear old elements
             g.selectAll('*').remove();
             
-            // 力导向模拟
+            // Force-directed simulation
             simulation = d3.forceSimulation(nodes)
                 .force('link', d3.forceLink(links).id(d => d.id).distance(d => {
                     return d.relevance > 1 ? 80 : 120;
@@ -9906,7 +9906,7 @@
                 .force('center', d3.forceCenter(0, 0))
                 .force('collision', d3.forceCollide().radius(d => d.radius + 5));
             
-            // 绘制连线
+            // Draw links
             const link = g.append('g')
                 .selectAll('line')
                 .data(links)
@@ -9918,7 +9918,7 @@
                 })
                 .attr('stroke-width', d => Math.max(1, d.relevance * 2));
             
-            // 绘制节点
+            // Draw nodes
             const node = g.append('g')
                 .selectAll('g')
                 .data(nodes)
@@ -9928,7 +9928,7 @@
                     .on('drag', dragged)
                     .on('end', dragended));
             
-            // 节点外发光效果
+            // Node glow effect
             const defs = svg.select('defs').empty() ? svg.append('defs') : svg.select('defs');
             defs.selectAll('*').remove();
             
@@ -9958,30 +9958,30 @@
                 .style('filter', (d, i) => `url(#glow-${i})`)
                 .style('cursor', 'pointer');
             
-            // 节点标签
+            // Node labels
             node.append('text')
                 .attr('class', d => d.type === 'concept' ? 'concept-label' : 'node-label')
                 .attr('text-anchor', 'middle')
                 .attr('dy', d => d.type === 'concept' ? 5 : (d.radius + 14))
                 .text(d => d.name.length > 20 ? d.name.substring(0, 18) + '...' : d.name);
             
-            // 提示框
+            // Tooltip
             const tooltip = document.getElementById('tooltip');
             
             node.on('mouseover', (event, d) => {
                 if (d.type === 'feature') {
                     tooltip.innerHTML = `
                         <div class="tooltip-title">${d.name}</div>
-                        <div class="tooltip-row"><span class="tooltip-label">频率：</span>${d.frequency}</div>
-                        <div class="tooltip-row"><span class="tooltip-label">关联度：</span>${d.relevance.toFixed(2)}</div>
-                        <div class="tooltip-row"><span class="tooltip-label">类型：</span>${d.isShared ? '共有特征' : '独有特征'}</div>
-                        <div class="tooltip-row"><span class="tooltip-label">特征类型：</span>${d.featureType}</div>
-                        <div class="tooltip-row"><span class="tooltip-label">关联概念：</span>${d.concepts.join(', ')}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Frequency:</span>${d.frequency}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Relevance:</span>${d.relevance.toFixed(2)}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Type:</span>${d.isShared ? 'Shared Feature' : 'Unique Feature'}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Feature Type:</span>${d.featureType}</div>
+                        <div class="tooltip-row"><span class="tooltip-label">Related Concepts:</span>${d.concepts.join(', ')}</div>
                     `;
                 } else {
                     tooltip.innerHTML = `
                         <div class="tooltip-title">${d.name}</div>
-                        <div class="tooltip-row">核心概念节点</div>
+                        <div class="tooltip-row">Core Concept Node</div>
                     `;
                 }
                 tooltip.style.opacity = 1;
@@ -9996,7 +9996,7 @@
                 tooltip.style.opacity = 0;
             });
             
-            // 更新位置
+            // Update positions
             simulation.on('tick', () => {
                 link
                     .attr('x1', d => d.source.x)
@@ -10025,7 +10025,7 @@
             d.fy = null;
         }
         
-        // 事件监听
+        // Event listeners
         document.getElementById('freqFilter').addEventListener('input', (e) => {
             document.getElementById('freqValue').textContent = e.target.value;
             updateGraph();
@@ -10039,7 +10039,7 @@
         document.getElementById('showUnique').addEventListener('change', updateGraph);
         document.getElementById('showShared').addEventListener('change', updateGraph);
         
-        // 初始化
+        // Initialize
         updateGraph();
     </script>
 </body>

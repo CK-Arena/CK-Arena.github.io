@@ -73,6 +73,7 @@
   <div class="navbar-menu">
     <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
       <a class="navbar-item" href="#home">Home</a>
+      <a class="navbar-item" href="#news">News</a>
       <a class="navbar-item" href="#abstract">Abstract</a>
       <a class="navbar-item" href="#game-demo">Game Demo</a>
       <a class="navbar-item" href="./sup/knowledge_graph_selector.html" target="_blank">Knowledge Graph</a>
@@ -165,6 +166,28 @@
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
 
+        <div id="news" style="text-align: left; margin-bottom: 2rem;">
+          <h2 class="title is-4">News</h2>
+          <div style="border: 1px solid #ddd; border-radius: 6px; overflow: hidden; font-size: 0.95rem;">
+            <div style="display: flex; gap: 1rem; padding: 0.7rem 1rem; background: #f7f7f7; border-bottom: 1px solid #ddd;">
+              <span style="white-space: nowrap; color: #888; min-width: 6rem;">2025-03</span>
+              <span>Added 4 new models to the leaderboard: <code>step-3.5-flash</code>, <code>nemotron-3-nano-30b-a3b</code>, <code>trinity-large-preview</code>, <code>glm-4.5-air</code>.</span>
+            </div>
+            <div style="display: flex; gap: 1rem; padding: 0.7rem 1rem; background: #f7f7f7;">
+              <span style="white-space: nowrap; color: #888; min-width: 6rem;">2025-02</span>
+              <span>Paper submitted to arXiv.</span>
+            </div>
+          </div>
+        </div>
+
+        <figure class="image my-5" style="max-width: 85%; margin: 0 auto;">
+          <img src="docs/figures/models_leaderboard.png" alt="Model Leaderboard" style="width: 100%; height: auto;" />
+        </figure>
+        <div class="content has-text-left mb-5">
+          <p><em>Leaderboard of LLMs in CK-Arena. Each player starts with an initial rating of 0. After stabilization, a player consistently defeating 0-rated opponents converges around 420, which serves as a reference for strong performance. The leaderboard highlights relative differences across 18 evaluated LLMs.</em></p>
+        </div>
+
+        <div style="height: 3rem;"></div>
         <img src="docs/figures/overview.png" alt="Heat Image" class="image my-5 is-flex mx-auto" style="max-width: 100%;" />
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
@@ -231,18 +254,6 @@ The game ends when:<br>
 
     <!-- 图片展示区 -->
     <div class="columns is-multiline" style="max-width: 90%; margin: 0 auto;">
-      <!-- Model Leaderboard - Single row -->
-      <div class="column is-full" style="margin-bottom: 3rem;">
-        <div class="has-text-centered">
-          <figure class="image" style="max-width: 85%; margin: 0 auto;">
-            <img src="docs/figures/models_leaderboard.png" alt="Model Leaderboard" style="width: 100%; height: auto;" />
-          </figure>
-        </div>
-        <div class="content has-text-left" style="max-width: 85%; margin: 2rem auto 0;">
-          <p><em>Leaderboard of LLMs in CK-Arena. Each player starts with an initial rating of 0. After stabilization, a player consistently defeating 0-rated opponents converges around 420, which serves as a reference for strong performance. The leaderboard highlights relative differences across 18 evaluated LLMs.</em></p>
-        </div>
-      </div>
-
       <!-- Heatmap and Static Leaderboard - Two column layout -->
       <div class="column is-full" style="margin-bottom: 3rem;">
         <div class="columns is-variable is-4">
@@ -266,18 +277,6 @@ The game ends when:<br>
               <p><em>QA benchmark results. Three open-source models were selected for this evaluation, and the results reflected the specific performance of different models on a single task. The consistency between QA benchmark ranking and dynamic game ranking can also indirectly demonstrate the reliability of dynamic evaluation.</em></p>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- Win rate performance -->
-      <div class="column is-full" style="margin-bottom: 3rem;">
-        <div class="has-text-centered">
-          <figure class="image" style="max-width: 95%; margin: 0 auto;">
-            <img src="docs/figures/z.png" alt="Win Rate Performance" style="width: 100%; height: auto;" />
-          </figure>
-        </div>
-        <div class="content has-text-left" style="max-width: 95%; margin: 2rem auto 0;">
-          <p><em>The win rate performance of six LLMs across 11 categories. A comparative analysis reveals that each model exhibits distinct strengths and weaknesses across different concept categories. These variations are likely influenced by differences in training data, architectural design, and optimization strategies specific to each model. The analysis reveals models' focus areas, knowledge gaps, and insights for improving conceptual reasoning.</em></p>
         </div>
       </div>
 
