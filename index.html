@@ -171,6 +171,10 @@
           <div style="border: 1px solid #ddd; border-radius: 6px; overflow: hidden; font-size: 0.95rem;">
             <div style="display: flex; gap: 1rem; padding: 0.7rem 1rem; background: #f7f7f7; border-bottom: 1px solid #ddd;">
               <span style="white-space: nowrap; color: #888; min-width: 6rem;">2025-03</span>
+              <span>Added 2 anonymous models to the leaderboard: <code>hunter</code> and <code>healer</code>.</span>
+            </div>
+            <div style="display: flex; gap: 1rem; padding: 0.7rem 1rem; background: #f7f7f7; border-bottom: 1px solid #ddd;">
+              <span style="white-space: nowrap; color: #888; min-width: 6rem;">2025-03</span>
               <span>Added 4 new models to the leaderboard: <code>step-3.5-flash</code>, <code>nemotron-3-nano-30b-a3b</code>, <code>trinity-large-preview</code>, <code>glm-4.5-air</code>.</span>
             </div>
             <div style="display: flex; gap: 1rem; padding: 0.7rem 1rem; background: #f7f7f7;">
@@ -180,12 +184,512 @@
           </div>
         </div>
 
-        <figure class="image my-5" style="max-width: 85%; margin: 0 auto;">
-          <img src="docs/figures/models_leaderboard.png" alt="Model Leaderboard" style="width: 100%; height: auto;" />
-        </figure>
-        <div class="content has-text-left mb-5">
-          <p><em>Leaderboard of LLMs in CK-Arena. Each player starts with an initial rating of 0. After stabilization, a player consistently defeating 0-rated opponents converges around 420, which serves as a reference for strong performance. The leaderboard highlights relative differences across 18 evaluated LLMs.</em></p>
+        <!-- Interactive Leaderboard -->
+        <div id="leaderboard-section" class="my-5">
+          <style>
+            #leaderboard-section { font-family: inherit; }
+
+            .lb-filter-group {
+              display: flex;
+              align-items: center;
+              flex-wrap: wrap;
+              gap: 0.4rem;
+              margin-bottom: 0.6rem;
+            }
+            .lb-filter-label {
+              font-size: 0.78rem;
+              font-weight: 700;
+              color: #999;
+              text-transform: uppercase;
+              letter-spacing: 0.06em;
+              min-width: 4.5rem;
+              flex-shrink: 0;
+            }
+            .lb-filter-chips {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 0.35rem;
+            }
+            .lb-chip {
+              padding: 0.25rem 0.75rem;
+              border-radius: 999px;
+              border: 1.5px solid #ddd;
+              background: #fff;
+              cursor: pointer;
+              font-size: 0.82rem;
+              font-weight: 500;
+              color: #555;
+              transition: background 0.13s, color 0.13s, border-color 0.13s;
+              user-select: none;
+              line-height: 1.4;
+            }
+            .lb-chip:hover { border-color: #aaa; background: #f5f5f5; }
+            .lb-chip.active {
+              color: #fff;
+              border-color: transparent;
+              background: #333;
+            }
+            /* vendor-specific active colors */
+            .lb-chip.active.vc-openai    { background: #10a37f; }
+            .lb-chip.active.vc-google    { background: #4285f4; }
+            .lb-chip.active.vc-anthropic { background: #c96442; }
+            .lb-chip.active.vc-alibaba   { background: #ff6a00; }
+            .lb-chip.active.vc-deepseek  { background: #5c6bc0; }
+            .lb-chip.active.vc-moonshot  { background: #7b5ea7; }
+            .lb-chip.active.vc-others    { background: #607d8b; }
+            /* attribute active colors */
+            .lb-chip.active.ac-open      { background: #2e7d32; }
+            .lb-chip.active.ac-closed    { background: #424242; }
+            .lb-chip.active.ac-reasoning { background: #6a1b9a; }
+            .lb-chip.active.ac-nonreasoning { background: #1565c0; }
+            .lb-chip.active.ac-flagship  { background: #b8860b; }
+            .lb-chip.active.ac-anonymous { background: #546e7a; }
+            /* vendor-specific active for OpenRouter */
+            .lb-chip.active.vc-openrouter { background: #7c3aed; }
+
+            .lb-divider {
+              border: none;
+              border-top: 1px solid #eee;
+              margin: 0.5rem 0 0.9rem;
+            }
+
+            .lb-table-wrap {
+              overflow-x: auto;
+              border-radius: 10px;
+              box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            }
+            .lb-table {
+              width: 100%;
+              border-collapse: collapse;
+              font-size: 0.93rem;
+              background: #fff;
+            }
+            .lb-table thead tr { background: #f4f4f4; }
+            .lb-table th {
+              padding: 0.7rem 1rem;
+              font-weight: 600;
+              text-align: left;
+              white-space: nowrap;
+              color: #333;
+              border-bottom: 2px solid #e8e8e8;
+            }
+            .lb-table th.right, .lb-table td.right { text-align: right; }
+            .lb-table td {
+              padding: 0.6rem 1rem;
+              border-bottom: 1px solid #f0f0f0;
+              vertical-align: middle;
+              color: #333;
+            }
+            .lb-table tr:last-child td { border-bottom: none; }
+            .lb-table tr:hover td { background: #fafafa; }
+            .lb-rank {
+              font-weight: 700;
+              font-size: 1rem;
+              color: #888;
+              min-width: 2rem;
+              text-align: center;
+            }
+            .lb-model-name { font-weight: 600; color: #222; }
+            .lb-score {
+              font-weight: 700;
+              font-size: 0.95rem;
+              white-space: nowrap;
+            }
+            .lb-score.positive { color: #1a9e5f; }
+            .lb-score.negative { color: #c0392b; }
+            .lb-bar-cell { min-width: 110px; padding-right: 1.2rem; }
+            .lb-bar-bg {
+              background: #eee;
+              border-radius: 4px;
+              height: 8px;
+              overflow: hidden;
+            }
+            .lb-bar-fill { height: 100%; border-radius: 4px; min-width: 2px; }
+            .lb-vendor-tag {
+              display: inline-block;
+              padding: 0.15rem 0.6rem;
+              border-radius: 999px;
+              font-size: 0.75rem;
+              font-weight: 600;
+              color: #fff;
+              white-space: nowrap;
+            }
+            .lb-attr-tags { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+            .lb-attr-tag {
+              display: inline-block;
+              padding: 0.1rem 0.5rem;
+              border-radius: 4px;
+              font-size: 0.7rem;
+              font-weight: 600;
+              white-space: nowrap;
+              border: 1px solid;
+            }
+            .lb-tag-open     { color: #2e7d32; border-color: #a5d6a7; background: #f1f8e9; }
+            .lb-tag-closed   { color: #424242; border-color: #bdbdbd; background: #f5f5f5; }
+            .lb-tag-reasoning    { color: #6a1b9a; border-color: #ce93d8; background: #f3e5f5; }
+            .lb-tag-flagship { color: #b8860b; border-color: #ffe082; background: #fffde7; }
+            .lb-tag-anonymous { color: #546e7a; border-color: #b0bec5; background: #eceff1; }
+
+            .lb-pagination {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 0.4rem;
+              margin-top: 1.1rem;
+            }
+            .lb-page-btn {
+              width: 2rem;
+              height: 2rem;
+              border-radius: 6px;
+              border: 1.5px solid #ddd;
+              background: #fff;
+              cursor: pointer;
+              font-size: 0.85rem;
+              font-weight: 600;
+              color: #444;
+              transition: background 0.12s, color 0.12s;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+            .lb-page-btn:hover { background: #f0f0f0; }
+            .lb-page-btn.active { background: #333; color: #fff; border-color: #333; }
+            .lb-page-btn:disabled { opacity: 0.35; cursor: default; }
+            .lb-info-text {
+              font-size: 0.82rem;
+              color: #888;
+              text-align: center;
+              margin-top: 0.5rem;
+            }
+            .lb-empty {
+              text-align: center;
+              padding: 2rem 1rem;
+              color: #aaa;
+              font-size: 0.9rem;
+            }
+          </style>
+
+          <!-- Vendor filter (multi-select) -->
+          <div class="lb-filter-group">
+            <span class="lb-filter-label">Vendor</span>
+            <div class="lb-filter-chips" id="lb-vendor-chips"></div>
+          </div>
+          <!-- Attribute filters -->
+          <div class="lb-filter-group">
+            <span class="lb-filter-label">Source</span>
+            <div class="lb-filter-chips" id="lb-source-chips"></div>
+          </div>
+          <div class="lb-filter-group">
+            <span class="lb-filter-label">Type</span>
+            <div class="lb-filter-chips" id="lb-type-chips"></div>
+          </div>
+          <div class="lb-filter-group">
+            <span class="lb-filter-label">Scope</span>
+            <div class="lb-filter-chips" id="lb-scope-chips"></div>
+          </div>
+          <div class="lb-filter-group">
+            <span class="lb-filter-label">Identity</span>
+            <div class="lb-filter-chips" id="lb-identity-chips"></div>
+          </div>
+
+          <hr class="lb-divider" />
+
+          <div class="lb-table-wrap">
+            <table class="lb-table">
+              <thead>
+                <tr>
+                  <th style="text-align:center;">#</th>
+                  <th>Model</th>
+                  <th>Vendor</th>
+                  <th>Attributes</th>
+                  <th class="right">Score</th>
+                  <th class="lb-bar-cell">Rating Bar</th>
+                </tr>
+              </thead>
+              <tbody id="lb-tbody"></tbody>
+            </table>
+          </div>
+          <div class="lb-pagination" id="lb-pagination"></div>
+          <p class="lb-info-text">Leaderboard updated 2025-03-18 &bull; Each player starts at 0; consistently defeating 0-rated opponents converges to ~420 (strong-performance reference).</p>
         </div>
+
+        <script>
+        (function() {
+          // open: publicly released weights; reasoning: chain-of-thought reasoning model
+          // flagship: the newest/latest model representing that vendor
+          var MODELS = [
+            { rank: 1,  name: "GPT-5",                    score: 281.58,  vendor: "OpenAI",      open: false, reasoning: false, flagship: true,  anonymous: false },
+            { rank: 2,  name: "Gemini-3-pro-preview",     score: 268.64,  vendor: "Google",      open: false, reasoning: false, flagship: true,  anonymous: false },
+            { rank: 3,  name: "Claude-opus-4-5",          score: 231.48,  vendor: "Anthropic",   open: false, reasoning: false, flagship: true,  anonymous: false },
+            { rank: 4,  name: "hunter",                   score: 220.28,  vendor: "OpenRouter",  open: false, reasoning: false, flagship: false, anonymous: true  },
+            { rank: 5,  name: "Claude-opus-4-1",          score: 211.31,  vendor: "Anthropic",   open: false, reasoning: false, flagship: false, anonymous: false },
+            { rank: 6,  name: "step-3.5-flash",           score: 191.53,  vendor: "Others",      open: false, reasoning: false, flagship: true,  anonymous: false },
+            { rank: 7,  name: "Qwq-plus",                 score: 186.67,  vendor: "Alibaba",     open: false, reasoning: true,  flagship: false, anonymous: false },
+            { rank: 8,  name: "Qwen3-max",                score: 148.76,  vendor: "Alibaba",     open: false, reasoning: false, flagship: true,  anonymous: false },
+            { rank: 9,  name: "DeepSeek-v3.1",            score: 136.09,  vendor: "DeepSeek",    open: true,  reasoning: false, flagship: true,  anonymous: false },
+            { rank: 10, name: "nemotron-3-nano-30b-a3b",  score: 131.16,  vendor: "Others",      open: true,  reasoning: false, flagship: true,  anonymous: false },
+            { rank: 11, name: "trinity-large-preview",    score: 111.08,  vendor: "Others",      open: false, reasoning: false, flagship: true,  anonymous: false },
+            { rank: 12, name: "DeepSeek-v3",              score: 108.70,  vendor: "DeepSeek",    open: true,  reasoning: false, flagship: false, anonymous: false },
+            { rank: 13, name: "o1",                       score: 104.22,  vendor: "OpenAI",      open: false, reasoning: true,  flagship: false, anonymous: false },
+            { rank: 14, name: "DeepSeek-R1",              score: 101.20,  vendor: "DeepSeek",    open: true,  reasoning: true,  flagship: false, anonymous: false },
+            { rank: 15, name: "Gemini-2.5-flash-preview", score: 80.95,   vendor: "Google",      open: false, reasoning: false, flagship: false, anonymous: false },
+            { rank: 16, name: "healer",                   score: 73.17,   vendor: "OpenRouter",  open: false, reasoning: false, flagship: false, anonymous: true  },
+            { rank: 17, name: "Qwen2.5-72b",              score: 70.00,   vendor: "Alibaba",     open: true,  reasoning: false, flagship: false, anonymous: false },
+            { rank: 18, name: "GPT-oss-120b",             score: 67.93,   vendor: "OpenAI",      open: false, reasoning: false, flagship: false, anonymous: false },
+            { rank: 19, name: "Qwen-plus",                score: 66.43,   vendor: "Alibaba",     open: false, reasoning: false, flagship: false, anonymous: false },
+            { rank: 20, name: "glm-4.5-air",              score: 59.04,   vendor: "Others",      open: true,  reasoning: false, flagship: true,  anonymous: false },
+            { rank: 21, name: "Kimi-k2-instruct",         score: 53.10,   vendor: "Moonshot",    open: false, reasoning: false, flagship: true,  anonymous: false },
+            { rank: 22, name: "GPT-4o",                   score: 48.83,   vendor: "OpenAI",      open: false, reasoning: false, flagship: false, anonymous: false },
+            { rank: 23, name: "Gemini-2.5-Pro-thinking",  score: 36.26,   vendor: "Google",      open: false, reasoning: true,  flagship: false, anonymous: false },
+            { rank: 24, name: "LlaMA-3.3-70b-instruct",   score: 21.27,   vendor: "Others",      open: true,  reasoning: false, flagship: true,  anonymous: false },
+            { rank: 25, name: "Gemini-2.0-pro-exp",       score: 17.99,   vendor: "Google",      open: false, reasoning: false, flagship: false, anonymous: false },
+            { rank: 26, name: "Ernie-4.5-300b-a47b",      score: 3.69,    vendor: "Others",      open: true,  reasoning: false, flagship: true,  anonymous: false },
+            { rank: 27, name: "Claude-3-5-haiku",         score: -62.41,  vendor: "Anthropic",   open: false, reasoning: false, flagship: false, anonymous: false }
+          ];
+
+          var VENDOR_COLORS = {
+            "OpenAI":      "#10a37f",
+            "Google":      "#4285f4",
+            "Anthropic":   "#c96442",
+            "Alibaba":     "#ff6a00",
+            "DeepSeek":    "#5c6bc0",
+            "Moonshot":    "#7b5ea7",
+            "OpenRouter":  "#7c3aed",
+            "Others":      "#607d8b"
+          };
+
+          var VENDORS = ["OpenAI", "Google", "Anthropic", "Alibaba", "DeepSeek", "Moonshot", "OpenRouter", "Others"];
+          var MEDALS  = { 1: "&#127947;", 2: "&#129352;", 3: "&#129353;" };
+          var PAGE_SIZE = 10;
+
+          // filter state
+          var selectedVendors = {};  // vendor -> true when selected
+          var sourceFilter    = null; // null | "open" | "closed"
+          var typeFilter      = null; // null | "reasoning" | "nonreasoning"
+          var flagshipOnly    = false;
+          var anonymousOnly   = false;
+
+          var currentPage = 1;
+          var filtered    = MODELS.slice();
+          var maxScore    = Math.max.apply(null, MODELS.map(function(m){ return m.score; }));
+
+          // ---- filtering ----
+          function applyFilters() {
+            var hasVendor = VENDORS.some(function(v){ return selectedVendors[v]; });
+            filtered = MODELS.filter(function(m) {
+              if (hasVendor && !selectedVendors[m.vendor]) return false;
+              if (sourceFilter === "open"   &&  m.open) return true;
+              if (sourceFilter === "open"   && !m.open) return false;
+              if (sourceFilter === "closed" && !m.open) return true;
+              if (sourceFilter === "closed" &&  m.open) return false;
+              if (typeFilter === "reasoning"    &&  m.reasoning) return true;
+              if (typeFilter === "reasoning"    && !m.reasoning) return false;
+              if (typeFilter === "nonreasoning" && !m.reasoning) return true;
+              if (typeFilter === "nonreasoning" &&  m.reasoning) return false;
+              if (flagshipOnly && !m.flagship) return false;
+              if (anonymousOnly && !m.anonymous) return false;
+              return true;
+            });
+            currentPage = 1;
+          }
+
+          // ---- render vendor chips ----
+          function renderVendorChips() {
+            var container = document.getElementById("lb-vendor-chips");
+            container.innerHTML = "";
+
+            // "All" chip: active when no vendor selected
+            var hasVendor = VENDORS.some(function(v){ return selectedVendors[v]; });
+            var allChip = document.createElement("button");
+            allChip.className = "lb-chip" + (!hasVendor ? " active" : "");
+            allChip.textContent = "All";
+            allChip.onclick = function() {
+              selectedVendors = {};
+              applyFilters();
+              renderAll();
+            };
+            container.appendChild(allChip);
+
+            VENDORS.forEach(function(v) {
+              var chip = document.createElement("button");
+              var vcClass = "vc-" + v.toLowerCase();
+              chip.className = "lb-chip " + vcClass + (selectedVendors[v] ? " active" : "");
+              chip.textContent = v;
+              chip.onclick = function() {
+                selectedVendors[v] = !selectedVendors[v];
+                applyFilters();
+                renderAll();
+              };
+              container.appendChild(chip);
+            });
+          }
+
+          // ---- render source chips (exclusive toggle) ----
+          function renderSourceChips() {
+            var container = document.getElementById("lb-source-chips");
+            container.innerHTML = "";
+            [
+              { key: "open",   label: "Open Source",   cls: "ac-open"   },
+              { key: "closed", label: "Closed Source",  cls: "ac-closed" }
+            ].forEach(function(opt) {
+              var chip = document.createElement("button");
+              chip.className = "lb-chip " + opt.cls + (sourceFilter === opt.key ? " active" : "");
+              chip.textContent = opt.label;
+              chip.onclick = function() {
+                sourceFilter = (sourceFilter === opt.key) ? null : opt.key;
+                applyFilters();
+                renderAll();
+              };
+              container.appendChild(chip);
+            });
+          }
+
+          // ---- render type chips (exclusive toggle) ----
+          function renderTypeChips() {
+            var container = document.getElementById("lb-type-chips");
+            container.innerHTML = "";
+            [
+              { key: "reasoning",    label: "Reasoning",     cls: "ac-reasoning"    },
+              { key: "nonreasoning", label: "Non-Reasoning",  cls: "ac-nonreasoning" }
+            ].forEach(function(opt) {
+              var chip = document.createElement("button");
+              chip.className = "lb-chip " + opt.cls + (typeFilter === opt.key ? " active" : "");
+              chip.textContent = opt.label;
+              chip.onclick = function() {
+                typeFilter = (typeFilter === opt.key) ? null : opt.key;
+                applyFilters();
+                renderAll();
+              };
+              container.appendChild(chip);
+            });
+          }
+
+          // ---- render scope chips ----
+          function renderScopeChips() {
+            var container = document.getElementById("lb-scope-chips");
+            container.innerHTML = "";
+            var chip = document.createElement("button");
+            chip.className = "lb-chip ac-flagship" + (flagshipOnly ? " active" : "");
+            chip.textContent = "Flagship Only";
+            chip.onclick = function() {
+              flagshipOnly = !flagshipOnly;
+              applyFilters();
+              renderAll();
+            };
+            container.appendChild(chip);
+          }
+
+          // ---- render identity chips ----
+          function renderIdentityChips() {
+            var container = document.getElementById("lb-identity-chips");
+            container.innerHTML = "";
+            var chip = document.createElement("button");
+            chip.className = "lb-chip ac-anonymous" + (anonymousOnly ? " active" : "");
+            chip.textContent = "Anonymous Only";
+            chip.onclick = function() {
+              anonymousOnly = !anonymousOnly;
+              applyFilters();
+              renderAll();
+            };
+            container.appendChild(chip);
+          }
+
+          // ---- render table ----
+          function renderTable() {
+            var tbody = document.getElementById("lb-tbody");
+            var start = (currentPage - 1) * PAGE_SIZE;
+            var page  = filtered.slice(start, start + PAGE_SIZE);
+            tbody.innerHTML = "";
+
+            if (filtered.length === 0) {
+              tbody.innerHTML = '<tr><td colspan="6" class="lb-empty">No models match the current filters.</td></tr>';
+              return;
+            }
+
+            page.forEach(function(m) {
+              var tr = document.createElement("tr");
+              var rankCell = MEDALS[m.rank]
+                ? '<td class="lb-rank"><span>' + MEDALS[m.rank] + "</span></td>"
+                : '<td class="lb-rank">' + m.rank + "</td>";
+              var scoreClass = m.score >= 0 ? "positive" : "negative";
+              var scoreStr   = (m.score >= 0 ? "+" : "") + m.score.toFixed(2);
+              var barPct     = Math.max(0, (m.score / maxScore) * 100);
+              var barColor   = VENDOR_COLORS[m.vendor] || "#888";
+
+              var attrTags = "";
+              attrTags += m.open
+                ? '<span class="lb-attr-tag lb-tag-open">Open</span>'
+                : '<span class="lb-attr-tag lb-tag-closed">Closed</span>';
+              if (m.reasoning) {
+                attrTags += '<span class="lb-attr-tag lb-tag-reasoning">Reasoning</span>';
+              }
+              if (m.flagship) {
+                attrTags += '<span class="lb-attr-tag lb-tag-flagship">Flagship</span>';
+              }
+              if (m.anonymous) {
+                attrTags += '<span class="lb-attr-tag lb-tag-anonymous">Anonymous</span>';
+              }
+
+              tr.innerHTML = rankCell
+                + '<td class="lb-model-name">' + m.name + "</td>"
+                + '<td><span class="lb-vendor-tag" style="background:' + barColor + '">' + m.vendor + "</span></td>"
+                + '<td><div class="lb-attr-tags">' + attrTags + "</div></td>"
+                + '<td class="right"><span class="lb-score ' + scoreClass + '">' + scoreStr + "</span></td>"
+                + '<td class="lb-bar-cell"><div class="lb-bar-bg"><div class="lb-bar-fill" style="width:' + barPct.toFixed(1) + '%;background:' + barColor + '"></div></div></td>';
+              tbody.appendChild(tr);
+            });
+          }
+
+          // ---- render pagination ----
+          function renderPagination() {
+            var total = Math.ceil(filtered.length / PAGE_SIZE);
+            var pg = document.getElementById("lb-pagination");
+            pg.innerHTML = "";
+            if (total <= 1) return;
+
+            function mkBtn(label, targetPage, disabled, active) {
+              var b = document.createElement("button");
+              b.className = "lb-page-btn" + (active ? " active" : "");
+              b.innerHTML = label;
+              if (disabled) b.disabled = true;
+              b.onclick = function() {
+                currentPage = targetPage;
+                renderTable();
+                renderPagination();
+              };
+              return b;
+            }
+
+            pg.appendChild(mkBtn("&#8249;", currentPage - 1, currentPage === 1, false));
+            for (var i = 1; i <= total; i++) {
+              pg.appendChild(mkBtn(i, i, false, i === currentPage));
+            }
+            pg.appendChild(mkBtn("&#8250;", currentPage + 1, currentPage === total, false));
+          }
+
+          function renderAll() {
+            renderVendorChips();
+            renderSourceChips();
+            renderTypeChips();
+            renderScopeChips();
+            renderIdentityChips();
+            renderTable();
+            renderPagination();
+          }
+
+          function init() {
+            applyFilters();
+            renderAll();
+          }
+
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", init);
+          } else {
+            init();
+          }
+        })();
+        </script>
+        <!-- /Interactive Leaderboard -->
 
         <div style="height: 3rem;"></div>
         <img src="docs/figures/overview.png" alt="Heat Image" class="image my-5 is-flex mx-auto" style="max-width: 100%;" />
