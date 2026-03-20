@@ -171,7 +171,7 @@
           <div style="border: 1px solid #ddd; border-radius: 6px; overflow: hidden; font-size: 0.95rem;">
             <div style="display: flex; gap: 1rem; padding: 0.7rem 1rem; background: #f7f7f7; border-bottom: 1px solid #ddd;">
               <span style="white-space: nowrap; color: #888; min-width: 6rem;">2026-03</span>
-              <span>Added 2 anonymous models to the leaderboard: <code>hunter</code> and <code>healer</code>.</span>
+              <span>Added 2 anonymous models to the leaderboard (now revealed: <code>hunter</code> is <code>xiaomi/mimo-v2-pro</code>, <code>healer</code> is <code>xiaomi/mimo-v2-omni</code>).</span>
             </div>
             <div style="display: flex; gap: 1rem; padding: 0.7rem 1rem; background: #f7f7f7; border-bottom: 1px solid #ddd;">
               <span style="white-space: nowrap; color: #888; min-width: 6rem;">2026-03</span>
@@ -242,10 +242,9 @@
             .lb-chip.active.ac-closed    { background: #424242; }
             .lb-chip.active.ac-reasoning { background: #6a1b9a; }
             .lb-chip.active.ac-nonreasoning { background: #1565c0; }
-            .lb-chip.active.ac-flagship  { background: #b8860b; }
             .lb-chip.active.ac-anonymous { background: #546e7a; }
-            /* vendor-specific active for OpenRouter */
-            .lb-chip.active.vc-openrouter { background: #7c3aed; }
+            /* vendor-specific active for Xiaomi */
+            .lb-chip.active.vc-xiaomi    { background: #ff6900; }
 
             .lb-divider {
               border: none;
@@ -327,7 +326,6 @@
             .lb-tag-open     { color: #2e7d32; border-color: #a5d6a7; background: #f1f8e9; }
             .lb-tag-closed   { color: #424242; border-color: #bdbdbd; background: #f5f5f5; }
             .lb-tag-reasoning    { color: #6a1b9a; border-color: #ce93d8; background: #f3e5f5; }
-            .lb-tag-flagship { color: #b8860b; border-color: #ffe082; background: #fffde7; }
             .lb-tag-anonymous { color: #546e7a; border-color: #b0bec5; background: #eceff1; }
 
             .lb-pagination {
@@ -383,15 +381,6 @@
             <span class="lb-filter-label">Type</span>
             <div class="lb-filter-chips" id="lb-type-chips"></div>
           </div>
-          <div class="lb-filter-group">
-            <span class="lb-filter-label">Scope</span>
-            <div class="lb-filter-chips" id="lb-scope-chips"></div>
-          </div>
-          <div class="lb-filter-group">
-            <span class="lb-filter-label">Identity</span>
-            <div class="lb-filter-chips" id="lb-identity-chips"></div>
-          </div>
-
           <hr class="lb-divider" />
 
           <div class="lb-table-wrap">
@@ -421,7 +410,7 @@
             { rank: 1,  name: "GPT-5",                    score: 281.58,  vendor: "OpenAI",      open: false, reasoning: false, flagship: true,  anonymous: false },
             { rank: 2,  name: "Gemini-3-pro-preview",     score: 268.64,  vendor: "Google",      open: false, reasoning: false, flagship: true,  anonymous: false },
             { rank: 3,  name: "Claude-opus-4-5",          score: 231.48,  vendor: "Anthropic",   open: false, reasoning: false, flagship: true,  anonymous: false },
-            { rank: 4,  name: "hunter",                   score: 220.28,  vendor: "OpenRouter",  open: false, reasoning: false, flagship: false, anonymous: true  },
+            { rank: 4,  name: "mimo-v2-pro",               score: 220.28,  vendor: "Xiaomi",      open: false, reasoning: false, flagship: false, anonymous: false },
             { rank: 5,  name: "Claude-opus-4-1",          score: 211.31,  vendor: "Anthropic",   open: false, reasoning: false, flagship: false, anonymous: false },
             { rank: 6,  name: "step-3.5-flash",           score: 191.53,  vendor: "Others",      open: false, reasoning: false, flagship: true,  anonymous: false },
             { rank: 7,  name: "Qwq-plus",                 score: 186.67,  vendor: "Alibaba",     open: false, reasoning: true,  flagship: false, anonymous: false },
@@ -433,7 +422,7 @@
             { rank: 13, name: "o1",                       score: 104.22,  vendor: "OpenAI",      open: false, reasoning: true,  flagship: false, anonymous: false },
             { rank: 14, name: "DeepSeek-R1",              score: 101.20,  vendor: "DeepSeek",    open: true,  reasoning: true,  flagship: false, anonymous: false },
             { rank: 15, name: "Gemini-2.5-flash-preview", score: 80.95,   vendor: "Google",      open: false, reasoning: false, flagship: false, anonymous: false },
-            { rank: 16, name: "healer",                   score: 73.17,   vendor: "OpenRouter",  open: false, reasoning: false, flagship: false, anonymous: true  },
+            { rank: 16, name: "mimo-v2-omni",              score: 73.17,   vendor: "Xiaomi",      open: false, reasoning: false, flagship: false, anonymous: false },
             { rank: 17, name: "Qwen2.5-72b",              score: 70.00,   vendor: "Alibaba",     open: true,  reasoning: false, flagship: false, anonymous: false },
             { rank: 18, name: "GPT-oss-120b",             score: 67.93,   vendor: "OpenAI",      open: false, reasoning: false, flagship: false, anonymous: false },
             { rank: 19, name: "Qwen-plus",                score: 66.43,   vendor: "Alibaba",     open: false, reasoning: false, flagship: false, anonymous: false },
@@ -454,11 +443,11 @@
             "Alibaba":     "#ff6a00",
             "DeepSeek":    "#5c6bc0",
             "Moonshot":    "#7b5ea7",
-            "OpenRouter":  "#7c3aed",
+            "Xiaomi":      "#ff6900",
             "Others":      "#607d8b"
           };
 
-          var VENDORS = ["OpenAI", "Google", "Anthropic", "Alibaba", "DeepSeek", "Moonshot", "OpenRouter", "Others"];
+          var VENDORS = ["OpenAI", "Google", "Anthropic", "Alibaba", "DeepSeek", "Moonshot", "Xiaomi", "Others"];
           var MEDALS  = { 1: "&#127947;", 2: "&#129352;", 3: "&#129353;" };
           var PAGE_SIZE = 10;
 
@@ -466,8 +455,6 @@
           var selectedVendors = {};  // vendor -> true when selected
           var sourceFilter    = null; // null | "open" | "closed"
           var typeFilter      = null; // null | "reasoning" | "nonreasoning"
-          var flagshipOnly    = false;
-          var anonymousOnly   = false;
 
           var currentPage = 1;
           var filtered    = MODELS.slice();
@@ -486,8 +473,6 @@
               if (typeFilter === "reasoning"    && !m.reasoning) return false;
               if (typeFilter === "nonreasoning" && !m.reasoning) return true;
               if (typeFilter === "nonreasoning" &&  m.reasoning) return false;
-              if (flagshipOnly && !m.flagship) return false;
-              if (anonymousOnly && !m.anonymous) return false;
               return true;
             });
             currentPage = 1;
@@ -564,36 +549,6 @@
             });
           }
 
-          // ---- render scope chips ----
-          function renderScopeChips() {
-            var container = document.getElementById("lb-scope-chips");
-            container.innerHTML = "";
-            var chip = document.createElement("button");
-            chip.className = "lb-chip ac-flagship" + (flagshipOnly ? " active" : "");
-            chip.textContent = "Flagship Only";
-            chip.onclick = function() {
-              flagshipOnly = !flagshipOnly;
-              applyFilters();
-              renderAll();
-            };
-            container.appendChild(chip);
-          }
-
-          // ---- render identity chips ----
-          function renderIdentityChips() {
-            var container = document.getElementById("lb-identity-chips");
-            container.innerHTML = "";
-            var chip = document.createElement("button");
-            chip.className = "lb-chip ac-anonymous" + (anonymousOnly ? " active" : "");
-            chip.textContent = "Anonymous Only";
-            chip.onclick = function() {
-              anonymousOnly = !anonymousOnly;
-              applyFilters();
-              renderAll();
-            };
-            container.appendChild(chip);
-          }
-
           // ---- render table ----
           function renderTable() {
             var tbody = document.getElementById("lb-tbody");
@@ -622,9 +577,6 @@
                 : '<span class="lb-attr-tag lb-tag-closed">Closed</span>';
               if (m.reasoning) {
                 attrTags += '<span class="lb-attr-tag lb-tag-reasoning">Reasoning</span>';
-              }
-              if (m.flagship) {
-                attrTags += '<span class="lb-attr-tag lb-tag-flagship">Flagship</span>';
               }
               if (m.anonymous) {
                 attrTags += '<span class="lb-attr-tag lb-tag-anonymous">Anonymous</span>';
@@ -671,8 +623,6 @@
             renderVendorChips();
             renderSourceChips();
             renderTypeChips();
-            renderScopeChips();
-            renderIdentityChips();
             renderTable();
             renderPagination();
           }
