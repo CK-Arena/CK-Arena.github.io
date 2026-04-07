@@ -170,8 +170,8 @@
           <h2 class="title is-4">News</h2>
           <div style="border: 1px solid #ddd; border-radius: 6px; overflow: hidden; font-size: 0.95rem;">
             <div style="display: flex; gap: 1rem; padding: 0.7rem 1rem; background: #f7f7f7; border-bottom: 1px solid #ddd;">
-              <span style="white-space: nowrap; color: #888; min-width: 6rem;">2026-03</span>
-              <span>Added 2 anonymous models to the leaderboard (now revealed: <code>hunter</code> is <code>xiaomi/mimo-v2-pro</code>, <code>healer</code> is <code>xiaomi/mimo-v2-omni</code>).</span>
+              <span style="white-space: nowrap; color: #888; min-width: 6rem;">2026-04</span>
+              <span>Added 5 new models to the leaderboard: <code>xiaomi/mimo-v2-pro</code>, <code>xiaomi/mimo-v2-omni</code>), <code>minimax-m2.5</code>, <code>nemotron-3-super-120b-a12b</code>, <code>qwen3.6-plus</code>.</span>
             </div>
             <div style="display: flex; gap: 1rem; padding: 0.7rem 1rem; background: #f7f7f7; border-bottom: 1px solid #ddd;">
               <span style="white-space: nowrap; color: #888; min-width: 6rem;">2026-03</span>
@@ -407,33 +407,36 @@
           // open: publicly released weights; dedicated: dedicated chain-of-thought reasoner (always reasons)
           // flagship: the newest/latest model representing that vendor
           var MODELS = [
-            { rank: 1,  name: "GPT-5",                    score: 281.58,  vendor: "OpenAI",      open: false, dedicated: false, flagship: true,  anonymous: false },
-            { rank: 2,  name: "Gemini-3-pro-preview",     score: 268.64,  vendor: "Google",      open: false, dedicated: false, flagship: true,  anonymous: false },
-            { rank: 3,  name: "Claude-opus-4-5",          score: 231.48,  vendor: "Anthropic",   open: false, dedicated: false, flagship: true,  anonymous: false },
-            { rank: 4,  name: "mimo-v2-pro",               score: 220.28,  vendor: "Xiaomi",      open: false, dedicated: false, flagship: false, anonymous: false },
-            { rank: 5,  name: "Claude-opus-4-1",          score: 211.31,  vendor: "Anthropic",   open: false, dedicated: false, flagship: false, anonymous: false },
-            { rank: 6,  name: "step-3.5-flash",           score: 191.53,  vendor: "Others",      open: false, dedicated: false, flagship: true,  anonymous: false },
-            { rank: 7,  name: "Qwq-plus",                 score: 186.67,  vendor: "Alibaba",     open: false, dedicated: true,  flagship: false, anonymous: false },
-            { rank: 8,  name: "Qwen3-max",                score: 148.76,  vendor: "Alibaba",     open: false, dedicated: false, flagship: true,  anonymous: false },
-            { rank: 9,  name: "DeepSeek-v3.1",            score: 136.09,  vendor: "DeepSeek",    open: true,  dedicated: false, flagship: true,  anonymous: false },
-            { rank: 10, name: "nemotron-3-nano-30b-a3b",  score: 131.16,  vendor: "Others",      open: true,  dedicated: false, flagship: true,  anonymous: false },
-            { rank: 11, name: "trinity-large-preview",    score: 111.08,  vendor: "Others",      open: false, dedicated: false, flagship: true,  anonymous: false },
-            { rank: 12, name: "DeepSeek-v3",              score: 108.70,  vendor: "DeepSeek",    open: true,  dedicated: false, flagship: false, anonymous: false },
-            { rank: 13, name: "o1",                       score: 104.22,  vendor: "OpenAI",      open: false, dedicated: true,  flagship: false, anonymous: false },
-            { rank: 14, name: "DeepSeek-R1",              score: 101.20,  vendor: "DeepSeek",    open: true,  dedicated: true,  flagship: false, anonymous: false },
-            { rank: 15, name: "Gemini-2.5-flash-preview", score: 80.95,   vendor: "Google",      open: false, dedicated: false, flagship: false, anonymous: false },
-            { rank: 16, name: "mimo-v2-omni",              score: 73.17,   vendor: "Xiaomi",      open: false, dedicated: false, flagship: false, anonymous: false },
-            { rank: 17, name: "Qwen2.5-72b",              score: 70.00,   vendor: "Alibaba",     open: true,  dedicated: false, flagship: false, anonymous: false },
-            { rank: 18, name: "GPT-oss-120b",             score: 67.93,   vendor: "OpenAI",      open: false, dedicated: false, flagship: false, anonymous: false },
-            { rank: 19, name: "Qwen-plus",                score: 66.43,   vendor: "Alibaba",     open: false, dedicated: false, flagship: false, anonymous: false },
-            { rank: 20, name: "glm-4.5-air",              score: 59.04,   vendor: "Others",      open: true,  dedicated: false, flagship: true,  anonymous: false },
-            { rank: 21, name: "Kimi-k2-instruct",         score: 53.10,   vendor: "Moonshot",    open: false, dedicated: false, flagship: true,  anonymous: false },
-            { rank: 22, name: "GPT-4o",                   score: 48.83,   vendor: "OpenAI",      open: false, dedicated: false, flagship: false, anonymous: false },
-            { rank: 23, name: "Gemini-2.5-Pro-thinking",  score: 36.26,   vendor: "Google",      open: false, dedicated: true,  flagship: false, anonymous: false },
-            { rank: 24, name: "LlaMA-3.3-70b-instruct",   score: 21.27,   vendor: "Others",      open: true,  dedicated: false, flagship: true,  anonymous: false },
-            { rank: 25, name: "Gemini-2.0-pro-exp",       score: 17.99,   vendor: "Google",      open: false, dedicated: false, flagship: false, anonymous: false },
-            { rank: 26, name: "Ernie-4.5-300b-a47b",      score: 3.69,    vendor: "Others",      open: true,  dedicated: false, flagship: true,  anonymous: false },
-            { rank: 27, name: "Claude-3-5-haiku",         score: -62.41,  vendor: "Anthropic",   open: false, dedicated: false, flagship: false, anonymous: false }
+            { rank: 1,  name: "qwen3.6-plus",                  score: 297.68,  vendor: "Alibaba",     open: false, dedicated: false, flagship: true,  anonymous: false },
+            { rank: 2,  name: "GPT-5",                         score: 281.58,  vendor: "OpenAI",      open: false, dedicated: false, flagship: true,  anonymous: false },
+            { rank: 3,  name: "Gemini-3-pro-preview",          score: 268.64,  vendor: "Google",      open: false, dedicated: false, flagship: true,  anonymous: false },
+            { rank: 4,  name: "minimax-m2.5",                  score: 258.13,  vendor: "Others",      open: false, dedicated: false, flagship: true,  anonymous: false },
+            { rank: 5,  name: "Claude-opus-4-5",               score: 231.48,  vendor: "Anthropic",   open: false, dedicated: false, flagship: true,  anonymous: false },
+            { rank: 6,  name: "mimo-v2-pro",                   score: 220.28,  vendor: "Xiaomi",      open: false, dedicated: false, flagship: false, anonymous: false },
+            { rank: 7,  name: "Claude-opus-4-1",               score: 211.31,  vendor: "Anthropic",   open: false, dedicated: false, flagship: false, anonymous: false },
+            { rank: 8,  name: "step-3.5-flash",                score: 191.53,  vendor: "Others",      open: false, dedicated: false, flagship: true,  anonymous: false },
+            { rank: 9,  name: "Qwq-plus",                      score: 186.67,  vendor: "Alibaba",     open: false, dedicated: true,  flagship: false, anonymous: false },
+            { rank: 10, name: "Qwen3-max",                     score: 148.76,  vendor: "Alibaba",     open: false, dedicated: false, flagship: false, anonymous: false },
+            { rank: 11, name: "nemotron-3-super-120b-a12b",    score: 139.05,  vendor: "Others",      open: false, dedicated: false, flagship: true,  anonymous: false },
+            { rank: 12, name: "DeepSeek-v3.1",                 score: 136.09,  vendor: "DeepSeek",    open: true,  dedicated: false, flagship: true,  anonymous: false },
+            { rank: 13, name: "nemotron-3-nano-30b-a3b",       score: 131.16,  vendor: "Others",      open: true,  dedicated: false, flagship: false, anonymous: false },
+            { rank: 14, name: "trinity-large-preview",         score: 111.08,  vendor: "Others",      open: false, dedicated: false, flagship: false, anonymous: false },
+            { rank: 15, name: "DeepSeek-v3",                   score: 108.70,  vendor: "DeepSeek",    open: true,  dedicated: false, flagship: false, anonymous: false },
+            { rank: 16, name: "o1",                            score: 104.22,  vendor: "OpenAI",      open: false, dedicated: true,  flagship: false, anonymous: false },
+            { rank: 17, name: "DeepSeek-R1",                   score: 101.20,  vendor: "DeepSeek",    open: true,  dedicated: true,  flagship: false, anonymous: false },
+            { rank: 18, name: "Gemini-2.5-flash-preview",      score: 80.95,   vendor: "Google",      open: false, dedicated: false, flagship: false, anonymous: false },
+            { rank: 19, name: "mimo-v2-omni",                  score: 73.17,   vendor: "Xiaomi",      open: false, dedicated: false, flagship: false, anonymous: false },
+            { rank: 20, name: "Qwen2.5-72b",                   score: 70.00,   vendor: "Alibaba",     open: true,  dedicated: false, flagship: false, anonymous: false },
+            { rank: 21, name: "GPT-oss-120b",                  score: 67.93,   vendor: "OpenAI",      open: false, dedicated: false, flagship: false, anonymous: false },
+            { rank: 22, name: "Qwen-plus",                     score: 66.43,   vendor: "Alibaba",     open: false, dedicated: false, flagship: false, anonymous: false },
+            { rank: 23, name: "glm-4.5-air",                   score: 59.04,   vendor: "Others",      open: true,  dedicated: false, flagship: false, anonymous: false },
+            { rank: 24, name: "Kimi-k2-instruct",              score: 53.10,   vendor: "Moonshot",    open: false, dedicated: false, flagship: true,  anonymous: false },
+            { rank: 25, name: "GPT-4o",                        score: 48.83,   vendor: "OpenAI",      open: false, dedicated: false, flagship: false, anonymous: false },
+            { rank: 26, name: "Gemini-2.5-Pro-thinking",       score: 36.26,   vendor: "Google",      open: false, dedicated: true,  flagship: false, anonymous: false },
+            { rank: 27, name: "LlaMA-3.3-70b-instruct",        score: 21.27,   vendor: "Others",      open: true,  dedicated: false, flagship: false, anonymous: false },
+            { rank: 28, name: "Gemini-2.0-pro-exp",            score: 17.99,   vendor: "Google",      open: false, dedicated: false, flagship: false, anonymous: false },
+            { rank: 29, name: "Ernie-4.5-300b-a47b",           score: 3.69,    vendor: "Others",      open: true,  dedicated: false, flagship: false, anonymous: false },
+            { rank: 30, name: "Claude-3-5-haiku",              score: -62.41,  vendor: "Anthropic",   open: false, dedicated: false, flagship: false, anonymous: false }
           ];
 
           var VENDOR_COLORS = {
